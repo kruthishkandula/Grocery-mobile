@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "GroceryPlus",
+    "slug": "groceryplus",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./app/assets/images/app_icon2.png",
+    "scheme": "GroceryPlus",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.groceryplus",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.groceryplus",
+      "usesCleartextTraffic": true
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [],
+    "extra": {
+      "eas": {
+        "projectId": "179d04e4-7567-428f-be93-d4015bb84112"
+      }
+    },
+    "owner": "kruthish_kandula"
+  }
+}

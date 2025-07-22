@@ -1,0 +1,34 @@
+/* This file adds the requisite utility classes for Tailwind to work. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+    :root {
+        --color-primary: hsl(0, 0%, 0%);
+        --color-secondary: hsl(0, 0%, 50%);
+        --color-text-base: hsl(0, 0%, 100%);
+        --color-bg-primary: hsl(0, 0%, 100%);
+    }
+}
+
+.theme-orange {
+    --color-primary: #FFA673;
+    --color-secondary: #FFE3BB;
+}
+
+.theme-green {
+    --color-primary: #708A58;
+    --color-secondary: #FFF1CA;
+}
+
+.theme-blue {
+    --color-primary: #4E71FF;
+    --color-secondary: #8DD8FF;
+}
+
+.theme-pink {
+    --color-primary: #FF90BB;
+    --color-secondary: #FFC1DA;
+}

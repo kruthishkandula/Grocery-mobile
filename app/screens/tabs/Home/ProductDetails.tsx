@@ -50,7 +50,7 @@ export default function ProductDetails() {
   const getImageUrl = (url: string) => url?.startsWith('/') ? `${CMS_URL}${url}` : url;
 
   // Prepare images for carousels
-  const carouselImages = (product?.all_images || []).map((img: any) => ({
+  const carouselImages = (product?.images || []).map((img: any) => ({
     id: img.id,
     url: getImageUrl(img.url),
   }));
@@ -69,7 +69,7 @@ export default function ProductDetails() {
         {/* Product Details */}
         <View className="p-4">
           <Text className="text-[24px] font-extrabold mb-2">{product?.name}</Text>
-          <Text className="text-[18px] text-[#3E3E3E] mb-2">{product?.short_description}</Text>
+          <Text className="text-[18px] text-[#3E3E3E] mb-2">{product?.shortDescription}</Text>
 
           {/* Price Section */}
           <View className="flex-row items-center justify-between my-4">
@@ -78,22 +78,19 @@ export default function ProductDetails() {
             </Text>
             <View className="flex-1 items-end">
               <Text className="font-extrabold mb-2 text-[29px] text-primary">
-                {product?.currency_symbol}{product?.discount_price ?? product?.base_price}
+                {product?.currencySymbol}{product?.discountPrice ?? product?.basePrice}
               </Text>
 
-              {product?.discount_price && product?.discount_price < product?.base_price && (
+              {product?.discountPrice && product?.discountPrice < product?.basePrice && (
                 <Text className="text-base text-gray-400 line-through mb-2">
-                  {product?.currency_symbol}{product?.base_price}
+                  {product?.currencySymbol}{product?.basePrice}
                 </Text>
               )}
             </View>
           </View>
 
-          {/* Description */}
-          <Text className="text-[16px] font-light text-left text-[#3E3E3E] mb-4">{product?.description}</Text>
-
           {/* Cart Controls */}
-          <View className="flex-row justify-end items-center gap-4 mt-4">
+          <View className="flex-row justify-center items-center gap-4 my-4">
             {cartItem ? (
               <>
                 <TouchableOpacity className="bg-gray-200 rounded-full px-3 py-1" onPress={handleDecrement}>
@@ -112,6 +109,10 @@ export default function ProductDetails() {
               </TouchableOpacity>
             )}
           </View>
+
+          {/* Description */}
+          <Text className="text-[16px] font-light text-left text-[#3E3E3E] mb-4">{product?.description}</Text>
+
         </View>
       </ScrollView>
       <OverlayLoader open={cartLoading} text={`Updating Cart...`} />

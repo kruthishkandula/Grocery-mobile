@@ -2,12 +2,12 @@ import useTheme from '@/hooks/useTheme';
 import { useCartStore } from '@/store/cart/cartStore';
 import { CMS_URL } from '@/utility/config';
 import { convertToFloat } from '@/utility/utility';
-import { Button, CachedImage, DynamicHeader, IconSymbol } from '@atom';
+import { Button, CachedImage, DynamicHeader, IconSymbol, Text } from '@atom';
 import Details from '@molecule/Card/Details';
 import DynamicLoader from '@molecule/Loader';
 
 import React from 'react';
-import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, TouchableOpacity, View } from 'react-native';
 import EmptyCart from './EmptyCart';
 
 
@@ -51,12 +51,12 @@ export default function CartScreen({ navigation }: any) {
   // Zustand cart store for local state only
   const { items: cartItems, loading: isCartLoading, setQuantity, removeItem, clearCart } = useCartStore();
   const currency = cartItems?.[0]?.currency || 'INR';
-  const currencySymbol = cartItems?.[0]?.currency_symbol || '₹';
+  const currencySymbol = cartItems?.[0]?.currencySymbol || '₹';
 
 
   const subtotal = cartItems?.reduce((sum: number, item: any) => {
     return (
-      sum + (parseFloat(item?.product?.discount_price || 0) * parseInt(item?.quantity || 0))
+      sum + (parseFloat(item?.product?.discountPrice || 0) * parseInt(item?.quantity || 0))
     );
   }, 0);
 
@@ -104,25 +104,35 @@ export default function CartScreen({ navigation }: any) {
               }
 
               return (
-                <View className="flex-row justify-between items-center py-2 border-b border-gray-100">
+                <View style={{
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 1.41,
+                  elevation: 2,
+                  backgroundColor: colors?.bg2,
+                  borderRadius: 8,
+                  marginBottom: 8,
+                }} className="flex-row justify-between items-center p-4 border-b border-gray-100">
                   <View className="flex-row items-center">
-                    {product_details?.all_images && (
+                    {product_details?.images && (
                       <CachedImage
-                        name={getImageUrl(product_details?.all_images?.[0]?.url)}
+                        name={getImageUrl(product_details?.images?.[0]?.url)}
                         style={{ width: 48, height: 48, borderRadius: 8, marginRight: 12 }}
                       />
                     )}
                     <View>
                       <Text className="font-semibold">{product_details?.name}</Text>
                       <Text className="text-xs text-gray-500">
-                        {currencySymbol}{product_details?.discount_price}
+                        {currencySymbol}{product_details?.discountPrice}
                       </Text>
-                      <Text className="text-xs text-gray-500">
-                        {product_details?.short_description}
+                      <Text numberOfLines={3}  className="text-xs text-gray-500 max-[100px]:overflow-hidden">
+                        {product_details?.shortDescription}
                       </Text>
                     </View>
                   </View>
 
+                  {/* controllers */}
                   <View className="flex-col items-end gap-5">
                     <View className="flex-row items-center">
                       <TouchableOpacity
@@ -155,8 +165,9 @@ export default function CartScreen({ navigation }: any) {
                         <Text className="text-lg font-bold">+</Text>
                       </TouchableOpacity>
                     </View>
+
                     <Text className="ml-4 font-semibold">
-                      {currencySymbol} {convertToFloat((product_details?.discount_price || 0) * item.quantity)}
+                      {currencySymbol} {convertToFloat((product_details?.discountPrice || 0) * item.quantity)}
                     </Text>
                   </View>
                 </View>

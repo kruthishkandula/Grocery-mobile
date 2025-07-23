@@ -3,7 +3,7 @@ import { useAuth } from '@/context/AuthContext';
 import useTheme from '@/hooks/useTheme';
 import { navigationRef } from '@/navigation/RootNavRef';
 import { Theme } from '@/Themes';
-import KeyboardWrapper from '@atom/KeyboardWrapper';
+import KeyboardWrapper from '@/components/atom/Wrapper/KeyboardWrapper';
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { useEffect, useRef, useState } from 'react';
 import { Platform, View } from 'react-native';

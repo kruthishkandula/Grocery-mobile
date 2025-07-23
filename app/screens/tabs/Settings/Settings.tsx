@@ -1,12 +1,13 @@
-import { CachedImage, DynamicHeader } from '@/components/atom';
+import { CachedImage } from '@/components/atom';
 import { useAuth } from '@/context/AuthContext';
-import { gpsh } from '@/style/theme';
+import useTheme from '@/hooks/useTheme';
+import { gpsh, gpsw } from '@/style/theme';
 import IconSymbol from '@atom/IconSymbol';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { upperFirst } from 'lodash';
 import React from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 
 
 const settingsCms = {
@@ -104,33 +105,22 @@ const settingsCms = {
       is_active: true,
     },
     {
-      id: 5,
+      id: 7,
       title: 'Logout',
       route: null,
       icon: 'log-out',
       iconSet: 'Feather',
       size: 24,
       isLogout: true,
-      is_active: false
+      is_active: true
     },
   ],
-  bottom_options: [{
-    id: 5,
-    title: 'Logout',
-    route: null,
-    icon: 'log-out',
-    iconSet: 'Feather',
-    size: 24,
-    isLogout: true,
-    is_active: true
-  }]
 }
 
 export default function Settings() {
   const { logout, userDetails } = useAuth();
   const { navigate } = useNavigation<any>();
-
-  console.log('userDetails', userDetails)
+  const { colors } = useTheme()
 
   const userProfile = {
     ...userDetails,
@@ -149,28 +139,35 @@ export default function Settings() {
   };
 
   return (
-    <ScrollView contentContainerClassName='flex-1 mb-[80px]' className='flex-1 bg-[rgba(0,0,0,0.24)] '>
-      {/* header */}
-      {/* <DynamicHeader title='Settings' /> */}
-
+    <View className='flex-1 flex-grow bg-[rgba(0,0,0,0.14)]' >
       {/* Profile Section */}
-      <View className='flex-row bg-bg rounded-[20px] px-2 gap-6 items-center py-8 border-b border-white m-4'>
+      <LinearGradient start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={{
+          flex: 1,
+          margin: gpsw(10), maxHeight: gpsh(120), gap: 10, flexDirection: 'row', paddingHorizontal: gpsw(10), paddingVertical: gpsh(10), borderRadius: 20, borderColor: '#fff',
+          alignItems: 'center'
+
+        }}
+
+        colors={[colors?.primary, colors?.bg]}
+      >
         <CachedImage
           name={userProfile.photo}
           style={{ width: 80, height: 80, borderRadius: 40, marginBottom: 12 }}
         />
         <View  >
-          <Text className='text-[32px] font-bold'>{upperFirst(userProfile.name)}</Text>
+          <Text className='text-[32px] font-bold text-text1'>{upperFirst(userProfile.name)}</Text>
           <View className='flex-row items-center gap-2' >
             <IconSymbol name='phone' size={16} />
-            <Text className='text-gray-500 text-[16px]'>{userProfile.phonenumber}</Text>
+            <Text className='text-shading text-[16px]'>{userProfile.phonenumber}</Text>
           </View>
           <View className='flex-row items-center gap-2'>
             <IconSymbol name='email' size={16} />
-            <Text className='text-gray-500 text-[16px]'>{userProfile.email}</Text>
+            <Text className='text-shading text-[16px]'>{userProfile.email}</Text>
           </View>
         </View>
-      </View>
+      </LinearGradient>
 
       <View className='flex-1 bg-bg w-full' style={{
         borderTopRightRadius: gpsh(20),
@@ -188,7 +185,7 @@ export default function Settings() {
                 <View className='rounded-[100px] bg-shadingLight p-4'>
                   <IconSymbol name={item.icon} iconSet={item.iconSet} size={item.size} color='text-text2' />
                 </View>
-                <Text className='font-medium'>{item.title?.replace('(Balance)', `${userDetails?.currencySymbol} ${0.00}`)}</Text>
+                <Text className='font-medium text-text1'>{item.title?.replace('(Balance)', `${userDetails?.currencySymbol} ${0.00}`)}</Text>
               </TouchableOpacity>
             ))
           }
@@ -202,11 +199,26 @@ export default function Settings() {
 
         {/* Settings Options */}
         <FlatList
-          bounces={false}
           data={settingsCms?.settings_options.filter(item => item.is_active)}
           keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={{ paddingBottom: gpsw(100) }}
           renderItem={({ item, index }) => {
             let title = item.title;
+
+            if (item.isLogout) {
+              return (
+                <View className='w-full items-center justify-end flex-1 px-4 py-2' >
+                  <TouchableOpacity
+                    key={`setting-${index}`}
+                    className={`flex-row items-center gap-2 py-4 px-5  border-gray-100 ${item.isLogout ? 'mt-4' : ''}`}
+                    onPress={() => handleOptionPress(item)}
+                  >
+                    <IconSymbol name={item.icon} iconSet={item.iconSet} size={item.size} color={item.isLogout ? '#EF4444' : '#222'} />
+                    <Text className={`text-base ${item.isLogout ? 'text-red-500 font-semibold' : ''}`}>{item.title}</Text>
+                  </TouchableOpacity>
+                </View>
+              )
+            }
 
             return (
               <TouchableOpacity
@@ -214,9 +226,9 @@ export default function Settings() {
                 className={`flex-row items-center gap-2 py-4 px-5  border-gray-100`}
                 onPress={() => handleOptionPress(item)}
               >
-                <IconSymbol name={item.icon} iconSet={item.iconSet} size={item.size} color={'#222'} />
-                <Text className={`text-base`}>{title}</Text>
-                <IconSymbol name='chevron-right' size={item?.size} color='text-text2' style={{ marginLeft: 'auto' }} />
+                <IconSymbol name={item.icon} iconSet={item.iconSet} size={item.size} color={colors.text1} />
+                <Text className={`text-base text-text1`}>{title}</Text>
+                <IconSymbol name='chevron-right' size={item?.size} color={colors.text1} style={{ marginLeft: 'auto' }} />
               </TouchableOpacity>
             )
           }
@@ -230,21 +242,7 @@ export default function Settings() {
           )}
         />
 
-
-        {/* logout option */}
-        <View className='w-full items-center justify-end flex-1 px-4 py-2' >
-          {settingsCms?.bottom_options?.filter(item => item.is_active)?.map((item, index) => (
-            <TouchableOpacity
-              key={`setting-${index}`}
-              className={`flex-row items-center gap-2 py-4 px-5  border-gray-100 ${item.isLogout ? 'mt-4' : ''}`}
-              onPress={() => handleOptionPress(item)}
-            >
-              <IconSymbol name={item.icon} iconSet={item.iconSet} size={item.size} color={item.isLogout ? '#EF4444' : '#222'} />
-              <Text className={`text-base ${item.isLogout ? 'text-red-500 font-semibold' : ''}`}>{item.title}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
       </View>
-    </ScrollView>
+    </View>
   )
 }

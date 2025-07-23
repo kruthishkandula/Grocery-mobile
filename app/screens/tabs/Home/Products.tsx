@@ -1,5 +1,5 @@
-import { fetchAllCategories } from '@/api/nodeapi/Categories';
-import { fetchProductsByCategory } from '@/api/nodeapi/Products';
+import { useFetchAllCategories } from '@/api/nodeapi/Categories/api';
+import { useFetchProductsByCategory } from '@/api/nodeapi/Products/api';
 import DynamicError from '@/components/molecule/Error';
 import DynamicLoader from '@/components/molecule/Loader';
 import OverlayLoader from '@/components/molecule/Loader/OverLayLoader';
@@ -9,7 +9,6 @@ import { useWishlistStore } from '@/store/whishlist/wishlistStore';
 import { IconSymbol, Text } from '@atom';
 import DynamicHeader from '@atom/DynamicHeader';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Image, Modal, RefreshControl, TouchableOpacity, View } from 'react-native';
 
@@ -38,28 +37,12 @@ export default function Products() {
   // Use cartItems as the source of truth for cart items
   const cartDataItems = cartItems || [];
 
-
-  // Fetch categories
-  const { data: categoriesData, isLoading: categoriesLoading, error: categoriesError, refetch: refetchCategories } = useQuery({
-    queryKey: ['categories'],
-    queryFn: fetchAllCategories,
-  });
-
-  // Fetch products by selected category
-  const {
-    data: productsData,
-    isLoading: productsLoading,
-    error: productsError,
-    refetch: refetchProducts,
-  } = useQuery({
-    queryKey: ['products', selectedCategory],
-    queryFn: () => fetchProductsByCategory(selectedCategory),
-    enabled: !!selectedCategory,
-  });
+  const { data: categoriesData, isLoading: categoriesLoading, error: categoriesError, refetch: refetchCategories } = useFetchAllCategories();
+  const { data: productsData, isLoading: productsLoading, error: productsError, refetch: refetchProducts } = useFetchProductsByCategory({ categoryId: selectedCategory });
 
   // Helper to get product image url
   const getProductImage = (item: any) => {
-    const img = item.all_images?.[0];
+    const img = item.images?.[0];
     if (!img) return undefined;
     return img.formats?.medium?.url || img.formats?.small?.url || img.formats?.thumbnail?.url || img.url;
   };
@@ -105,6 +88,8 @@ export default function Products() {
       removeItem(productId)
     }
   };
+
+  console.log('selectedCategory', selectedCategory)
 
   // Category selection logic
   useEffect(() => {
@@ -199,7 +184,7 @@ export default function Products() {
               data={(productsData?.data || []).map((item: { id: string; }) => getProductFromCache(item.id) || item)}
               keyExtractor={item => item.id?.toString()}
               showsVerticalScrollIndicator={false}
-              contentContainerClassName="justify-between"
+              contentContainerClassName="justify-between gap-4"
               numColumns={2}
               refreshControl={<RefreshControl tintColor={colors?.primary} title={'Fetching Products...'} refreshing={isRefreshing} onRefresh={refetch} />}
               renderItem={({ item }) => {
@@ -225,19 +210,19 @@ export default function Products() {
                       resizeMode="cover"
                     />
                     <View className="flex-1 mt-[10px]">
-                      <Text className="text-[14px] text-text1 font-semibold">{item.name}</Text>
-                      <View className="flex-row items-center mt-[30px]">
-                        <Text className="text-[16px] font-bold text-red-500">
-                          {item.currency_symbol}
-                          {item.discount_price ?? item.base_price}
+                      <Text variant='medium16' className="text-text1">{item.name}</Text>
+                      <View className="flex-row items-center mt-[10px]">
+                        <Text className="text-[12px] font-bold text-red-500">
+                          {item.currencySymbol}
+                          {item.discountPrice ?? item.basePrice}
                         </Text>
-                        {item.discount_price && item.discount_price < item.base_price && (
-                          <Text className="text-xs text-text1 ml-2 line-through">
-                            {item.currency_symbol}
-                            {item.base_price}
+                        {item.discountPrice && item.discountPrice < item.basePrice && (
+                          <Text className="text-[10px] text-text1 ml-2 line-through">
+                            {item.currencySymbol}
+                            {item.basePrice}
                           </Text>
                         )}
-                        <Text className="text-[12px] text-text1 ml-1">/{item.weight_unit}</Text>
+                        <Text className="text-[10px] text-text1 ml-1">/{item.weightUnit}</Text>
                       </View>
                     </View>
 
@@ -281,10 +266,12 @@ export default function Products() {
                     {/* Wishlist Controls */}
                     <TouchableOpacity
                       className="flex bg-[rgba(255,255,255,0.2)] absolute top-3 right-2 flex-row px-[8px] py-[8px] rounded-[7px] items-center justify-center flex-1"
-                      onPress={(e) => { isWishlistItem ? removeWishlistItem(item.id) : addWishlistItem({
-                        id: item.id,
-                        product: item,
-                      }) }}
+                      onPress={(e) => {
+                        isWishlistItem ? removeWishlistItem(item.id) : addWishlistItem({
+                          id: item.id,
+                          product: item,
+                        })
+                      }}
                     >
                       <IconSymbol name={isWishlistItem ? "heart-fill" : "heart"} iconSet={'Octicons'} size={24} color={isWishlistItem ? "red" : "#222"} />
                     </TouchableOpacity>
@@ -326,7 +313,7 @@ export default function Products() {
                     setVariantModalVisible(false);
                   }}
                 >
-                  <Text>{variant.name} - ₹{variant.discount_price ?? variant.price}</Text>
+                  <Text>{variant.name} - ₹{variant.discountPrice ?? variant.price}</Text>
                 </TouchableOpacity>
               ))}
               <TouchableOpacity onPress={() => setVariantModalVisible(false)} className="mt-2">

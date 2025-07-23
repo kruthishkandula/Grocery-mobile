@@ -12,11 +12,13 @@ export const NODE_URLS = {
     UPDATE_CART: (cartId: string) => `/api/cart/${cartId}`,
     REMOVE_FROM_CART: (cartId: string) => `/api/cart/${cartId}`,
 
-
     CATEGORIES: '/api/categories/list',
     PRODUCTS: '/api/products/list',
-    BANNERS: '/api/banners/list',
     ORDERS: '/api/orders/list',
+
+    // cms
+    BANNERS: '/api/cms/banners/list',
+    DASHBOARD: '/api/cms/dashboard/list',
 }
 
 

@@ -2,8 +2,8 @@ import Loader from '@/components/molecule/Loader/OverLayLoader';
 import { useAuth } from '@/context/AuthContext';
 import useTheme from '@/hooks/useTheme';
 import { Button, Text } from '@atom';
-import { FormField } from '@atom/FormField';
-import KeyboardScrollView from '@atom/KeyboardSrollView';
+import { FormField } from '@atom/Input/FormField';
+import KeyboardScrollView from '@/components/atom/Wrapper/KeyboardSrollView';
 import AuthScreenWrapper from '@atom/Wrapper/AuthScreenWrapper';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState, useRef } from 'react';
@@ -42,7 +42,7 @@ export default function Login({ navigation }: any) {
   const handleLogin = async (formData: LoginForm) => {
     try {
       setLoading(true);
-      login(formData.username, formData.password);
+      await login(formData.username, formData.password);
     } catch (error: any) {
       if (error?.message == "Invalid credentials.") {
         setError('username', { message: 'Invalid username or password' });

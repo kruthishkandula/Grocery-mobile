@@ -24,7 +24,6 @@ const CachedImage: React.FC<CachedImageProps> = ({
   size = 100, // Default size
 }) => {
 
-  console.log('name', name)
   // Determine if name is a URL or a local image key
   const isUrl = name?.startsWith('http://') || name?.startsWith('https://');
   const isStrapiUrl = name?.startsWith('/uploads')

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Animated, Text, TextInput, TextInputProps, TouchableOpacity, View } from 'react-native';
-import IconSymbol from './IconSymbol';
+import IconSymbol from '../IconSymbol';
 
 export interface FloatingLabelInputProps extends Omit<TextInputProps, 'autoCapitalize' | 'returnKeyType'> {
     value?: string;

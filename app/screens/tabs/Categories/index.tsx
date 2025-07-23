@@ -4,7 +4,7 @@ import CategoryItem1 from '@molecule/CategoryItem1'
 import React from 'react'
 import { FlatList, View } from 'react-native'
 
-import { useFetchAllCategories } from '@/api/nodeapi/Categories'
+import { useFetchAllCategories } from '@/api/nodeapi/Categories/api'
 import DynamicHeader from '@atom/DynamicHeader'
 import DynamicError from '@molecule/Error'
 import DynamicLoader from '@molecule/Loader'

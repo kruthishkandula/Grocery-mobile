@@ -4,7 +4,7 @@ import DashboardSectionHeader from '@/components/atom/Header/DashboardSectionHea
 import { useThemeContextActions } from '@/Themes';
 import { getThemeColors } from '@/Themes/theme-config';
 import { IconSymbol, Text } from '@atom';
-import CategoryItem1 from '@molecule/CategoryItem1';
+import CategoryItem1 from '@/components/molecule/Card/CategoryItem1';
 import DynamicError from '@molecule/Error';
 import DynamicLoader from '@molecule/Loader';
 import SearchBar from '@molecule/SearchBar';
@@ -12,6 +12,7 @@ import { Image } from 'expo-image';
 import React, { useRef, useState } from 'react';
 import { Animated, Dimensions, FlatList, TouchableOpacity, View } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
+import { useAuth } from '@/context/AuthContext';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -65,10 +66,14 @@ export default function Dashboard() {
     const colors = getThemeColors(theme);
     const scrollX = useRef(new Animated.Value(0)).current;
     const [isRefreshing, setIsRefreshing] = useState(false);
+    const { loading: authLoading, userLoggedIn } = useAuth();
 
-    const { data, isLoading, error, refetch: refetchCategories } = useFetchAllCategories();
-    const { data: bannersData, isLoading: bannersLoading, error: bannersError, refetch: refetchBanners } = useFetchAllBanners({});
-    // const { data: productsData, isLoading: productsLoading, error: productsError, refetch: refetchProducts } = usefethp();
+    const { data, isLoading, error, refetch: refetchCategories } = useFetchAllCategories({
+        enabled: !authLoading && userLoggedIn,
+    });
+    const { data: bannersData, isLoading: bannersLoading, error: bannersError, refetch: refetchBanners } = useFetchAllBanners({}, {
+        enabled: !authLoading && userLoggedIn,
+    });
 
     const refetch = async () => {
         setIsRefreshing(true);
@@ -79,6 +84,7 @@ export default function Dashboard() {
         }
     };
 
+    if (authLoading) return null; // Or a splash/loader
     if (isLoading || bannersLoading) return <DynamicLoader message={'Loading...'} />;
     if (error) return <DynamicError error={error} onRetry={refetch} />;
 
@@ -173,7 +179,7 @@ export default function Dashboard() {
                         />
                         {/* Pagination Dots */}
                         <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
-                            {banners.map((_, i) => {
+                            {banners.map((_: any, i: any) => {
                                 const inputRange = [
                                     (i - 1) * SCREEN_WIDTH * 0.85,
                                     i * SCREEN_WIDTH * 0.85,
@@ -195,7 +201,7 @@ export default function Dashboard() {
                                         style={{
                                             height: 8,
                                             borderRadius: 4,
-                                            backgroundColor: '#888',
+                                            backgroundColor: colors?.fourth,
                                             marginHorizontal: 4,
                                             width: dotWidth,
                                             opacity,
@@ -215,7 +221,7 @@ export default function Dashboard() {
         <View className="bg-bg2 pb-5 flex-1 justify-start">
             {/* Header */}
             <View style={{ borderBottomLeftRadius: 20, borderBottomRightRadius: 20 }}>
-                <View style={{ padding: 20 }}>
+                <View style={{ paddingHorizontal: 20 }}>
                     <View className='flex flex-row justify-between'>
                         <Text className='text-[30px] font-[800] text-text1'>Grocery Plus</Text>
                         <IconSymbol name='bell' iconSet='FontAwesome5' size={24} color={colors?.text1} />

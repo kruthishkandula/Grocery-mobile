@@ -37,7 +37,7 @@ export default function Details({
 
                     return (
                         <View key={key} className='flex-row justify-between items-center w-full mb-2'>
-                            <Text variant='medium16' className='text-text1'>{KeyName}</Text>
+                            <Text variant='medium14' className='text-text1'>{KeyName}</Text>
                             <Text variant='regular16' className='text-text1 font-semibold text-base'>
                                 {value}
                             </Text>
@@ -53,11 +53,11 @@ export default function Details({
 
                         return (
                             <View key={key} className='flex-row justify-between items-center w-full mb-2'>
-                                <Text variant='medium16' className='text-text1'
+                                <Text variant='medium14' className='text-text1'
                                     style={[{
                                         ...(boldKeys.includes(key) && {
                                             fontWeight: 'bold',
-                                            fontSize: 20
+                                            fontSize: 18
                                         })
                                     }]}>
                                     {KeyName}
@@ -66,7 +66,7 @@ export default function Details({
                                     style={{
                                         ...(boldKeys.includes(key) && {
                                             fontWeight: 'bold',
-                                            fontSize: 20,
+                                            fontSize: 18,
                                         })
                                     }}>
                                     {value}

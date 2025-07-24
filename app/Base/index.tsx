@@ -1,3 +1,4 @@
+import Alert from '@/components/molecule/Alert';
 import AnimatedSplash from '@/components/molecule/AnimatedSplash';
 import { AuthProvider } from '@/context/AuthContext';
 import { local_storage } from '@/storage';
@@ -93,6 +94,7 @@ export default function Base() {
                             <ClickOutsideProvider>
                                 <RootNavigator />
                             </ClickOutsideProvider>
+                            <Alert />
                         </ToastProvider>
                     </AuthProvider>
                 </PersistQueryClientProvider>

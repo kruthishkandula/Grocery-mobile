@@ -4,9 +4,9 @@ import { getThemeColors } from '@/Themes/theme-config';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
-import { CachedImage } from '../atom';
+import { CachedImage } from '../../atom';
 
-export default function CategoryItem1({ item }: { item: { imageUrl: any, name: string } }) {
+export default function CategoryItem2({ item }: { item: { imageUrl: any, name: string } }) {
     const { theme } = useThemeContextActions();
     const colors = getThemeColors(theme);
     const { navigate } = useNavigation<any>()
@@ -33,8 +33,8 @@ export default function CategoryItem1({ item }: { item: { imageUrl: any, name: s
         >
             <CachedImage
                 name={`${item.imageUrl}`}
-                width={gpsw(80)}
-                height={gpsh(60)}
+                width={gpsw(110)}
+                height={gpsh(90)}
                 contentFit="fill"
             />
             <Text numberOfLines={2} style={{ color: colors?.text1, maxWidth: gpsw(100), textAlign: 'center' }} className='text-[16px] font-[500] text-text1 mt-2'>{item.name}</Text>

@@ -16,26 +16,26 @@ export default function RootLayout() {
         ...(Platform.OS !== 'web' && {
           cardStyleInterpolator: ({ current: { progress }, layouts }) => ({
             cardStyle: {
-              // opacity: progress.interpolate({
-              //   inputRange: [0, 1],
-              //   outputRange: [0, 1],
-              // }),
+              opacity: progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 1],
+              }),
               transform: [
-                // {
-                //   perspective: 1000,
-                // },
                 {
-                  rotateY: progress.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: ['180deg', '0deg'],
-                  }),
+                  perspective: 1000,
                 },
-                {
-                  scale: progress.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0.1, 1],
-                  }),
-                }
+                // {
+                //   rotateY: progress.interpolate({
+                //     inputRange: [0, 1],
+                //     outputRange: ['180deg', '0deg'],
+                //   }),
+                // },
+                // {
+                //   scale: progress.interpolate({
+                //     inputRange: [0, 1],
+                //     outputRange: [0.1, 1],
+                //   }),
+                // }
               ],
             },
           }),

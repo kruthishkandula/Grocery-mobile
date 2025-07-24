@@ -51,7 +51,7 @@ export default function DynamicHeader({
         {leftComponent}
       </View>
       {/* Title */}
-      <Text className="text-lg font-bold flex-1 text-start" numberOfLines={2} ellipsizeMode="tail" style={{ maxWidth: '30%' }}>
+      <Text className="text-lg font-bold flex-1 text-start" numberOfLines={2} ellipsizeMode="tail" style={{ maxWidth: '40%', textAlign: 'center' }}>
         {title}
       </Text>
       {/* Right */}

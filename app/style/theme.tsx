@@ -68,13 +68,13 @@ const { scale, width, height } = Dimensions.get('window');
 
 export const CardNumbers = height > 810 ? 4 : 3;
 
-export function getFontSizeByWindowWidth(fontSize: number) {
+export function getFontSizeByWindowWidth(fontSize: number | string) {
     fontSize = parseInt(fontSize.toString(), 10);
     const baseWidth = 320; // width of smallest iPhone
     return PixelRatio.roundToNearestPixel(fontSize * (width / baseWidth));
 }
 
-export function getFontSizeByWindowHeight(fontSize: number) {
+export function getFontSizeByWindowHeight(fontSize: number | string) {
     fontSize = parseInt(fontSize.toString(), 10);
     const baseHeight = 568; // width of smallest iPhone
     // const baseHeight = 568; // width of smallest iPhone

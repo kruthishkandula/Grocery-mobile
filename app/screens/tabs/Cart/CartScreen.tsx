@@ -9,6 +9,7 @@ import DynamicLoader from '@molecule/Loader';
 import React from 'react';
 import { ActivityIndicator, FlatList, TouchableOpacity, View } from 'react-native';
 import EmptyCart from './EmptyCart';
+import { gpsw } from '@/style/theme';
 
 
 const getImageUrl = (image: string) => {
@@ -126,7 +127,9 @@ export default function CartScreen({ navigation }: any) {
                       <Text className="text-xs text-gray-500">
                         {currencySymbol}{product_details?.discountPrice}
                       </Text>
-                      <Text numberOfLines={3}  className="text-xs text-gray-500 max-[100px]:overflow-hidden">
+                      <Text numberOfLines={3} style={{
+                        maxWidth: gpsw(150)
+                      }}  className="text-xs text-gray-500 ">
                         {product_details?.shortDescription}
                       </Text>
                     </View>

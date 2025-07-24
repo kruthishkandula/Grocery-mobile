@@ -1,6 +1,6 @@
 import { useThemeContextActions } from '@/Themes'
 import { getThemeColors } from '@/Themes/theme-config'
-import CategoryItem1 from '@molecule/CategoryItem1'
+import CategoryItem1 from '@/components/molecule/Card/CategoryItem1'
 import React from 'react'
 import { FlatList, View } from 'react-native'
 
@@ -8,6 +8,7 @@ import { useFetchAllCategories } from '@/api/nodeapi/Categories/api'
 import DynamicHeader from '@atom/DynamicHeader'
 import DynamicError from '@molecule/Error'
 import DynamicLoader from '@molecule/Loader'
+import CategoryItem2 from '@/components/molecule/Card/CategoryItem2'
 
 export default function Categories() {
     const { theme } = useThemeContextActions();
@@ -26,7 +27,7 @@ export default function Categories() {
             <FlatList
                 //   ListHeaderComponent={SearchBar}
                 data={data?.data || []}
-                renderItem={({ item }) => <CategoryItem1 item={item} />}
+                renderItem={({ item }) => <CategoryItem2 item={item} />}
                 numColumns={2}
                 contentContainerClassName='p-5 gap-4'
                 className='bg-shadingLight'

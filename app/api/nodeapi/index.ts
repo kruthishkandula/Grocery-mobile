@@ -1,4 +1,6 @@
 // src/services/api/Api.ts
+import { navigate } from '@/navigation/RootNavRef';
+import { showAlert } from '@/store/alert/alerts';
 import { updateLogin } from '@/store/auth/session';
 import { NODE_URL } from '@/utility/config';
 import axios from 'axios';
@@ -58,14 +60,14 @@ nodeApi.interceptors.response.use(
 
     if (error.response?.status === 401 || error.response?.status === 403) {
       updateLogin(false);
-      // showGlobalToast({
-      //   type: 'error',
-      //   title: 'Session expired',
-      //   message: 'Please log in again.',
-      //   duration: 2000,
-      //   close: true,
-      // });
+      showAlert({
+        type: 'error',
+        title: 'Session expired',
+        message: 'Please log in again.',
+        duration: 2000,
+      });
       console.error('Unauthorized access - redirecting to login');
+      navigate('login')
     }
     return Promise.reject(error);
   }

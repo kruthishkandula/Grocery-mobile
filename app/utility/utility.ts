@@ -1,4 +1,5 @@
-import { useWindowDimensions } from "react-native";
+import { Text } from "react-native";
+import { Linking, Platform, useWindowDimensions } from "react-native";
 
 export function getRandomObj(obj: any) {
     var objkeys = Object.keys(obj)
@@ -71,3 +72,47 @@ export const getStringOrFallback = (
         return fallback;
     }
 };
+
+export const openDeviceSpecificSettings = () => {
+    if (Platform.OS === 'ios') {
+        Linking.openURL('app-settings:');
+    } else if (Platform.OS === 'android') {
+        Linking.openSettings();
+    }
+};
+
+export const openAppSettings = () => {
+    if (Platform.OS === 'ios') {
+        Linking.openURL('app-settings:');
+    } else if (Platform.OS === 'android') {
+        Linking.openSettings();
+    }
+};
+
+export const onCommonLinkPress = (url: string) => {
+    if (url) {
+        switch (url) {
+            case 'openLocationSettings':
+                openAppSettings();
+                break;
+            case 'openSettings':
+                openDeviceSpecificSettings();
+                break;
+            default:
+                Linking.openURL(url);
+        }
+        return false;
+    }
+
+    return true;
+};
+
+
+export const _randmomString = (length: number = 32): string => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+}

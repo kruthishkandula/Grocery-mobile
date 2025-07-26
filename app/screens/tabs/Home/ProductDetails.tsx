@@ -3,7 +3,7 @@ import OverlayLoader from '@/components/molecule/Loader/OverLayLoader';
 import useTheme from '@/hooks/useTheme';
 import { useCartStore } from '@/store/cart/cartStore';
 import { CMS_URL } from '@/utility/config';
-import { DynamicHeader, IconSymbol, Text } from '@atom';
+import { DynamicHeader, IconSymbol, Text, ThemedSafeArea } from '@atom';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, TouchableOpacity, View } from 'react-native';
@@ -57,32 +57,32 @@ export default function ProductDetails() {
 
 
   return (
-    <View className='flex-1'>
+    <ThemedSafeArea>
       <DynamicHeader title={product?.name} style={{
         position: 'sticky',
         top: 0,
         zIndex: 10,
       }} />
-      < ScrollView className="flex-1 bg-shadingLight" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
+      < ScrollView className="flex-1 bg-shadingLight" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
         <FeaturedCarousel images={carouselImages} imageHeight={250} borderRadius={12} />
 
         {/* Product Details */}
         <View className="p-4">
-          <Text className="text-[24px] font-extrabold mb-2">{product?.name}</Text>
+          <Text variant='bold18' className="text-[28px] font-extrabold mb-2">{product?.name}</Text>
           <Text className="text-[18px] text-[#3E3E3E] mb-2">{product?.shortDescription}</Text>
 
           {/* Price Section */}
-          <View className="flex-row items-center justify-between my-4">
-            <Text className='text-[29px] text-text1' >
-              {product?.weight || 1} {product?.weight_unit}
+          <View className="flex-row items-center justify-between mb-4">
+            <Text className='text-[28px] text-text1' >
+              {product?.weight || 1} {product?.weightUnit}
             </Text>
             <View className="flex-1 items-end">
-              <Text className="font-extrabold mb-2 text-[29px] text-primary">
+              <Text variant='bold18' className="mb-2 text-[29px] text-tertiary">
                 {product?.currencySymbol}{product?.discountPrice ?? product?.basePrice}
               </Text>
 
               {product?.discountPrice && product?.discountPrice < product?.basePrice && (
-                <Text className="text-base text-gray-400 line-through mb-2">
+                <Text className="text-base italic text-gray-400 line-through mb-2">
                   {product?.currencySymbol}{product?.basePrice}
                 </Text>
               )}
@@ -90,16 +90,21 @@ export default function ProductDetails() {
           </View>
 
           {/* Cart Controls */}
-          <View className="flex-row justify-center items-center gap-4 my-4">
+          <View className="flex-row justify-end items-center gap-4 mb-6">
             {cartItem ? (
               <>
-                <TouchableOpacity className="bg-gray-200 rounded-full px-3 py-1" onPress={handleDecrement}>
-                  {/* <Text className="text-lg font-bold">-</Text> */}
-                  <IconSymbol name='circle-minus' color={colors.text1} iconSet='FontAwesome6' />
+                <TouchableOpacity
+                  className="bg-primary px-2 py-1"
+                  onPress={handleDecrement}
+                >
+                  <Text className="text-lg text-text2 font-bold">-</Text>
                 </TouchableOpacity>
                 <Text className="text-[24px] mx-2">{cartItem.quantity}</Text>
-                <TouchableOpacity className="bg-gray-200 rounded-full px-3 py-1" onPress={handleAddToCart}>
-                  <IconSymbol name='circle-plus' color={colors.text1} iconSet='FontAwesome6' />
+                <TouchableOpacity
+                  className="bg-primary px-2 py-1"
+                  onPress={handleAddToCart}
+                >
+                  <Text className="text-lg text-text2 font-bold">+</Text>
                 </TouchableOpacity>
               </>
             ) : (
@@ -116,6 +121,6 @@ export default function ProductDetails() {
         </View>
       </ScrollView>
       <OverlayLoader open={cartLoading} text={`Updating Cart...`} />
-    </View>
+    </ThemedSafeArea>
   );
 }

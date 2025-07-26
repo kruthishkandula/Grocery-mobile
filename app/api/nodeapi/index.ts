@@ -50,6 +50,8 @@ nodeApi.interceptors.response.use(
     return response;
   },
   (error) => {
+
+    // console.log('error000', error)
     console.log('Response error:', error);
     console.log('Error details:', {
       message: error.message,
@@ -58,7 +60,12 @@ nodeApi.interceptors.response.use(
       response: error.response?.data
     });
 
-    if (error.response?.status === 401 || error.response?.status === 403) {
+    const excludeSessionError = [
+      '/api/auth/login',
+    ]
+
+    // session expired or unauthorized
+    if (!excludeSessionError?.includes(error.config?.url) && (error.response?.status === 401 || error.response?.status === 403)) {
       updateLogin(false);
       showAlert({
         type: 'error',

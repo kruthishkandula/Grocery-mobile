@@ -12,6 +12,7 @@ import Text from "./Text";
 import Toast, { ToastProps } from "./Toast";
 import { ToastProvider } from "./ToastProvider";
 import AuthScreenWrapper from "./Wrapper/AuthScreenWrapper";
+import { ThemedSafeArea } from "./Wrapper/ThemeSafeView";
 
 export {
     HorizontalCardSeparator, IconSymbol, Line, SafeAreaContainer,
@@ -25,6 +26,7 @@ export {
     KeyboardWrapper,
     Toast,
     ToastProps,
-    AuthScreenWrapper
+    AuthScreenWrapper,
+    ThemedSafeArea
 };
 

@@ -8,6 +8,7 @@ import { useNavigationState } from '@react-navigation/native';
 import React from 'react';
 import { Text, View } from 'react-native';
 import Empty from '../../screens/tabs/Empty';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 const Tab = createBottomTabNavigator<any>();
@@ -16,6 +17,7 @@ const TabsLayout = () => {
     const { colors } = useTheme();
     const { items } = useCartStore();
     const state = useNavigationState(state => state);
+    const { bottom } = useSafeAreaInsets()
 
     // Helper function to get the current route name from nested navigator state
     const getActiveRouteName = (state: any): string => {
@@ -44,14 +46,14 @@ const TabsLayout = () => {
                     bottom: gpsh(0),
                     left: gpsh(0),
                     right: gpsh(0),
-                    height: gpsh(70),
+                    height: gpsh(70) + bottom/2,
                     borderTopRightRadius: 30,
                     borderTopLeftRadius: 30,
                     backgroundColor: colors?.bg,
                     flexDirection: 'row',
                     justifyContent: 'space-around',
                     alignItems: 'center',
-                    borderWidth: 0
+                    borderWidth: 0,
                 },
                 tabBarShowLabel: true,
                 tabBarActiveTintColor: colors?.primary,

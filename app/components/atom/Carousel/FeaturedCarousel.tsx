@@ -79,14 +79,14 @@ const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({
                 }}
             />
             {/* Indicators */}
-            <View style={styles.indicatorContainer}>
+            {images?.length > 1 && <View style={styles.indicatorContainer}>
                 {images.map((_, idx) => (
                     <View
                         key={idx}
-                        style={[styles.dot, activeIndex === idx && styles.activeDot, { backgroundColor: activeIndex === idx ? colors?.primary : '#cfcfcf' }]}
+                        style={[styles.dot, activeIndex === idx && styles.activeDot, { backgroundColor: activeIndex === idx ? "#000" : '#cfcfcf' }]}
                     />
                 ))}
-            </View>
+            </View>}
         </View>
     );
 };

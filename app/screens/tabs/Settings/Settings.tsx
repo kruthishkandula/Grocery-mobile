@@ -1,4 +1,4 @@
-import { CachedImage } from '@/components/atom';
+import { CachedImage, ThemedSafeArea } from '@/components/atom';
 import { useAuth } from '@/context/AuthContext';
 import useTheme from '@/hooks/useTheme';
 import { gpsh, gpsw } from '@/style/theme';
@@ -44,7 +44,7 @@ const settingsCms = {
     {
       id: 0,
       title: 'Profile settings',
-      route: 'Profile',
+      route: 'ProfileSettings',
       icon: 'user',
       iconSet: 'Feather',
       size: 24,
@@ -53,7 +53,7 @@ const settingsCms = {
     {
       id: 1,
       title: 'Favorite Products',
-      route: 'WishList',
+      route: 'FavouriteProducts',
       icon: 'heart',
       iconSet: 'Feather',
       size: 24,
@@ -139,110 +139,113 @@ export default function Settings() {
   };
 
   return (
-    <View className='flex-1 flex-grow bg-[rgba(0,0,0,0.14)]' >
-      {/* Profile Section */}
-      <LinearGradient start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        style={{
-          flex: 1,
-          margin: gpsw(10), maxHeight: gpsh(120), gap: 10, flexDirection: 'row', paddingHorizontal: gpsw(10), paddingVertical: gpsh(10), borderRadius: 20, borderColor: '#fff',
-          alignItems: 'center'
+    <ThemedSafeArea>
+      <View className='flex-1 flex-grow bg-[rgba(0,0,0,0.14)]' >
+        
+        {/* Profile Section */}
+        <LinearGradient start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={{
+            flex: 1,
+            margin: gpsw(10), maxHeight: gpsh(120), gap: 10, flexDirection: 'row', paddingHorizontal: gpsw(10), paddingVertical: gpsh(10), borderRadius: 20, borderColor: '#fff',
+            alignItems: 'center'
 
-        }}
+          }}
 
-        colors={[colors?.primary, colors?.bg]}
-      >
-        <CachedImage
-          name={userProfile.photo}
-          style={{ width: 80, height: 80, borderRadius: 40, marginBottom: 12 }}
-        />
-        <View  >
-          <Text className='text-[32px] font-bold text-text1'>{upperFirst(userProfile.name)}</Text>
-          <View className='flex-row items-center gap-2' >
-            <IconSymbol name='phone' size={16} />
-            <Text className='text-shading text-[16px]'>{userProfile.phonenumber}</Text>
+          colors={[colors?.primary, colors?.bg]}
+        >
+          <CachedImage
+            name={userProfile.photo}
+            style={{ width: 80, height: 80, borderRadius: 40, marginBottom: 12 }}
+          />
+          <View  >
+            <Text className='text-[32px] font-bold text-text1'>{upperFirst(userProfile.name)}</Text>
+            <View className='flex-row items-center gap-2' >
+              <IconSymbol name='phone' size={16} />
+              <Text className='text-shading text-[16px]'>{userProfile.phonenumber}</Text>
+            </View>
+            <View className='flex-row items-center gap-2'>
+              <IconSymbol name='email' size={16} />
+              <Text className='text-shading text-[16px]'>{userProfile.email}</Text>
+            </View>
           </View>
-          <View className='flex-row items-center gap-2'>
-            <IconSymbol name='email' size={16} />
-            <Text className='text-shading text-[16px]'>{userProfile.email}</Text>
+        </LinearGradient>
+
+        <View className='flex-1 bg-bg w-full' style={{
+          borderTopRightRadius: gpsh(20),
+          borderTopLeftRadius: gpsh(20),
+        }} >
+          {/* order options */}
+          <View className='flex-row gap-4 px-4 pt-3 pb-5 items-center justify-center flex-wrap'>
+            {
+              settingsCms?.order_options?.filter(item => item.is_active).map((item, index) => (
+                <TouchableOpacity
+                  key={`order-${index}`}
+                  className='w-[100px] h-[100px] flex-col p-2  justify-center items-center gap-2'
+                  onPress={() => navigate(item.route)}
+                >
+                  <View className='rounded-[100px] bg-shadingLight p-4'>
+                    <IconSymbol name={item.icon} iconSet={item.iconSet} size={item.size} color='text-text2' />
+                  </View>
+                  <Text className='font-medium text-text1'>{item.title?.replace('(Balance)', `${userDetails?.currencySymbol} ${0.00}`)}</Text>
+                </TouchableOpacity>
+              ))
+            }
           </View>
-        </View>
-      </LinearGradient>
 
-      <View className='flex-1 bg-bg w-full' style={{
-        borderTopRightRadius: gpsh(20),
-        borderTopLeftRadius: gpsh(20),
-      }} >
-        {/* order options */}
-        <View className='flex-row gap-4 px-4 pt-3 pb-5 items-center justify-center flex-wrap'>
-          {
-            settingsCms?.order_options?.filter(item => item.is_active).map((item, index) => (
-              <TouchableOpacity
-                key={`order-${index}`}
-                className='w-[100px] h-[100px] flex-col p-2  justify-center items-center gap-2'
-                onPress={() => navigate(item.route)}
-              >
-                <View className='rounded-[100px] bg-shadingLight p-4'>
-                  <IconSymbol name={item.icon} iconSet={item.iconSet} size={item.size} color='text-text2' />
-                </View>
-                <Text className='font-medium text-text1'>{item.title?.replace('(Balance)', `${userDetails?.currencySymbol} ${0.00}`)}</Text>
-              </TouchableOpacity>
-            ))
-          }
-        </View>
-
-        {/* horizontal line */}
-        <View className='w-full px-4' >
-          <View className='w-full h-[1px] bg-shadingLight' />
-        </View>
+          {/* horizontal line */}
+          <View className='w-full px-4' >
+            <View className='w-full h-[1px] bg-shadingLight' />
+          </View>
 
 
-        {/* Settings Options */}
-        <FlatList
-          data={settingsCms?.settings_options.filter(item => item.is_active)}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={{ paddingBottom: gpsw(100) }}
-          renderItem={({ item, index }) => {
-            let title = item.title;
+          {/* Settings Options */}
+          <FlatList
+            data={settingsCms?.settings_options.filter(item => item.is_active)}
+            keyExtractor={(item) => item.id.toString()}
+            contentContainerStyle={{ paddingBottom: gpsw(100) }}
+            renderItem={({ item, index }) => {
+              let title = item.title;
 
-            if (item.isLogout) {
+              if (item.isLogout) {
+                return (
+                  <View className='w-full items-center justify-end flex-1 px-4 py-2' >
+                    <TouchableOpacity
+                      key={`setting-${index}`}
+                      className={`flex-row items-center gap-2 py-4 px-5  border-gray-100 ${item.isLogout ? 'mt-4' : ''}`}
+                      onPress={() => handleOptionPress(item)}
+                    >
+                      <IconSymbol name={item.icon} iconSet={item.iconSet} size={item.size} color={item.isLogout ? '#EF4444' : '#222'} />
+                      <Text className={`text-base ${item.isLogout ? 'text-red-500 font-semibold' : ''}`}>{item.title}</Text>
+                    </TouchableOpacity>
+                  </View>
+                )
+              }
+
               return (
-                <View className='w-full items-center justify-end flex-1 px-4 py-2' >
-                  <TouchableOpacity
-                    key={`setting-${index}`}
-                    className={`flex-row items-center gap-2 py-4 px-5  border-gray-100 ${item.isLogout ? 'mt-4' : ''}`}
-                    onPress={() => handleOptionPress(item)}
-                  >
-                    <IconSymbol name={item.icon} iconSet={item.iconSet} size={item.size} color={item.isLogout ? '#EF4444' : '#222'} />
-                    <Text className={`text-base ${item.isLogout ? 'text-red-500 font-semibold' : ''}`}>{item.title}</Text>
-                  </TouchableOpacity>
-                </View>
+                <TouchableOpacity
+                  key={`setting-${index}`}
+                  className={`flex-row items-center gap-2 py-4 px-5  border-gray-100`}
+                  onPress={() => handleOptionPress(item)}
+                >
+                  <IconSymbol name={item.icon} iconSet={item.iconSet} size={item.size} color={colors.text1} />
+                  <Text className={`text-base text-text1`}>{title}</Text>
+                  <IconSymbol name='chevron-right' size={item?.size} color={colors.text1} style={{ marginLeft: 'auto' }} />
+                </TouchableOpacity>
               )
             }
+            }
+            className='w-full mt-4 flex-grow'
+            showsVerticalScrollIndicator={false}
+            ListEmptyComponent={() => (
+              <View className='flex-1 items-center justify-center'>
+                <Text className='text-gray-500'>No settings available</Text>
+              </View>
+            )}
+          />
 
-            return (
-              <TouchableOpacity
-                key={`setting-${index}`}
-                className={`flex-row items-center gap-2 py-4 px-5  border-gray-100`}
-                onPress={() => handleOptionPress(item)}
-              >
-                <IconSymbol name={item.icon} iconSet={item.iconSet} size={item.size} color={colors.text1} />
-                <Text className={`text-base text-text1`}>{title}</Text>
-                <IconSymbol name='chevron-right' size={item?.size} color={colors.text1} style={{ marginLeft: 'auto' }} />
-              </TouchableOpacity>
-            )
-          }
-          }
-          className='w-full mt-4 flex-grow'
-          showsVerticalScrollIndicator={false}
-          ListEmptyComponent={() => (
-            <View className='flex-1 items-center justify-center'>
-              <Text className='text-gray-500'>No settings available</Text>
-            </View>
-          )}
-        />
-
+        </View>
       </View>
-    </View>
+    </ThemedSafeArea>
   )
 }

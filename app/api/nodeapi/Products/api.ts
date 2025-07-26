@@ -21,7 +21,7 @@ export const useFetchProductsByCategory = ({ categoryId, ...rest }: {
     queryFn: async () => {
 
       const response = await nodeApi.post(NODE_URLS.PRODUCTS, {
-        categoryId: categoryId,
+        ...(categoryId && categoryId !== "All" && { categoryId: categoryId }),
         "page": 1,
         "pageSize": 10,
         "sortBy": "name",

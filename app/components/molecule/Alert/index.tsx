@@ -10,7 +10,7 @@ import {
 } from '@/style-dictionary-dist/momoStyle';
 import { fontFamily, gpsh, gpsw } from '@/style/theme';
 import { onCommonLinkPress } from '@/utility/utility';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Animated, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Markdown from 'react-native-markdown-display';
 
@@ -33,6 +33,8 @@ export const AlertContent = ({
         onLinkPress = null,
         onPress = null,
     } = message;
+
+    const FADE_DURATION = 300; // ms
 
     const animationValue = useRef(new Animated.Value(0)).current;
     const barAnim = useRef(new Animated.Value(1)).current; // 1 = full width, 0 = empty
@@ -68,7 +70,7 @@ export const AlertContent = ({
                 ) : type === 'success' ? (
                     <IconSymbol color="white" name="success" size={24} />
                 ) : (
-                    <IconSymbol color="white" name="info" size={24} />
+                    <IconSymbol color="white" iconSet='Feather' name="info" size={24} />
                 )}
             </View>
         );
@@ -133,30 +135,42 @@ export const AlertContent = ({
         );
     }
 
+    const [showBar, setShowBar] = useState(false);
+
     useEffect(() => {
-        Animated.sequence([
+        if (!close) {
+            // Fade in
             Animated.timing(animationValue, {
                 toValue: 1,
-                duration: 500,
+                duration: FADE_DURATION,
                 useNativeDriver: true,
-            }),
-            ...(close ? [] : [
-                Animated.delay(duration),
-                Animated.timing(animationValue, {
+            }).start(() => {
+                // After fade-in, show bar and start bar animation
+                setShowBar(true);
+                barAnim.setValue(1);
+                Animated.timing(barAnim, {
                     toValue: 0,
-                    duration: 500,
-                    useNativeDriver: true,
-                }),
-            ]),
-        ]).start(() => {
-            !close && onHide();
-        });
+                    duration: duration,
+                    useNativeDriver: false,
+                }).start();
 
-        if (!close) {
-            Animated.timing(barAnim, {
-                toValue: 0,
-                duration: duration,
-                useNativeDriver: false,
+                // After duration, hide bar and fade out
+                setTimeout(() => {
+                    setShowBar(false);
+                    Animated.timing(animationValue, {
+                        toValue: 0,
+                        duration: FADE_DURATION,
+                        useNativeDriver: true,
+                    }).start(() => {
+                        onHide();
+                    });
+                }, duration);
+            });
+        } else {
+            Animated.timing(animationValue, {
+                toValue: 1,
+                duration: FADE_DURATION,
+                useNativeDriver: true,
             }).start();
         }
 
@@ -207,12 +221,12 @@ export const AlertContent = ({
                     </TouchableOpacity>
                 )}
                 {/* Duration Bar */}
-                {!close && (
+                {!close && showBar && (
                     <View style={styles.barContainer}>
                         <Animated.View
                             style={[
                                 styles.durationBar,
-                                { width: barWidth, backgroundColor: 'black' }
+                                { width: barWidth, backgroundColor: 'rgba(0,0,0,0.2)' }
                             ]}
                         />
                     </View>
@@ -260,7 +274,6 @@ const styles = StyleSheet.create({
         padding: gpsw(12),
         paddingRight: gpsw(13),
         position: 'absolute',
-        // bottom: gpmsh(20),
         left: 20,
         right: 20,
         backgroundColor: 'orange',
@@ -275,7 +288,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 0,
         right: 0,
-        bottom: 0,
+        bottom: 1.5,
         height: 4,
         borderBottomLeftRadius: gpsw(alertCornerRadius),
         borderBottomRightRadius: gpsw(alertCornerRadius),
@@ -283,8 +296,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     durationBar: {
+        zIndex: 200,
         height: '100%',
-        backgroundColor: 'rgba(255,255,255,0.7)',
     },
 });
 

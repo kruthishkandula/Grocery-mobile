@@ -154,7 +154,9 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
                 />
                 <TouchableOpacity
                     activeOpacity={0.7}
-                    onPress={() => inputRef.current?.focus()}
+                    onPress={() => {
+                        inputRef.current?.focus()
+                    }}
                     style={{ position: 'absolute', left: hasLeftIcon ? 44 : 12, top: 0, height: '100%', zIndex: 11 }}
                 >
                     <Animated.Text style={labelStyle}>{placeholder}</Animated.Text>

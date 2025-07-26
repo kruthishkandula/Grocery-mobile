@@ -13,6 +13,7 @@ type CachedImageProps = {
   width?: number; // Optional width prop
   height?: number; // Optional height prop
   size?: number; // Optional size prop
+  className?: string; // Optional className prop for styling
 };
 
 const CachedImage: React.FC<CachedImageProps> = ({

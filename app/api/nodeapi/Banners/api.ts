@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import nodeApi from '../index';
 
 
-export const useFetchAllBanners = (body: any) => useQuery({
+export const useFetchAllBanners = (body: any, options?: any) => useQuery({
   queryKey: ['banners'],
   queryFn: async () => {
     const response = await nodeApi.post(NODE_URLS.BANNERS, {
@@ -11,4 +11,5 @@ export const useFetchAllBanners = (body: any) => useQuery({
     });
     return response.data;
   },
+  ...options
 });

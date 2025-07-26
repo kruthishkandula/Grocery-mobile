@@ -6,10 +6,11 @@ import { FormField } from '@atom/Input/FormField';
 import KeyboardScrollView from '@/components/atom/Wrapper/KeyboardSrollView';
 import AuthScreenWrapper from '@atom/Wrapper/AuthScreenWrapper';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, use, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { View, TextInput, Platform, StyleSheet } from 'react-native';
 import z from 'zod';
+import { showAlert } from '@/store/alert/alerts';
 
 const loginSchema = z.object({
   username: z.string().min(3, 'Username required'),
@@ -28,7 +29,8 @@ export default function Login({ navigation }: any) {
     control,
     handleSubmit,
     setError,
-    formState: { isValid, errors },
+    formState: { isValid, errors},
+    reset,
     watch
   } = useForm({
     resolver: zodResolver(loginSchema),
@@ -53,6 +55,13 @@ export default function Login({ navigation }: any) {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+   
+    return () => {
+      reset();
+    }
+  }, []);
 
   return (
     <AuthScreenWrapper

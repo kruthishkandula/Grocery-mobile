@@ -1,17 +1,14 @@
 // Example: App.tsx or your main entry
-import { useAuth } from '@/context/AuthContext';
-import useTheme from '@/hooks/useTheme';
-import { navigationRef } from '@/navigation/RootNavRef';
-import { Theme } from '@/Themes';
 import KeyboardWrapper from '@/components/atom/Wrapper/KeyboardWrapper';
+import { useAuth } from '@/context/AuthContext';
+import { navigationRef } from '@/navigation/RootNavRef';
+import AdminWebview from '@/screens/admin/AdminWebview';
+import { Theme } from '@/Themes';
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { useEffect, useRef, useState } from 'react';
-import { Platform, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AuthNavigator from './Auth/AuthNavigator';
 import { linking } from './linking';
 import RootLayout from './Main/MainstackNavigator';
-import AdminWebview from '@/screens/admin/AdminWebview';
 
 function RootNavigator() {
   const routeNameRef = useRef<string | undefined>('');
@@ -27,16 +24,6 @@ function RootNavigator() {
     return () => clearTimeout(timer);
   }, [userLoggedIn]);
 
-  const ThemedSafeArea = ({ children }: { children: React.ReactNode }) => {
-    const { colors } = useTheme();
-    const { top, bottom } = useSafeAreaInsets()
-
-    return (
-      <View style={{ flex: 1, paddingTop: Platform.OS === 'web' ? 0 : top, paddingBottom: Platform.OS === 'web' ? 0 : bottom, backgroundColor: colors?.bg }} >
-        {children}
-      </View>
-    )
-  };
 
   const theme = {
     ...DefaultTheme,
@@ -51,33 +38,31 @@ function RootNavigator() {
 
   return (
     <Theme>
-      <ThemedSafeArea>
-        <KeyboardWrapper>
-          <NavigationContainer
-            ref={navigationRef}
-            linking={linking}
-            theme={theme}
-            onReady={() => {
-              routeNameRef.current = navigationRef.getCurrentRoute()?.name;
-            }}
-            onStateChange={async () => {
-              if (__DEV__) {
-                const currentRouteName = navigationRef.getCurrentRoute()?.name;
-                console.log('currentRouteName', currentRouteName);
-              }
-            }}>
-            {isAuthenticated ? (
-              isAdmin ? (
-                <AdminWebview />
-              ) : (
-                <RootLayout />
-              )
+      <KeyboardWrapper>
+        <NavigationContainer
+          ref={navigationRef}
+          linking={linking}
+          theme={theme}
+          onReady={() => {
+            routeNameRef.current = navigationRef.getCurrentRoute()?.name;
+          }}
+          onStateChange={async () => {
+            if (__DEV__) {
+              const currentRouteName = navigationRef.getCurrentRoute()?.name;
+              console.log('currentRouteName', currentRouteName);
+            }
+          }}>
+          {isAuthenticated ? (
+            isAdmin ? (
+              <AdminWebview />
             ) : (
-              <AuthNavigator />
-            )}
-          </NavigationContainer>
-        </KeyboardWrapper>
-      </ThemedSafeArea>
+              <RootLayout />
+            )
+          ) : (
+            <AuthNavigator />
+          )}
+        </NavigationContainer>
+      </KeyboardWrapper>
     </Theme>
   );
 }

@@ -1,13 +1,15 @@
+import AddressScreen from '@/screens/tabs/Address';
 import CartScreen from '@/screens/tabs/Cart/CartScreen';
 import ProductDetails from '@/screens/tabs/Home/ProductDetails';
 import { createStackNavigator } from '@react-navigation/stack';
+import { Platform } from 'react-native';
 import Products from '../../screens/tabs/Home/Products';
 import TabsLayout from './TabsLayout';
-import { Platform } from 'react-native';
 
 const Stack = createStackNavigator<any>();
 
 export default function RootLayout() {
+
   return (
     <Stack.Navigator
       initialRouteName="homescreen"
@@ -66,6 +68,13 @@ export default function RootLayout() {
       <Stack.Screen
         name="Cart"
         component={CartScreen}
+        options={{
+          animation: Platform.OS === 'web' ? 'none' : 'default'
+        }}
+      />
+      <Stack.Screen
+        name="Address"
+        component={AddressScreen}
         options={{
           animation: Platform.OS === 'web' ? 'none' : 'default'
         }}

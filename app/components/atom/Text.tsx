@@ -3,14 +3,62 @@ import React from 'react';
 import { Text as RNText } from 'react-native';
 
 const variantMap = {
-    'light12': `font-popins font-light text-[${gpsw(12)}px]`,
-    'light14': `font-popins font-light text-[${gpsw(14)}px]`,
-    'regular14': `font-popins font-normal text-[${gpsw(14)}px]`,
-    'regular16': `font-popins font-normal text-[${gpsw(16)}px]`,
-    'medium14': `font-popins font-medium text-[${gpsw(14)}px]`,
-    'medium16': `font-popins font-medium text-[${gpsw(16)}px]`,
-    'bold18': `font-popins font-bold text-[${gpsw(18)}px]`,
-    'bold20': `font-popins font-bold text-[${gpsw(20)}px]`,
+    'light12': {
+        className: `font-popins font-light`,
+        style: {
+            lineHeight: gpsw(14),
+            fontSize: gpsw(12),
+        }
+    },
+    'light14': {
+        className: `font-popins font-light`,
+        style: {
+            lineHeight: gpsw(16),
+            fontSize: gpsw(14),
+        }
+    },
+    'regular14': {
+        className: `font-popins font-normal`,
+        style: {
+            lineHeight: gpsw(16),
+            fontSize: gpsw(14),
+        }
+    },
+    'regular16': {
+        className: `font-popins font-normal`,
+        style: {
+            lineHeight: gpsw(18),
+            fontSize: gpsw(16),
+        }
+    },
+    'medium14': {
+        className: `font-popins font-medium`,
+        style: {
+            lineHeight: gpsw(16),
+            fontSize: gpsw(14),
+        }
+    },
+    'medium16': {
+        className: `font-popins font-medium`,
+        style: {
+            lineHeight: gpsw(18),
+            fontSize: gpsw(16),
+        }
+    },
+    'bold18': {
+        className: `font-popins font-bold`,
+        style: {
+            lineHeight: gpsw(20),
+            fontSize: gpsw(18),
+        }
+    },
+    'bold20': {
+        className: `font-popins font-bold`,
+        style: {
+            lineHeight: gpsw(22),
+            fontSize: gpsw(20),
+        }
+    },
 };
 
 type TextProps = React.ComponentProps<typeof RNText> & {
@@ -26,7 +74,7 @@ export default function Text({
 }: TextProps) {
 
     return (
-        <RNText className={`${variantMap[variant]} ${className}`} style={[style]} {...props}>
+        <RNText className={`${variantMap[variant].className} ${className}`} style={[variantMap[variant].style, style]} {...props}>
             {children}
         </RNText>
     );

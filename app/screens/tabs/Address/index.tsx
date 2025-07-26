@@ -1,4 +1,4 @@
-import { Button, DynamicHeader, HorizontalCardSeparator, IconSymbol } from '@/components/atom';
+import { Button, DynamicHeader, HorizontalCardSeparator, IconSymbol, ThemedSafeArea } from '@/components/atom';
 import Box from '@/components/atom/Box';
 import { useAddressStore } from '@/store/address/addressStore';
 import { gpsh } from '@/style/theme';
@@ -220,7 +220,7 @@ const AddressScreen = () => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <ThemedSafeArea>
       <DynamicHeader title="My Addresses" />
       <View style={styles.container}>
         <FlatList
@@ -286,7 +286,7 @@ const AddressScreen = () => {
           initial={editAddress}
         />
       </View>
-    </View>
+    </ThemedSafeArea>
   );
 };
 

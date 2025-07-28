@@ -1,7 +1,7 @@
 import { useToast } from '@/components/atom/ToastProvider';
 import { useAuth } from '@/context/AuthContext';
 import { goBack } from '@/navigation/RootNavRef';
-import { Button, Text } from '@atom';
+import { Button, Text, ThemedSafeArea } from '@atom';
 import { FormField } from '@atom/Input/FormField';
 import KeyboardScrollView from '@/components/atom/Wrapper/KeyboardSrollView';
 import AuthScreenWrapper from '@atom/Wrapper/AuthScreenWrapper';
@@ -45,7 +45,7 @@ export default function Register({ navigation }: any) {
   const phoneInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
   const confirmPasswordInputRef = useRef<TextInput>(null);
-  
+
   const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -76,102 +76,104 @@ export default function Register({ navigation }: any) {
   };
 
   return (
-    <AuthScreenWrapper
-      illustrationSource={require('@/assets/images/register.png')}
-      gradientColors={["#fff", "#fff", "#fff"]}
-      size={180} // Reduced size to give more space for form
-    >
-      <KeyboardScrollView 
-        contentContainerStyle={styles.scrollContent}
-        extraScrollHeight={Platform.OS === 'android' ? 250 : 30} // Override for this screen
+    <ThemedSafeArea>
+      <AuthScreenWrapper
+        illustrationSource={require('@/assets/images/register.png')}
+        gradientColors={["#fff", "#fff", "#fff"]}
+        size={180} // Reduced size to give more space for form
       >
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <Text variant='bold20' style={styles.title}>
-              Welcome Onboarding
-            </Text>
-            <Text variant='light12' style={styles.subtitle}>
-              Create your account to get started
-            </Text>
-          </View>
-          
-          <View style={styles.formContainer}>
-            <FormField 
-              required 
-              inputType='username' 
-              control={control} 
-              name="username" 
-              placeholder="Username" 
-              returnKeyType="next"
-              onSubmitEditing={() => emailInputRef.current?.focus()}
-              blurOnSubmit={false}
-            />
-            <FormField 
-              required 
-              inputType='email' 
-              control={control} 
-              name="email" 
-              placeholder="Email" 
-              ref={emailInputRef}
-              returnKeyType="next"
-              onSubmitEditing={() => phoneInputRef.current?.focus()}
-              blurOnSubmit={false}
-            />
-            <FormField 
-              required 
-              inputType='phone' 
-              control={control} 
-              name="phonenumber" 
-              placeholder="Phone Number" 
-              ref={phoneInputRef}
-              returnKeyType="next"
-              onSubmitEditing={() => passwordInputRef.current?.focus()}
-              blurOnSubmit={false}
-              keyboardType="phone-pad"
-            />
-            <FormField 
-              required 
-              inputType='password' 
-              control={control} 
-              name="password" 
-              placeholder="Password" 
-              ref={passwordInputRef}
-              returnKeyType="next"
-              secureTextEntry
-              onSubmitEditing={() => confirmPasswordInputRef.current?.focus()}
-              blurOnSubmit={false}
-            />
-            <FormField 
-              required 
-              inputType='password' 
-              control={control} 
-              name="confirmpassword" 
-              placeholder="Confirm Password" 
-              ref={confirmPasswordInputRef}
-              returnKeyType="done"
-              secureTextEntry
-              onSubmitEditing={handleSubmit(onSubmit)}
-            />
-          </View>
-
-          <View style={styles.buttonContainer}>
-            <Button 
-              disabled={!isValid} 
-              title="Register" 
-              onPress={handleSubmit(onSubmit)} 
-              loading={isSubmitting} 
-              className="rounded-[4px]" 
-            />
-            <Text style={styles.loginText}>
-              Already have an account?{' '}
-              <Text style={styles.loginLink} onPress={() => goBack()}>
-                Login
+        <KeyboardScrollView
+          contentContainerStyle={styles.scrollContent}
+          extraScrollHeight={Platform.OS === 'android' ? 250 : 30} // Override for this screen
+        >
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <Text variant='bold20' style={styles.title}>
+                Welcome Onboarding
               </Text>
-            </Text>
+              <Text variant='light12' style={styles.subtitle}>
+                Create your account to get started
+              </Text>
+            </View>
+
+            <View style={styles.formContainer}>
+              <FormField
+                required
+                inputType='username'
+                control={control}
+                name="username"
+                placeholder="Username"
+                returnKeyType="next"
+                onSubmitEditing={() => emailInputRef.current?.focus()}
+                blurOnSubmit={false}
+              />
+              <FormField
+                required
+                inputType='email'
+                control={control}
+                name="email"
+                placeholder="Email"
+                ref={emailInputRef}
+                returnKeyType="next"
+                onSubmitEditing={() => phoneInputRef.current?.focus()}
+                blurOnSubmit={false}
+              />
+              <FormField
+                required
+                inputType='phone'
+                control={control}
+                name="phonenumber"
+                placeholder="Phone Number"
+                ref={phoneInputRef}
+                returnKeyType="next"
+                onSubmitEditing={() => passwordInputRef.current?.focus()}
+                blurOnSubmit={false}
+                keyboardType="phone-pad"
+              />
+              <FormField
+                required
+                inputType='password'
+                control={control}
+                name="password"
+                placeholder="Password"
+                ref={passwordInputRef}
+                returnKeyType="next"
+                secureTextEntry
+                onSubmitEditing={() => confirmPasswordInputRef.current?.focus()}
+                blurOnSubmit={false}
+              />
+              <FormField
+                required
+                inputType='password'
+                control={control}
+                name="confirmpassword"
+                placeholder="Confirm Password"
+                ref={confirmPasswordInputRef}
+                returnKeyType="done"
+                secureTextEntry
+                onSubmitEditing={handleSubmit(onSubmit)}
+              />
+            </View>
+
+            <View style={styles.buttonContainer}>
+              <Button
+                disabled={!isValid}
+                title="Register"
+                onPress={handleSubmit(onSubmit)}
+                loading={isSubmitting}
+                className="rounded-[4px]"
+              />
+              <Text style={styles.loginText}>
+                Already have an account?{' '}
+                <Text style={styles.loginLink} onPress={() => goBack()}>
+                  Login
+                </Text>
+              </Text>
+            </View>
           </View>
-        </View>
-      </KeyboardScrollView>
-    </AuthScreenWrapper>
+        </KeyboardScrollView>
+      </AuthScreenWrapper>
+    </ThemedSafeArea>
   );
 }
 
@@ -195,7 +197,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   subtitle: {
-    textAlign: 'center', 
+    textAlign: 'center',
     color: '#666',
     marginBottom: 16,
     fontSize: 16,

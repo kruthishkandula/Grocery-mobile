@@ -1,7 +1,7 @@
 import Loader from '@/components/molecule/Loader/OverLayLoader';
 import { useAuth } from '@/context/AuthContext';
 import useTheme from '@/hooks/useTheme';
-import { Button, Text } from '@atom';
+import { Button, Text, ThemedSafeArea } from '@atom';
 import { FormField } from '@atom/Input/FormField';
 import KeyboardScrollView from '@/components/atom/Wrapper/KeyboardSrollView';
 import AuthScreenWrapper from '@atom/Wrapper/AuthScreenWrapper';
@@ -24,12 +24,12 @@ export default function Login({ navigation }: any) {
   const { colors } = useTheme()
   const [loading, setLoading] = useState(false);
   const passwordInputRef = useRef<TextInput>(null);
-  
+
   const {
     control,
     handleSubmit,
     setError,
-    formState: { isValid, errors},
+    formState: { isValid, errors },
     reset,
     watch
   } = useForm({
@@ -57,79 +57,91 @@ export default function Login({ navigation }: any) {
   };
 
   useEffect(() => {
-   
+
     return () => {
       reset();
     }
   }, []);
 
   return (
-    <AuthScreenWrapper
-      illustrationSource={require('@/assets/images/login.png')}
-      gradientColors={[colors?.bg, colors?.bg]}
-      size={250} // Reduced size for more form space
-    >
-      <KeyboardScrollView 
-        contentContainerStyle={styles.scrollContent}
-        extraScrollHeight={Platform.OS === 'android' ? 250 : 30} // Override for this screen
+    <ThemedSafeArea>
+      <AuthScreenWrapper
+        illustrationSource={require('@/assets/images/login.png')}
+        gradientColors={[colors?.bg, colors?.bg]}
+        size={250} // Reduced size for more form space
       >
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <Text variant='bold20' style={styles.title}>
-              Login
-            </Text>
-            <Text variant='light12' style={styles.subtitle}>
-              Welcome back! Please enter your credentials to continue.
-            </Text>
-          </View>
-          
-          <View style={styles.formContainer}>
-            <FormField
-              control={control}
-              name="username"
-              placeholder="Username"
-              autoCapitalize="none"
-              returnKeyType="next"
-              inputType="username"
-              maxLength={25}
-              onSubmitEditing={() => passwordInputRef.current?.focus()}
-              blurOnSubmit={false}
-            />
-            <FormField
-              ref={passwordInputRef}
-              control={control}
-              name="password"
-              placeholder="Enter password"
-              secureTextEntry
-              autoCapitalize="none"
-              returnKeyType="done"
-              inputType="password"
-              maxLength={25}
-              onSubmitEditing={handleSubmit(handleLogin)}
-            />
-          </View>
-
-          <View style={styles.buttonContainer}>
-            <Button 
-              disabled={!isValid} 
-              title="Login" 
-              onPress={handleSubmit(handleLogin)} 
-              loading={loading} 
-              className="rounded-[4px]" 
-            />
-            <Text style={styles.registerText}>
-              Don't have an account?{' '}
-              <Text style={styles.registerLink} onPress={() => {
-                navigation?.navigate('register')
-              }}>
-                Register
+        <KeyboardScrollView
+          contentContainerStyle={styles.scrollContent}
+          extraScrollHeight={Platform.OS === 'android' ? 250 : 30} // Override for this screen
+        >
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <Text variant='bold20' style={styles.title}>
+                Login
               </Text>
-            </Text>
+              <Text variant='light12' style={styles.subtitle}>
+                Welcome back! Please enter your credentials to continue.
+              </Text>
+            </View>
+
+            <View style={styles.formContainer}>
+              <FormField
+                control={control}
+                name="username"
+                placeholder="Username"
+                autoCapitalize="none"
+                returnKeyType="next"
+                inputType="username"
+                maxLength={25}
+                onSubmitEditing={() => passwordInputRef.current?.focus()}
+                blurOnSubmit={false}
+              />
+              <FormField
+                ref={passwordInputRef}
+                control={control}
+                name="password"
+                placeholder="Enter password"
+                secureTextEntry
+                autoCapitalize="none"
+                returnKeyType="done"
+                inputType="password"
+                maxLength={25}
+                onSubmitEditing={handleSubmit(handleLogin)}
+              />
+            </View>
+
+            <View style={styles.buttonContainer}>
+              <Button
+                disabled={!isValid}
+                title="Login"
+                onPress={handleSubmit(handleLogin)}
+                loading={loading}
+                className="rounded-[4px]"
+              />
+              <Text style={styles.registerText}>
+                Don't have an account?{' '}
+                <Text style={styles.registerLink} onPress={() => {
+                  navigation?.navigate('register')
+                }}>
+                  Register
+                </Text>
+              </Text>
+
+
+              <Text style={styles.registerText}>
+                Login as Admin?{' '}
+                <Text style={styles.registerLink} onPress={() => {
+                  navigation?.navigate('adminportal')
+                }}>
+                  Admin Login
+                </Text>
+              </Text>
+            </View>
           </View>
-        </View>
-      </KeyboardScrollView>
-      <Loader open={loading} />
-    </AuthScreenWrapper>
+        </KeyboardScrollView>
+        <Loader open={loading} />
+      </AuthScreenWrapper>
+    </ThemedSafeArea>
   );
 }
 
@@ -153,7 +165,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   subtitle: {
-    textAlign: 'center', 
+    textAlign: 'center',
     color: '#666',
     marginBottom: 8,
     fontSize: 16,

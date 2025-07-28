@@ -107,7 +107,9 @@ export default function Dashboard() {
                             renderItem={({ item }) => (
                                 <TouchableOpacity
                                     activeOpacity={0.85}
-                                    onPress={() => console.log('Banner clicked', item)}
+                                    onPress={() => {
+                                        navigate(item?.link, item)
+                                    }}
                                 >
                                     <View
                                         style={{
@@ -221,7 +223,7 @@ export default function Dashboard() {
     return (
         <View className="bg-bg2 pb-5 flex-1 justify-start">
             {/* Header */}
-            <LinearGradient style={{ borderBottomLeftRadius: 40, borderBottomRightRadius: 40, paddingTop: top, paddingBottom: 20 }} start={{ x: 2, y: 2 }} colors={[colors?.primary, colors?.bg, colors?.secondary]} >
+            <LinearGradient style={{ borderBottomLeftRadius: 40, borderBottomRightRadius: 40, paddingTop: top, paddingBottom: 0 }} start={{ x: 2, y: 2 }} colors={[colors?.primary, colors?.bg, colors?.secondary]} >
                 <View style={{ padding: 20, elevation: 4, shadowColor: '#333', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 4 }} className='flex-col gap-2'>
                     {/* header & notifications section */}
                     <View className='flex flex-row justify-between'>
@@ -245,7 +247,7 @@ export default function Dashboard() {
                             </View>
                         </View>
                         <TouchableOpacity>
-                            <IconSymbol name='chevron-right' iconSet='FontAwesome6' size={24} color={colors?.text1} />
+                            <IconSymbol name='chevron-right' iconSet='FontAwesome6' size={24} color={colors?.white} />
                         </TouchableOpacity>
                     </TouchableOpacity>
                 </View>

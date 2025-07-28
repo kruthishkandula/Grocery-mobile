@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Platform } from 'react-native';
 import Products from '../../screens/tabs/Home/Products';
 import TabsLayout from './TabsLayout';
+import Offers from '@/screens/tabs/Offers';
 
 const Stack = createStackNavigator<any>();
 
@@ -47,6 +48,13 @@ export default function RootLayout() {
       <Stack.Screen
         name="homescreen"
         component={TabsLayout}
+        options={{
+          animation: Platform.OS === 'web' ? 'none' : 'default'
+        }}
+      />
+      <Stack.Screen
+        name="offers"
+        component={Offers}
         options={{
           animation: Platform.OS === 'web' ? 'none' : 'default'
         }}

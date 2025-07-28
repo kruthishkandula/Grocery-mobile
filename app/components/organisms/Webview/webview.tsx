@@ -1,4 +1,4 @@
-import { DynamicHeader } from '@/components/atom';
+import { DynamicHeader, ThemedSafeArea } from '@/components/atom';
 import DynamicLoader from '@/components/molecule/Loader';
 import { useAuth } from '@/context/AuthContext';
 import useBackHandler from '@/hooks/useBackHandler';
@@ -29,7 +29,7 @@ export default function WebViewScreen({ link, header }: { link: string, header: 
     const canGoBackRef = useRef(false);
     const currentRefUrl = useRef(link);
     const [isRefresh, setisRefresh] = useState(false);
-    const webViewRef = useRef<any>();
+    const webViewRef = useRef<any>(null);
     const { goBack, navigate } = useNavigation<any>();
     const [height, setHeight] = useState(Dimensions.get('screen').height);
 
@@ -151,11 +151,7 @@ export default function WebViewScreen({ link, header }: { link: string, header: 
     };
 
     return (
-        <SafeAreaView
-            style={{
-                backgroundColor: '#fff',
-                flex: 1,
-            }}>
+        <ThemedSafeArea>
             <DarkStatusBar />
             {(header) && <DynamicHeader title={header} onBack={() => {
                 logout();
@@ -191,7 +187,6 @@ export default function WebViewScreen({ link, header }: { link: string, header: 
                         }}
                         style={[styles.view, { height }]}
                         renderLoading={() => <DynamicLoader />}
-                        renderError={() => null} // We'll handle errors manually
                         onError={handleError}
                     />
                     {isLoading && <DynamicLoader />}
@@ -201,7 +196,7 @@ export default function WebViewScreen({ link, header }: { link: string, header: 
                     <ErrorScreen errorMessage={errorMessage} onRetry={handleRetry} />
                 </Box>
             )}
-        </SafeAreaView>
+        </ThemedSafeArea>
     );
 }
 

@@ -3,7 +3,8 @@ import useTheme from '@/hooks/useTheme';
 import { navigate } from '@/navigation/RootNavRef';
 import { useCartStore } from '@/store/cart/cartStore';
 import { useWishlistStore } from '@/store/whishlist/wishlistStore';
-import { gpsh, gpsw } from '@/style/theme';
+import { gpsw } from '@/style/theme';
+import * as Haptics from 'expo-haptics';
 import React, { useState } from 'react';
 import { ImageProps, Modal, TouchableOpacity, View, ViewStyle } from 'react-native';
 
@@ -47,6 +48,7 @@ export default function ProductItem1({ item, style, imageStyle }: ProductItem1Pr
         console.log('existing_cart_item---', existing_cart_item)
         // return;
         // If item already exists in cart, you can handle it here
+
         if (existing_cart_item) {
             setQuantity({
                 ...existing_cart_item,
@@ -81,7 +83,7 @@ export default function ProductItem1({ item, style, imageStyle }: ProductItem1Pr
                 activeOpacity={0.85}
                 onPress={() => navigate('ProductDetails', item)}
                 className="flex-1 flex-col bg-bg rounded-xl shadow-sm mx-[10px] p-2 justify-between"
-                style={[{ maxWidth: 170}, style]}
+                style={[{ maxWidth: 170 }, style]}
             >
                 <CachedImage
                     name={item.images?.[0].url}
@@ -118,12 +120,16 @@ export default function ProductItem1({ item, style, imageStyle }: ProductItem1Pr
                 </View>
 
                 {/* Cart Controls */}
-                <View style={{maxWidth: 150}} className="flex-1 p-2 w-full flex-row items-center justify-between">
+                <View style={{ maxWidth: 150 }} className="flex-1 p-2 w-full flex-row items-center justify-between">
                     {cartItem ? (
                         <>
                             <TouchableOpacity
+                                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                                 className="bg-primary px-2 py-1"
-                                onPress={(e) => { e.stopPropagation(); handleDecrement(item) }}
+                                onPress={(e) => {
+                                    Haptics.selectionAsync()
+                                    e.stopPropagation(); handleDecrement(item)
+                                }}
                             >
                                 <Text className="text-lg text-text2 font-bold">-</Text>
                             </TouchableOpacity>
@@ -131,8 +137,12 @@ export default function ProductItem1({ item, style, imageStyle }: ProductItem1Pr
                                 fontSize: gpsw(16),
                             }} className="m-2">{cartItem.quantity}</Text>
                             <TouchableOpacity
+                                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                                 className="bg-primary px-2 py-1"
-                                onPress={(e) => { e.stopPropagation(); handleAddToCart(item) }}
+                                onPress={(e) => {
+                                    Haptics.selectionAsync()
+                                    e.stopPropagation(); handleAddToCart(item)
+                                }}
                             >
                                 <Text className="text-xl text-text2 font-bold">+</Text>
                             </TouchableOpacity>
@@ -140,15 +150,22 @@ export default function ProductItem1({ item, style, imageStyle }: ProductItem1Pr
                     ) : hasVariants ? (
                         <TouchableOpacity
                             className="flex flex-row bg-primary px-[16px] py-[10px] rounded-[7px] items-center justify-center flex-1"
-                            onPress={(e) => { e.stopPropagation(); handleAddToCart(item) }}
+                            onPress={(e) => {
+                                Haptics.selectionAsync()
+                                e.stopPropagation(); handleAddToCart(item)
+                            }}
                         >
                             <IconSymbol name="cart" size={16} color="#fff" />
                             <Text className="text-white ml-2">Select Variant</Text>
                         </TouchableOpacity>
                     ) : (
                         <TouchableOpacity
+                            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                             className="flex flex-row bg-primary px-[16px] py-[10px] rounded-[7px] items-center justify-center flex-1"
-                            onPress={(e) => { e.stopPropagation(); handleAddToCart(item) }}
+                            onPress={(e) => {
+                                Haptics.selectionAsync()
+                                e.stopPropagation(); handleAddToCart(item)
+                            }}
                         >
                             <IconSymbol name="cart" size={16} color="#fff" />
                             <Text variant='light12' numberOfLines={1} style={{ maxWidth: '100%', fontSize: gpsw(10) }} className="text-white ml-2">Add to Cart</Text>

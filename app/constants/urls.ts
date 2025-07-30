@@ -18,7 +18,7 @@ export const NODE_URLS = {
 
     // cms
     BANNERS: '/api/cms/banners/list',
-    DASHBOARD: '/api/cms/dashboard/list',
+    DASHBOARD: '/api/cms/dashboard/list-with-data',
 }
 
 

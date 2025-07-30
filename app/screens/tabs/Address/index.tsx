@@ -1,9 +1,9 @@
-import { Button, DynamicHeader, HorizontalCardSeparator, IconSymbol, ThemedSafeArea } from '@/components/atom';
-import Box from '@/components/atom/Box';
+import { Button, DynamicHeader, IconSymbol, Text, ThemedSafeArea } from '@/components/atom';
+import Animation from '@/components/molecule/Animation';
 import { useAddressStore } from '@/store/address/addressStore';
 import { gpsh } from '@/style/theme';
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View, Modal, TextInput, Pressable } from 'react-native';
+import { FlatList, Modal, Pressable, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const LABEL_OPTIONS = ['Home', 'Office', 'Other'];
@@ -58,148 +58,148 @@ const AddressModal = ({
   return (
     <Modal onDismiss={onClose} visible={visible} animationType="slide" transparent onRequestClose={onClose}>
       <View style={styles.modalOverlay}>
-        <ScrollView showsVerticalScrollIndicator={false} style={[styles.modalContent, { maxHeight: '60%' }]} contentContainerStyle={{ paddingBottom: 24 }}>
-          <View className='flex-row justify-between' >
+        <View style={[styles.modalContent, { maxHeight: '60%' }]} >
+          <View className='flex-row justify-between ' >
             <Text style={styles.modalTitle}>{form.id ? 'Edit Address' : 'Add Address'}</Text>
             <TouchableOpacity onPress={onClose} style={{ marginLeft: 'auto' }}>
               <IconSymbol name="close" size={24} color="#222" style={{ marginLeft: 'auto' }} />
             </TouchableOpacity>
           </View>
 
-          {/* horizontal line */}
-          <View style={{ flex: 1, marginVertical: gpsh(10), width: '100%', height: 2, backgroundColor: '#eee' }} />
-
-          {/* Label Pills */}
-          <Text style={styles.fieldLabel}>Save As <Text style={styles.required}>*</Text></Text>
-          <View style={styles.pillsRow}>
-            {LABEL_OPTIONS.map((option) => (
-              <Pressable
-                key={option}
-                style={[
-                  styles.pill,
-                  (form.label === option) && styles.pillSelected,
-                ]}
-                onPress={() => handleLabelSelect(option)}
-              >
-                <Text style={[
-                  styles.pillText,
-                  (form.label === option) && styles.pillTextSelected,
-                ]}>
-                  {option}
-                </Text>
-              </Pressable>
-            ))}
-          </View>
-          {form.label === 'Other' && (
+          <ScrollView showsVerticalScrollIndicator={false} >
+            {/* Label Pills */}
+            <Text style={styles.fieldLabel}>Save As <Text style={styles.required}>*</Text></Text>
+            <View style={styles.pillsRow}>
+              {LABEL_OPTIONS.map((option) => (
+                <Pressable
+                  key={option}
+                  style={[
+                    styles.pill,
+                    (form.label === option) && styles.pillSelected,
+                  ]}
+                  onPress={() => handleLabelSelect(option)}
+                >
+                  <Text style={[
+                    styles.pillText,
+                    (form.label === option) && styles.pillTextSelected,
+                  ]}>
+                    {option}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+            {form.label === 'Other' && (
+              <TextInput
+                style={styles.input}
+                placeholder="Custom label"
+                value={form.customLabel}
+                onChangeText={(v) => handleChange('customLabel', v)}
+                maxLength={10}
+              />
+            )}
+            {/* Receiver Details */}
+            <Text style={styles.fieldLabel}>Receiver Name <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
-              placeholder="Custom label"
-              value={form.customLabel}
-              onChangeText={(v) => handleChange('customLabel', v)}
+              placeholder="Full Name"
+              value={form.receiverName}
+              onChangeText={(v) => handleChange('receiverName', v)}
+              maxLength={20}
+            />
+            <Text style={styles.fieldLabel}>Receiver Phone <Text style={styles.required}>*</Text></Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Phone Number"
+              value={form.receiverPhone}
+              onChangeText={(v) => handleChange('receiverPhone', v)}
+              keyboardType="phone-pad"
               maxLength={10}
             />
-          )}
-          {/* Receiver Details */}
-          <Text style={styles.fieldLabel}>Receiver Name <Text style={styles.required}>*</Text></Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Full Name"
-            value={form.receiverName}
-            onChangeText={(v) => handleChange('receiverName', v)}
-            maxLength={20}
-          />
-          <Text style={styles.fieldLabel}>Receiver Phone <Text style={styles.required}>*</Text></Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Phone Number"
-            value={form.receiverPhone}
-            onChangeText={(v) => handleChange('receiverPhone', v)}
-            keyboardType="phone-pad"
-            maxLength={10}
-          />
 
-          {/* horizontal line */}
-          <View style={{ flex: 1, marginVertical: gpsh(10), width: '100%', height: 1, backgroundColor: '#eee' }} />
+            {/* horizontal line */}
+            <View style={{ flex: 1, marginVertical: gpsh(10), width: '100%', height: 1, backgroundColor: '#eee' }} />
 
-          {/* Address Fields */}
-          <Text style={styles.fieldLabel}>Address Line 1 <Text style={styles.required}>*</Text></Text>
-          <TextInput
-            style={styles.input}
-            placeholder="H.No/Flat No/Room No, Street Name"
-            value={form.addressLine1}
-            onChangeText={(v) => handleChange('addressLine1', v)}
-            maxLength={30}
-          />
-          <Text style={styles.fieldLabel}>Address Line 2 <Text style={styles.optional}>(Optional)</Text></Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Street Name, Area, Landmark"
-            value={form.addressLine2}
-            onChangeText={(v) => handleChange('addressLine2', v)}
-            maxLength={30}
-          />
-          <Text style={styles.fieldLabel}>City <Text style={styles.required}>*</Text></Text>
-          <TextInput
-            style={styles.input}
-            placeholder="City"
-            value={form.city}
-            onChangeText={(v) => handleChange('city', v)}
-            maxLength={20}
-          />
-          <Text style={styles.fieldLabel}>State <Text style={styles.required}>*</Text></Text>
-          <TextInput
-            style={styles.input}
-            placeholder="State"
-            value={form.state}
-            onChangeText={(v) => handleChange('state', v)}
-            maxLength={14}
-          />
-          <Text style={styles.fieldLabel}>Postal Code <Text style={styles.required}>*</Text></Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Postal Code"
-            value={form.postalCode}
-            onChangeText={(v) => handleChange('postalCode', v)}
-            keyboardType="numeric"
-            maxLength={10}
-          />
-          <Text style={styles.fieldLabel}>Country <Text style={styles.required}>*</Text></Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Country"
-            value={form.country}
-            onChangeText={(v) => handleChange('country', v)}
-            maxLength={10}
-          />
-
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 16 }}>
-            <Button variant='danger' title="Cancel" onPress={onClose} style={{ flex: 1, marginRight: 8 }} />
-            <Button
-              title={form.id ? 'Update' : 'Add'}
-              onPress={() => {
-                if (
-                  !getFinalLabel() ||
-                  !form.receiverName ||
-                  !form.receiverPhone ||
-                  !form.addressLine1 ||
-                  !form.city ||
-                  !form.state ||
-                  !form.postalCode ||
-                  !form.country
-                ) {
-                  return;
-                }
-                onSave({
-                  ...form,
-                  label: getFinalLabel(),
-                  id: form.id || Math.random().toString(36).slice(2),
-                });
-                onClose();
-              }}
-              style={{ flex: 1, marginLeft: 8 }}
+            {/* Address Fields */}
+            <Text style={styles.fieldLabel}>Address Line 1 <Text style={styles.required}>*</Text></Text>
+            <TextInput
+              style={styles.input}
+              placeholder="H.No/Flat No/Room No, Street Name"
+              value={form.addressLine1}
+              onChangeText={(v) => handleChange('addressLine1', v)}
+              maxLength={30}
             />
-          </View>
-        </ScrollView>
+            <Text style={styles.fieldLabel}>Address Line 2 <Text style={styles.optional}>(Optional)</Text></Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Street Name, Area, Landmark"
+              value={form.addressLine2}
+              onChangeText={(v) => handleChange('addressLine2', v)}
+              maxLength={30}
+            />
+            <Text style={styles.fieldLabel}>City <Text style={styles.required}>*</Text></Text>
+            <TextInput
+              style={styles.input}
+              placeholder="City"
+              value={form.city}
+              onChangeText={(v) => handleChange('city', v)}
+              maxLength={20}
+            />
+            <Text style={styles.fieldLabel}>State <Text style={styles.required}>*</Text></Text>
+            <TextInput
+              style={styles.input}
+              placeholder="State"
+              value={form.state}
+              onChangeText={(v) => handleChange('state', v)}
+              maxLength={14}
+            />
+            <Text style={styles.fieldLabel}>Postal Code <Text style={styles.required}>*</Text></Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Postal Code"
+              value={form.postalCode}
+              onChangeText={(v) => handleChange('postalCode', v)}
+              keyboardType="numeric"
+              maxLength={10}
+            />
+            <Text style={styles.fieldLabel}>Country <Text style={styles.required}>*</Text></Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Country"
+              value={form.country}
+              onChangeText={(v) => handleChange('country', v)}
+              maxLength={10}
+            />
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 16 }}>
+              <Button variant='danger' title="Cancel" onPress={onClose} style={{ flex: 1, marginRight: 8 }} />
+              <Button
+                title={form.id ? 'Update' : 'Add'}
+                onPress={() => {
+                  if (
+                    !getFinalLabel() ||
+                    !form.receiverName ||
+                    !form.receiverPhone ||
+                    !form.addressLine1 ||
+                    !form.city ||
+                    !form.state ||
+                    !form.postalCode ||
+                    !form.country
+                  ) {
+                    return;
+                  }
+                  onSave({
+                    ...form,
+                    label: getFinalLabel(),
+                    id: form.id || Math.random().toString(36).slice(2),
+                  });
+                  onClose();
+                }}
+                style={{ flex: 1, marginLeft: 8 }}
+              />
+            </View>
+          </ScrollView>
+
+        </View>
       </View>
     </Modal>
   );
@@ -285,7 +285,10 @@ const AddressScreen = () => {
               </View>
             </TouchableOpacity>
           )}
-          ListEmptyComponent={<Text style={{ textAlign: 'center', marginTop: 32 }}>No addresses yet.</Text>}
+          ListEmptyComponent={<View>
+            <Animation name="Address" />
+            <Text variant='medium16' style={{ textAlign: 'center', marginTop: 32 }}>No addresses yet.</Text>
+          </View>}
         />
         <Button title="Add Address" onPress={handleAdd} style={styles.addBtn} />
         <AddressModal

@@ -17,6 +17,13 @@ const variantMap = {
             fontSize: gpsw(14),
         }
     },
+    'regular12': {
+        className: `font-popins font-normal`,
+        style: {
+            lineHeight: gpsw(14),
+            fontSize: gpsw(12),
+        }
+    },
     'regular14': {
         className: `font-popins font-normal`,
         style: {
@@ -66,7 +73,7 @@ type TextProps = React.ComponentProps<typeof RNText> & {
 };
 
 export default function Text({
-    variant = 'regular16',
+    variant = 'regular12',
     className,
     style,
     children,

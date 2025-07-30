@@ -25,6 +25,8 @@ const CartItem1 = ({ item }: CartItem1Props) => {
         ...(item?.product && { ...item?.product } || {}),
     }
 
+    console.log('product_details', product_details)
+
     return (
         <View style={{
             shadowColor: '#000',

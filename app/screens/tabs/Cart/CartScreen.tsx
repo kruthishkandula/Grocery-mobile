@@ -98,11 +98,7 @@ export default function CartScreen({ navigation }: any) {
                 keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => <CartItem1 item={item} />}
-                ListEmptyComponent={<EmptyCart width={'100%'} style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flex: 1,
-                }} />}
+                ListEmptyComponent={<EmptyCart />}
                 contentContainerClassName='gap-4'
               />
             )}

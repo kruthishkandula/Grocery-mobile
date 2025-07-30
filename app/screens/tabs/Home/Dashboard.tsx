@@ -1,8 +1,10 @@
+import { useFetchDashboardData } from '@/api/nodeapi/Dashboard/api';
 import DashboardSectionHeader from '@/components/atom/Header/DashboardSectionHeader';
 import CategoryItem1 from '@/components/molecule/Card/CategoryItem1';
 import ProductItem1 from '@/components/molecule/Card/Product/ProductItem1';
+import DynamicError from '@/components/molecule/Error';
+import DynamicLoader from '@/components/molecule/Loader';
 import { useAuth } from '@/context/AuthContext';
-import { dashboard_cms } from '@/fixtures/dashboard_cms';
 import { useAddressStore } from '@/store/address/addressStore';
 import { gpsw } from '@/style/theme';
 import { useThemeContextActions } from '@/Themes';
@@ -13,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useRef, useState } from 'react';
-import { Animated, Dimensions, FlatList, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Animated, Dimensions, FlatList, TouchableOpacity, View } from 'react-native';
 import { RefreshControl, ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -42,14 +44,10 @@ export default function Dashboard() {
     const { navigate } = useNavigation<any>();
     const { top, bottom } = useSafeAreaInsets()
 
+    const { data, isLoading, error } = useFetchDashboardData()
+    let dashboard_cms = data?.data || [];
+
     let selected_address = addresses.find(address => address.id === selectedAddressId);
-
-    console.log('selected_address', selected_address)
-
-    // const { data, isLoading, error, refetch: refetchCategories } = useFetchAllCategories({
-    //     enabled: !authLoading && userLoggedIn,
-    // });
-
 
     const refetch = async () => {
         setIsRefreshing(true);
@@ -60,9 +58,10 @@ export default function Dashboard() {
         }
     };
 
-    if (authLoading) return null; // Or a splash/loader
-    // if (isLoading) return <DynamicLoader message={'Loading...'} />;
-    // if (error) return <DynamicError error={error} onRetry={refetch} />;
+    if (isLoading) {
+        return (<DynamicLoader message="Loading Dashboard..." />)
+    }
+    if (error) return <DynamicError error={error} onRetry={refetch} />;
 
 
     // Helper to get data for each section
@@ -241,13 +240,15 @@ export default function Dashboard() {
                             </View>
                             <View className='flex-col' >
                                 <View className='flex-row items-center' >
-                                    <Text style={{ color: colors?.text1, fontSize: gpsw(12) }} className='font-[300] text-text1'>Deliver to{' '}<Text variant='medium14' style={{ color: colors?.text1, fontSize: gpsw(16) }} className='font-[600] text-text1'>{selected_address?.label}</Text></Text>
+                                    <Text style={{ color: colors?.text1, fontSize: gpsw(12) }} className='font-[300] text-text1'>Deliver to{' '}
+                                        <Text variant='medium14' style={{ color: colors?.text1, fontSize: gpsw(16) }} className='font-[600] text-text1'>{selected_address?.label}</Text></Text>
                                 </View>
-                                <Text variant='medium14' style={{ color: colors?.shading, fontSize: gpsw(12) }} className='text-[12px] font-[600] text-text1'>{selected_address?.addressLine1}, {selected_address?.city}</Text>
-                            </View>
+                                {selected_address ? <Text variant='medium14' style={{ color: colors?.shading, fontSize: gpsw(12) }} className='text-[12px] font-[600] text-text1'>{selected_address?.addressLine1}, {selected_address?.city}</Text>
+                                    :
+                                    <Text variant='medium14' style={{ color: colors?.shading, fontSize: gpsw(12) }} className='text-[12px] font-[600] text-text1'>Select Delivery Address</Text>}</View>
                         </View>
                         <TouchableOpacity>
-                            <IconSymbol name='chevron-right' iconSet='FontAwesome6' size={24} color={colors?.white} />
+                            <IconSymbol name='chevron-right' iconSet='FontAwesome6' size={24} color={colors?.text1} />
                         </TouchableOpacity>
                     </TouchableOpacity>
                 </View>
@@ -263,9 +264,9 @@ export default function Dashboard() {
                 <>
                     <SearchBar />
                     {dashboard_cms
-                        .filter(section => section.enabled)
-                        .sort((a, b) => a.order - b.order)
-                        .map((section) => {
+                        .filter((section: any) => section.enabled)
+                        .sort((a: any, b: any) => a.order - b.order)
+                        .map((section: any) => {
                             return (
                                 renderSection(section as DashboardSection)
                             )

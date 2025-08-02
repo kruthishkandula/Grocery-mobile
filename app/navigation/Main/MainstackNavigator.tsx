@@ -1,11 +1,12 @@
 import AddressScreen from '@/screens/tabs/Address';
 import CartScreen from '@/screens/tabs/Cart/CartScreen';
+import CheckoutScreen from '@/screens/tabs/Cart/CheckoutScreen';
 import ProductDetails from '@/screens/tabs/Home/ProductDetails';
+import Offers from '@/screens/tabs/Offers';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Platform } from 'react-native';
 import Products from '../../screens/tabs/Home/Products';
 import TabsLayout from './TabsLayout';
-import Offers from '@/screens/tabs/Offers';
 
 const Stack = createStackNavigator<any>();
 
@@ -16,33 +17,6 @@ export default function RootLayout() {
       initialRouteName="homescreen"
       screenOptions={{
         headerShown: false,
-        ...(Platform.OS !== 'web' && {
-          cardStyleInterpolator: ({ current: { progress }, layouts }) => ({
-            cardStyle: {
-              opacity: progress.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 1],
-              }),
-              transform: [
-                {
-                  perspective: 1000,
-                },
-                // {
-                //   rotateY: progress.interpolate({
-                //     inputRange: [0, 1],
-                //     outputRange: ['180deg', '0deg'],
-                //   }),
-                // },
-                // {
-                //   scale: progress.interpolate({
-                //     inputRange: [0, 1],
-                //     outputRange: [0.1, 1],
-                //   }),
-                // }
-              ],
-            },
-          }),
-        }),
       }}
     >
       <Stack.Screen
@@ -76,6 +50,13 @@ export default function RootLayout() {
       <Stack.Screen
         name="Cart"
         component={CartScreen}
+        options={{
+          animation: Platform.OS === 'web' ? 'none' : 'default'
+        }}
+      />
+      <Stack.Screen
+        name="Checkout"
+        component={CheckoutScreen}
         options={{
           animation: Platform.OS === 'web' ? 'none' : 'default'
         }}

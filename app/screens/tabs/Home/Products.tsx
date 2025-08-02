@@ -1,5 +1,6 @@
 import { useFetchAllCategories } from '@/api/nodeapi/Categories/api';
 import { useFetchProductsByCategory } from '@/api/nodeapi/Products/api';
+import Animation from '@/components/molecule/Animation';
 import ProductItem1 from '@/components/molecule/Card/Product/ProductItem1';
 import DynamicError from '@/components/molecule/Error';
 import DynamicLoader from '@/components/molecule/Loader';
@@ -137,9 +138,12 @@ export default function Products() {
                   );
                 }}
                 ListEmptyComponent={
-                  <Text className="text-center text-gray-400 mt-8">
-                    No products found for this category.
-                  </Text>
+                  <View className="flex-1 items-center justify-center">
+                    <Animation name='EmptyCart' loop />
+                    <Text variant='medium14' className="text-center text-black mt-8">
+                      No products found for this category.
+                    </Text>
+                  </View>
                 }
               />
             )

@@ -86,7 +86,7 @@ export default function ProductItem1({ item, style, imageStyle }: ProductItem1Pr
                 style={[{ maxWidth: 170 }, style]}
             >
                 <CachedImage
-                    name={item.images?.[0].url}
+                    name={item.images?.[0].url || item.all_images?.[0].url}
                     height={130}
                     style={[{ borderRadius: 8, backgroundColor: colors.bg, width: '100%' }, imageStyle]}
                     contentFit="cover"

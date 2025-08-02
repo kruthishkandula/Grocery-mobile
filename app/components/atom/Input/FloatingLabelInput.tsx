@@ -131,7 +131,12 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
                     autoCapitalize={autoCapitalize || inputProps.autoCapitalize}
                     onFocus={e => { setIsFocused(true); onFocus && onFocus(e); }}
                     onBlur={e => { setIsFocused(false); onBlur && onBlur(e); }}
-                    style={{
+
+                    onSubmitEditing={onSubmitEditing}
+                    returnKeyType={returnKeyType}
+                    maxLength={inputProps.maxLength}
+                    {...rest}
+                    style={[{
                         borderWidth: isFocused ? 2 : 0.2,
                         borderColor: error ? input_error_border_color : isFocused ? inputFocusedColor : input_border_color,
                         borderRadius: 8,
@@ -146,11 +151,8 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
                         shadowOffset: { width: 0, height: 2 },
                         shadowOpacity: 0.2,
                         shadowRadius: 1.41,
-                    }}
-                    onSubmitEditing={onSubmitEditing}
-                    returnKeyType={returnKeyType}
-                    maxLength={inputProps.maxLength}
-                    {...rest}
+
+                    }, rest.style]}
                 />
                 <TouchableOpacity
                     activeOpacity={0.7}

@@ -7,6 +7,8 @@ import { DynamicHeader, ThemedSafeArea } from '@/components/atom';
 const FavouriteProducts = () => {
     const { items, loading } = useWishlistStore();
 
+    console.log('items', items)
+
     if (loading) {
         return (
             <View className="flex-1 justify-center items-center">

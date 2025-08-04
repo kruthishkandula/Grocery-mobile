@@ -1,4 +1,4 @@
-import { Button, IconSymbol } from '@/components/atom';
+import { Button, IconSymbol, Text } from '@/components/atom';
 import LinearHeader from '@/components/atom/Header/LinearHeader';
 import Animation from '@/components/molecule/Animation';
 import useTheme from '@/hooks/useTheme';
@@ -14,7 +14,6 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View
 } from 'react-native';
@@ -277,15 +276,16 @@ const CheckoutScreen = () => {
     return (
       <SafeAreaView style={styles.animationContainer}>
         <LinearGradient
-          colors={['#4facfe', '#00f2fe']}
+          colors={['#f8f8f8', '#f8f8f8']}
           style={styles.successGradient}
         >
           <Animation
             name="OrderSuccess"
             style={styles.successAnimation}
-            loop={false}
+            loop={true}
+            title={`Order Placed Successfully! 🎉`}
+            message={"Thank you for your order. We'll send you updates via notifications."}
           />
-          <Text style={styles.successText}>Order Placed Successfully! 🎉</Text>
         </LinearGradient>
       </SafeAreaView>
     );
@@ -297,7 +297,7 @@ const CheckoutScreen = () => {
         style={[
           styles.content,
           {
-            marginBottom: 40,
+            marginBottom: 20,
             opacity: fadeAnim,
             transform: [
               { translateY: slideAnim },
@@ -306,7 +306,7 @@ const CheckoutScreen = () => {
           }
         ]}
       >
-        <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <ScrollView style={[styles.scrollView]} showsVerticalScrollIndicator={false}>
           {/* Header */}
           <LinearHeader
             title="Checkout"
@@ -339,6 +339,7 @@ const CheckoutScreen = () => {
               {renderAddressSelection()}
               {renderPaymentMethods()}
             </View>
+
           </LinearHeader>
         </ScrollView>
 
@@ -350,6 +351,7 @@ const CheckoutScreen = () => {
           style={[styles.placeOrderButton, placing && styles.disabledButton]}
           textStyle={styles.placeOrderText}
         />
+
 
         {showAddressModal && (
           <View style={styles.addressModal}>
@@ -862,7 +864,6 @@ const styles = StyleSheet.create({
   successText: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#ffffff',
     marginTop: 20,
     textAlign: 'center',
   },

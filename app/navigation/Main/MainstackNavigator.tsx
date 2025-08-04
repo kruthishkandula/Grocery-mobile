@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Platform } from 'react-native';
 import Products from '../../screens/tabs/Home/Products';
 import TabsLayout from './TabsLayout';
+import SearchResultsScreen from '@/screens/SearchResultsScreen';
 
 const Stack = createStackNavigator<any>();
 
@@ -25,6 +26,11 @@ export default function RootLayout() {
         options={{
           animation: Platform.OS === 'web' ? 'none' : 'default'
         }}
+      />
+      <Stack.Screen 
+        name="SearchResults" 
+        component={SearchResultsScreen}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="offers"

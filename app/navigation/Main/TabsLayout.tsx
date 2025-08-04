@@ -4,8 +4,8 @@ import { useCartStore } from '@/store/cart/cartStore';
 import { gpsh } from '@/style/theme';
 import IconSymbol from '@atom/IconSymbol';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useNavigationState } from '@react-navigation/native';
-import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import Empty from '../../screens/tabs/Empty';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,24 +16,38 @@ const Tab = createBottomTabNavigator<any>();
 const TabsLayout = () => {
     const { colors } = useTheme();
     const { items } = useCartStore();
-    const state = useNavigationState(state => state);
-    const { bottom } = useSafeAreaInsets()
+    const navigation = useNavigation();
+    const { bottom } = useSafeAreaInsets();
+    const [hideTabBar, setHideTabBar] = useState(false);
 
-    // Helper function to get the current route name from nested navigator state
-    const getActiveRouteName = (state: any): string => {
-        const route = state.routes[state.index];
-        if (route.state) {
-            // Recursive call to handle nested navigators
-            return getActiveRouteName(route.state);
-        }
-        return route.name;
-    };
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('state', (e) => {
+            // Get the current navigation state
+            const state = e.data.state;
+            
+            // Function to get the current route name from the root navigator
+            const getCurrentRoute = (navState: any): string => {
+                if (!navState || !navState.routes) return '';
+                
+                const currentRoute = navState.routes[navState.index];
+                
+                // If the current route has nested state, traverse it
+                if (currentRoute.state) {
+                    return getCurrentRoute(currentRoute.state);
+                }
+                
+                return currentRoute.name;
+            };
+            
+            const currentRouteName = getCurrentRoute(state);
+            
+            // Hide tab bar for specific routes
+            const shouldHideTabBar = ['Products', 'ProductDetails', 'Cart', 'Checkout', 'Address'].includes(currentRouteName);
+            setHideTabBar(shouldHideTabBar);
+        });
 
-    // Get the active route name
-    const currentRoute = getActiveRouteName(state);
-
-    // Check if we should hide the tab bar
-    const hideTabBar = ['Products', 'ProductDetails', 'Cart'].includes(currentRoute);
+        return unsubscribe;
+    }, [navigation]);
 
     let productsCount = items?.length || 0;
 

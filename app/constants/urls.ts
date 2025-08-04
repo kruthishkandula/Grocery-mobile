@@ -14,6 +14,7 @@ export const NODE_URLS = {
 
     CATEGORIES: '/api/categories/list',
     PRODUCTS: '/api/products/list',
+    SEARCH_PRODUCTS: '/api/products/list', // Using existing products endpoint with search
     ORDERS: '/api/orders/list',
 
     // cms

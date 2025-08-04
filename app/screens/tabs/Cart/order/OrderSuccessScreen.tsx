@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 import Animation from '@/components/molecule/Animation';
 import { useOrderStore } from '@/store/order/orderStore';
+import { replace } from '@/navigation/RootNavRef';
 
 const OrderSuccessScreen = () => {
   const { currentOrder } = useOrderStore();
@@ -10,7 +11,7 @@ const OrderSuccessScreen = () => {
   useEffect(() => {
     // Auto navigate to home after 5 seconds
     const timer = setTimeout(() => {
-      router.replace('/');
+      replace('/');
     }, 5000);
 
     return () => clearTimeout(timer);
@@ -21,7 +22,7 @@ const OrderSuccessScreen = () => {
       <Animation 
               name="OrderSuccess"
               style={styles.animation}
-              loop={false} source={''}      />
+              loop={true} source={''}      />
       
       <Text style={styles.title}>Order Placed Successfully!</Text>
       <Text style={styles.subtitle}>Thank you for your order</Text>

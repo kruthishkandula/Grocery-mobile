@@ -15,6 +15,15 @@ export interface FloatingLabelInputProps extends Omit<TextInputProps, 'autoCapit
     inputType?: 'email' | 'username' | 'phone' | 'password' | 'default';
     leftIcon?: React.ReactNode;
     rightIcon?: React.ReactNode;
+    rightIconPress?: () => void;
+    inputStyling?: {
+        input_height?: number;
+        input_placeholder_color?: string;
+        input_focused_color?: string;
+        input_bg_color?: string;
+        input_border_color?: string;
+        input_error_border_color?: string;
+    };
 }
 
 const getInputPropsByType = (inputType: string | undefined) => {
@@ -48,14 +57,15 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
     inputType = 'default',
     leftIcon,
     rightIcon,
+    rightIconPress,
     ...rest
 }) => {
-    let input_height = 70;
-    let input_placeholder_color = '#212121'
-    let input_focused_color = inputFocusedColor || '#FF9800'
-    let input_bg_color = '#FFFFFF'
-    let input_border_color = '#212121'
-    let input_error_border_color = '#EF4444'
+    let input_height = rest?.inputStyling?.input_height || 70;
+    let input_placeholder_color = rest?.inputStyling?.input_placeholder_color || '#212121';
+    let input_focused_color = rest?.inputStyling?.input_focused_color || inputFocusedColor || '#FF9800';
+    let input_bg_color = rest?.inputStyling?.input_bg_color || '#FFFFFF';
+    let input_border_color = rest?.inputStyling?.input_border_color || '#212121';
+    let input_error_border_color = rest?.inputStyling?.input_error_border_color || '#EF4444';
 
     const [isFocused, setIsFocused] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -93,7 +103,7 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
                 color={isFocused ? input_focused_color : input_placeholder_color}
             />
         </TouchableOpacity>
-    ) : rightIcon;
+    ) : <TouchableOpacity onPress={rightIconPress} style={{ marginRight: 12 }}>{rightIcon}</TouchableOpacity>;
 
     const isLabelFloated = isFocused || value;
     const labelStyle = {
@@ -107,6 +117,7 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
             inputRange: [0, 1],
             outputRange: [16, 12],
         }),
+        fontWeight: isFocused ? 'bold' : '200',
         color: isFocused ? input_focused_color : input_placeholder_color,
         paddingHorizontal: 4,
         zIndex: isLabelFloated ? 4 : 2,
@@ -138,7 +149,7 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
                     {...rest}
                     style={[{
                         borderWidth: isFocused ? 2 : 0.2,
-                        borderColor: error ? input_error_border_color : isFocused ? inputFocusedColor : input_border_color,
+                        borderColor: error ? input_error_border_color : isFocused ? input_focused_color : input_border_color,
                         borderRadius: 8,
                         paddingVertical: input_height / 4,
                         paddingHorizontal: (RightIcon || LeftIcon) ? 40 : 12,
@@ -161,7 +172,7 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
                     }}
                     style={{ position: 'absolute', left: hasLeftIcon ? 44 : 12, top: 0, height: '100%', zIndex: 11 }}
                 >
-                    <Animated.Text style={labelStyle}>{placeholder}</Animated.Text>
+                    <Animated.Text style={[labelStyle]}>{placeholder}</Animated.Text>
                 </TouchableOpacity>
                 {RightIcon && (
                     <View style={{ position: 'absolute', right: 0, height: '100%', justifyContent: 'center', zIndex: 10 }}>

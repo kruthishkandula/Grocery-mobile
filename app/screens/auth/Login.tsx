@@ -57,7 +57,6 @@ export default function Login({ navigation }: any) {
   };
 
   useEffect(() => {
-
     return () => {
       reset();
     }

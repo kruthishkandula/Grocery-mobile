@@ -97,7 +97,7 @@ const ProfileSettings = () => {
                 <KeyboardScrollView
                     extraScrollHeight={Platform.OS === 'android' ? 250 : 30}
                 >
-                    <View style={[styles.container, { backgroundColor: '#F9FAFB' }]}>
+                    <View className='bg-surfaceBase' style={[styles.container]}>
                         <View style={styles.avatarSection}>
                             <TouchableOpacity onPress={handlePickImage} style={styles.avatarWrapper}>
                                 <Image
@@ -112,7 +112,7 @@ const ProfileSettings = () => {
                                     <Text style={{ color: '#fff', fontWeight: 'bold' }}>✏️</Text>
                                 </View>
                             </TouchableOpacity>
-                            <Text style={styles.avatarText}>Tap to change photo</Text>
+                            <Text className='text-textSecondary' style={styles.avatarText}>Tap to change photo</Text>
                         </View>
                         <View style={styles.form}>
                             <FormField
@@ -201,7 +201,6 @@ const styles = StyleSheet.create({
     },
     avatarText: {
         marginTop: 8,
-        color: '#888',
         fontSize: 13,
     },
     form: {

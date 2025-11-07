@@ -19,7 +19,7 @@ const FavouriteProducts = () => {
 
     return (
         <ThemedSafeArea>
-            <View className="flex-1 bg-white">
+            <View className="flex-1 bg-surfaceBase">
                 <DynamicHeader variant="back" title="Favourite Products" />
                 <View className="flex-1 bg-shadingLight px-4 pt-4">
                     <FlatList
@@ -37,7 +37,7 @@ const FavouriteProducts = () => {
                         numColumns={2}
                         horizontal={false}
                         ListEmptyComponent={
-                            <Text className="text-center text-gray-400 mt-8">
+                            <Text className="text-center text-textSecondary mt-8">
                                 No favourite products found.
                             </Text>
                         }

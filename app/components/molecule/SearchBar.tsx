@@ -147,14 +147,14 @@ export default function SearchBar({
   
   return (
     <View style={styles.container}>
-      <View style={[styles.searchContainer, { borderColor: isFocused ? colors?.primary : colors?.border }]}>
-        <IconSymbol name='search' size={20} color={colors?.text1} />
+      <View style={[styles.searchContainer, { borderColor: isFocused ? colors?.primary : colors?.borderDefault, backgroundColor: colors.surfaceBase}]}>
+        <IconSymbol name='search' size={20} color={colors?.textPrimary} />
         <TextInput
           ref={searchInputRef}
           placeholder={placeholder}
-          className='flex-1 ml-3 text-text1 p-[10px] h-[50px]'
-          style={{ color: colors?.text1 }}
-          placeholderTextColor={colors?.text2}
+          className='flex-1 ml-3 text-black p-[10px] h-[50px]'
+          style={{ color: colors?.textPrimary, backgroundColor: colors.surfaceBase }}
+          placeholderTextColor={colors?.textSecondary}
           value={searchQuery}
           onChangeText={setSearchQuery}
           onFocus={handleFocus}
@@ -167,12 +167,12 @@ export default function SearchBar({
         
         {searchQuery.length > 0 && (
           <TouchableOpacity onPress={clearSearch} style={styles.clearButton}>
-            <IconSymbol name='x' size={16} color={colors?.text2} />
+            <IconSymbol name='close' size={16} color={colors?.textSecondary} />
           </TouchableOpacity>
         )}
         
         <TouchableOpacity onPress={handleSearch}>
-          <IconSymbol name='microphone' size={20} color={colors?.text1} />
+          <IconSymbol name='microphone' size={20} color={colors?.textPrimary} />
         </TouchableOpacity>
       </View>
       
@@ -181,8 +181,8 @@ export default function SearchBar({
           style={[
             styles.dropdown, 
             { 
-              backgroundColor: colors?.bg,
-              borderColor: colors?.bg,
+              backgroundColor: colors?.surfaceOverlay,
+              borderColor: colors?.surfaceBase,
               opacity: fadeAnim 
             }
           ]}
@@ -190,7 +190,7 @@ export default function SearchBar({
           {isSearching ? (
             <View style={styles.loadingContainer}>
               <ActivityIndicator size="small" color={colors?.primary} />
-              <Text style={[styles.loadingText, { color: colors?.text2 }]}>Searching...</Text>
+              <Text style={[styles.loadingText, { color: colors?.textSecondary }]}>Searching...</Text>
             </View>
           ) : searchError ? (
             <View style={styles.errorContainer}>
@@ -209,7 +209,7 @@ export default function SearchBar({
             />
           ) : debouncedQuery.length >= 2 ? (
             <View style={styles.noResultsContainer}>
-              <Text style={[styles.noResultsText, { color: colors?.text2 }]}>
+              <Text style={[styles.noResultsText, { color: colors?.textPrimary }]}>
                 No products found for "{debouncedQuery}"
               </Text>
               <TouchableOpacity 
@@ -238,7 +238,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 10,
-    backgroundColor: '#fff',
     paddingHorizontal: 12,
     minHeight: 50,
   },

@@ -108,17 +108,17 @@ const SearchResultsScreen = () => {
   
   const renderFilterButton = () => (
     <TouchableOpacity
-      style={[styles.filterButton, { borderColor: colors?.bg }]}
+      style={[styles.filterButton, { borderColor: colors?.surfaceBase }]}
       onPress={() => setShowFilters(!showFilters)}
     >
-      <IconSymbol name='filter' size={16} color={colors?.text1} />
-      <Text style={[styles.filterText, { color: colors?.text1 }]}>Filters</Text>
+      <IconSymbol name='filter' size={16} color={colors?.textPrimary} />
+      <Text style={[styles.filterText, { color: colors?.textPrimary }]}>Filters</Text>
     </TouchableOpacity>
   );
   
   const renderSortOptions = () => (
-    <View style={[styles.sortContainer, { backgroundColor: colors?.background }]}>
-      <Text style={[styles.sortTitle, { color: colors?.text1 }]}>Sort by:</Text>
+    <View style={[styles.sortContainer, { backgroundColor: colors?.surfaceBase }]}>
+      <Text style={[styles.sortTitle, { color: colors?.textPrimary }]}>Sort by:</Text>
       
       <View style={styles.sortButtons}>
         {[
@@ -131,8 +131,8 @@ const SearchResultsScreen = () => {
             style={[
               styles.sortButton,
               {
-                backgroundColor: filters.sortBy === option.key ? colors?.primary : colors?.background,
-                borderColor: colors?.bg,
+                backgroundColor: filters.sortBy === option.key ? colors?.primary : colors?.surfaceBase,
+                borderColor: colors?.surfaceBase,
               }
             ]}
             onPress={() => setFilters(prev => ({ ...prev, sortBy: option.key as any }))}
@@ -141,7 +141,7 @@ const SearchResultsScreen = () => {
               style={[
                 styles.sortButtonText,
                 {
-                  color: filters.sortBy === option.key ? '#fff' : colors?.text1,
+                  color: filters.sortBy === option.key ? '#fff' : colors?.textPrimary,
                 }
               ]}
             >
@@ -156,8 +156,8 @@ const SearchResultsScreen = () => {
           style={[
             styles.sortButton,
             {
-              backgroundColor: filters.sortOrder === 'asc' ? colors?.primary : colors?.background,
-              borderColor: colors?.bg,
+              backgroundColor: filters.sortOrder === 'asc' ? colors?.primary : colors?.surfaceBase,
+              borderColor: colors?.surfaceBase,
             }
           ]}
           onPress={() => setFilters(prev => ({ ...prev, sortOrder: 'asc' }))}
@@ -165,7 +165,7 @@ const SearchResultsScreen = () => {
           <Text
             style={[
               styles.sortButtonText,
-              { color: filters.sortOrder === 'asc' ? '#fff' : colors?.text1 }
+              { color: filters.sortOrder === 'asc' ? '#fff' : colors?.textPrimary }
             ]}
           >
             ↑ Ascending
@@ -176,8 +176,8 @@ const SearchResultsScreen = () => {
           style={[
             styles.sortButton,
             {
-              backgroundColor: filters.sortOrder === 'desc' ? colors?.primary : colors?.background,
-              borderColor: colors?.bg,
+              backgroundColor: filters.sortOrder === 'desc' ? colors?.primary : colors?.surfaceBase,
+              borderColor: colors?.surfaceBase,
             }
           ]}
           onPress={() => setFilters(prev => ({ ...prev, sortOrder: 'desc' }))}
@@ -185,7 +185,7 @@ const SearchResultsScreen = () => {
           <Text
             style={[
               styles.sortButtonText,
-              { color: filters.sortOrder === 'desc' ? '#fff' : colors?.text1 }
+              { color: filters.sortOrder === 'desc' ? '#fff' : colors?.textPrimary }
             ]}
           >
             ↓ Descending
@@ -198,8 +198,8 @@ const SearchResultsScreen = () => {
   const renderProductItem = ({ item, index }: { item: any; index: number }) => (
     <View style={styles.productCard}>
       <ProductItem1
-        product={item}
-        onPress={() => handleProductSelect(item)}
+        item={item}
+        // onPress={() => handleProductSelect(item)}
       />
     </View>
   );
@@ -210,7 +210,7 @@ const SearchResultsScreen = () => {
     return (
       <View style={styles.loadingMore}>
         <ActivityIndicator size="small" color={colors?.primary} />
-        <Text style={[styles.loadingText, { color: colors?.text2 }]}>
+        <Text style={[styles.loadingText, { color: colors?.textPrimary }]}>
           Loading more products...
         </Text>
       </View>
@@ -219,11 +219,11 @@ const SearchResultsScreen = () => {
   
   const renderEmptyState = () => (
     <View style={styles.emptyContainer}>
-      <IconSymbol name='search' size={64} color={colors?.text2} />
-      <Text style={[styles.emptyTitle, { color: colors?.text1 }]}>
+      <IconSymbol name='search' size={64} color={colors?.textPrimary} />
+      <Text style={[styles.emptyTitle, { color: colors?.textPrimary }]}>
         No products found
       </Text>
-      <Text style={[styles.emptySubtitle, { color: colors?.text2 }]}>
+      <Text style={[styles.emptySubtitle, { color: colors?.textPrimary }]}>
         Try searching with different keywords
       </Text>
       <Button
@@ -243,7 +243,7 @@ const SearchResultsScreen = () => {
       />
       
       <View style={styles.resultsHeader}>
-        <Text style={[styles.resultsCount, { color: colors?.text1 }]}>
+        <Text style={[styles.resultsCount, { color: colors?.textPrimary }]}>
           {totalResults} {totalResults === 1 ? 'result' : 'results'} 
           {searchQuery ? ` for "${searchQuery}"` : ''}
         </Text>
@@ -257,14 +257,14 @@ const SearchResultsScreen = () => {
   // Show loading state for first page
   if (isLoading && page === 1) {
     return (
-      <View style={[styles.container, { backgroundColor: colors?.background }]}>
+      <View style={[styles.container, { backgroundColor: colors?.surfaceBase }]}>
         <LinearHeader
           title="Search Results"
           colors={['#667eea', '#764ba2']}
         />
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors?.primary} />
-          <Text style={[styles.loadingText, { color: colors?.text2, marginTop: 16 }]}>
+          <Text style={[styles.loadingText, { color: colors?.textPrimary, marginTop: 16 }]}>
             Searching products...
           </Text>
         </View>
@@ -273,10 +273,10 @@ const SearchResultsScreen = () => {
   }
   
   return (
-    <View style={[styles.container, { backgroundColor: colors?.background }]}>
+    <View style={[styles.container, { backgroundColor: colors?.surfaceBase }]}>
       <LinearHeader
         title="Search Results"
-        colors={['#667eea', '#764ba2']}
+        colors={[colors.primary, colors.primary]}
       />
       
       <FlatList

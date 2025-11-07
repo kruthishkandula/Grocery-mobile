@@ -29,15 +29,15 @@ const CartItem1 = ({ item }: CartItem1Props) => {
 
     return (
         <View style={{
-            shadowColor: '#000',
+            shadowColor: colors.textPrimary,
             shadowOffset: { width: 0, height: 1 },
             shadowOpacity: 0.2,
             shadowRadius: 1.41,
             elevation: 2,
-            backgroundColor: colors?.bg2,
+            backgroundColor: colors.surfaceElevated,
             borderRadius: 8,
             marginBottom: 8,
-        }} className="flex-row justify-between items-center p-4 border-b border-gray-100">
+        }} className="flex-row justify-between items-center p-4 border-b border-borderSubtle">
             <View className="flex-row items-center">
                 {product_details?.images && (
                     <CachedImage
@@ -46,13 +46,13 @@ const CartItem1 = ({ item }: CartItem1Props) => {
                     />
                 )}
                 <View>
-                    <Text className="font-semibold">{product_details?.name}</Text>
-                    <Text className="text-xs text-gray-500">
+                    <Text className="font-semibold text-textPrimary">{product_details?.name}</Text>
+                    <Text className="text-xs text-textSecondary">
                         {currencySymbol}{product_details?.discountPrice}
                     </Text>
                     <Text numberOfLines={3} style={{
                         maxWidth: gpsw(150)
-                    }} className="text-xs text-gray-500 ">
+                    }} className="text-xs text-textSecondary">
                         {product_details?.shortDescription}
                     </Text>
                 </View>
@@ -62,7 +62,7 @@ const CartItem1 = ({ item }: CartItem1Props) => {
             <View className="flex-col items-end gap-5">
                 <View className="flex-row items-center">
                     <TouchableOpacity
-                        className="bg-gray-200 rounded-full px-2"
+                        className="bg-primary rounded-md px-3"
                         onPress={() =>
                             Number(item.quantity) > 1
                                 ? setQuantity({
@@ -74,11 +74,11 @@ const CartItem1 = ({ item }: CartItem1Props) => {
                                 : removeItem(item.id)
                         }
                     >
-                        <Text className="text-lg font-bold">-</Text>
+                        <Text className="text-lg text-textPrimary font-medium">-</Text>
                     </TouchableOpacity>
-                    <Text className="mx-2">{item.quantity}</Text>
+                    <Text className="mx-2 text-textPrimary">{item.quantity}</Text>
                     <TouchableOpacity
-                        className="bg-gray-200 rounded-full px-2"
+                        className="bg-primary rounded-md px-3"
                         onPress={() =>
                             setQuantity({
                                 id: item.id,
@@ -88,11 +88,11 @@ const CartItem1 = ({ item }: CartItem1Props) => {
                             })
                         }
                     >
-                        <Text className="text-lg font-bold">+</Text>
+                        <Text className="text-lg text-textPrimary font-medium">+</Text>
                     </TouchableOpacity>
                 </View>
 
-                <Text className="ml-4 font-semibold">
+                <Text className="ml-4 text-accent font-semibold">
                     {currencySymbol} {convertToFloat((product_details?.discountPrice || 0) * item.quantity)}
                 </Text>
             </View>

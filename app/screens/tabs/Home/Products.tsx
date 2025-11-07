@@ -71,7 +71,7 @@ export default function Products() {
 
   return (
     <ThemedSafeArea>
-      <View className='flex-1 bg-shadingLight' >
+      <View className='flex-1 bg-surfaceBase' >
         {/* header */}
         <DynamicHeader
           variant="back"
@@ -80,10 +80,10 @@ export default function Products() {
           rightComponent={
             <TouchableOpacity onPress={() => navigate('Cart')}>
               <View className="relative">
-                <IconSymbol name="cart" size={28} color="#222" />
+                <IconSymbol name="cart" size={28} color={colors.textPrimary} />
                 {cartDataItems.length > 0 && (
-                  <View className="absolute -top-2 -right-2 bg-red-500 rounded-full w-5 h-5 items-center justify-center">
-                    <Text className="text-xs text-white">{cartDataItems.length}</Text>
+                  <View className="absolute -top-2 -right-2 bg-accent rounded-full w-5 h-5 items-center justify-center">
+                    <Text className="text-xs text-textInverse">{cartDataItems.length}</Text>
                   </View>
                 )}
               </View>
@@ -101,11 +101,11 @@ export default function Products() {
               contentContainerStyle={{ paddingVertical: 4 }}
               renderItem={({ item, index }) => (
                 <TouchableOpacity
-                  className={`px-4 py-2 mx-1 rounded-full ${selectedCategory === item.id ? 'bg-tertiary' : 'bg-outstand'}`}
+                  className={`px-4 py-2 mx-1 rounded-full ${selectedCategory === item.id ? 'bg-focusRing' : 'bg-transparent'}`}
                   onPress={() => handleTabPress(index, item.id)}
                   activeOpacity={0.8}
                 >
-                  <Text className={`text-base ${selectedCategory === item.id ? 'text-white font-semibold' : 'text-gray-700'}`}>
+                  <Text className={`text-base ${selectedCategory === item.id ? 'text-textPrimary font-semibold' : 'text-textSecondary'}`}>
                     {item.name}
                   </Text>
                 </TouchableOpacity>
@@ -138,9 +138,9 @@ export default function Products() {
                   );
                 }}
                 ListEmptyComponent={
-                  <View className="flex-1 items-center justify-center">
+                  <View className="flex-1 flex-grow items-center justify-center">
                     <Animation name='EmptyCart' loop />
-                    <Text variant='medium14' className="text-center text-black mt-8">
+                    <Text variant='medium14' className="text-center text-textPrimary mt-8">
                       No products found for this category.
                     </Text>
                   </View>

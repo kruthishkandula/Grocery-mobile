@@ -8,6 +8,7 @@ import { Platform } from 'react-native';
 import Products from '../../screens/tabs/Home/Products';
 import TabsLayout from './TabsLayout';
 import SearchResultsScreen from '@/screens/SearchResultsScreen';
+import OrderSuccessScreen from '@/screens/tabs/Cart/order/OrderSuccessScreen';
 
 const Stack = createStackNavigator<any>();
 
@@ -63,6 +64,13 @@ export default function RootLayout() {
       <Stack.Screen
         name="Checkout"
         component={CheckoutScreen}
+        options={{
+          animation: Platform.OS === 'web' ? 'none' : 'default'
+        }}
+      />
+      <Stack.Screen
+        name="order-success"
+        component={OrderSuccessScreen}
         options={{
           animation: Platform.OS === 'web' ? 'none' : 'default'
         }}

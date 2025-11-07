@@ -42,7 +42,7 @@ const TabsLayout = () => {
             const currentRouteName = getCurrentRoute(state);
             
             // Hide tab bar for specific routes
-            const shouldHideTabBar = ['Products', 'ProductDetails', 'Cart', 'Checkout', 'Address'].includes(currentRouteName);
+            const shouldHideTabBar = ['Products', 'ProductDetails', 'Cart', 'Checkout', 'Address', 'order-success'].includes(currentRouteName);
             setHideTabBar(shouldHideTabBar);
         });
 
@@ -63,15 +63,16 @@ const TabsLayout = () => {
                     height: gpsh(70) + bottom/2,
                     borderTopRightRadius: 30,
                     borderTopLeftRadius: 30,
-                    backgroundColor: colors?.bg,
+                    backgroundColor: colors?.surfaceElevated,
                     flexDirection: 'row',
                     justifyContent: 'space-around',
                     alignItems: 'center',
                     borderWidth: 0,
+                    borderTopWidth: 0
                 },
                 tabBarShowLabel: true,
                 tabBarActiveTintColor: colors?.primary,
-                tabBarInactiveTintColor: colors?.text1,
+                tabBarInactiveTintColor: colors?.textPrimary,
             }}
         >
             {tab_options.map((item) => (
@@ -82,17 +83,17 @@ const TabsLayout = () => {
                         tabBarIcon: (props) => {
                             return (
                                 <View className={`w-[55px] h-[55px] rounded-[50] items-center justify-center bg-${props?.focused ? 'primary' : 'transparent'} p-4`} >
-                                    <IconSymbol name={item?.icon} iconSet={item?.iconSet} size={item?.size} color={props?.focused ? '#fff' : colors?.text1} />
+                                    <IconSymbol name={item?.icon} iconSet={item?.iconSet} size={item?.size} color={props?.focused ? colors?.textInverse : colors?.textPrimary} />
                                 </View>
                             )
                         },
                         tabBarLabel: (props) => {
                             return (
-                                <Text className='flex-1 text-black' >{item?.label}</Text>
+                                <Text className='flex-1 text-[--color-text-primary]' >{item?.label}</Text>
                             )
                         },
                         tabBarBadge: item.name === 'Cart' && productsCount > 0 ? productsCount : undefined,
-                        tabBarBadgeStyle: { backgroundColor: '#ef4444', color: '#fff', fontSize: 12, padding: 0, width: 20, height: 20, borderRadius: 10, textAlign: 'center' },
+                        tabBarBadgeStyle: { backgroundColor: colors.accent, color: colors.textInverse, fontSize: 12, padding: 0, width: 20, height: 20, borderRadius: 10, textAlign: 'center' },
                     }}
                     component={item.component || Empty}
                 />

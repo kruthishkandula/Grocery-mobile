@@ -21,13 +21,13 @@ export default function CategoryItem2({ item }: { item: { imageUrl: any, name: s
                     title: item.name
                 });
             }}
-            className='flex bg-bg m-1 flex-col items-center p-4 rounded-[20px]'
+            className='flex bg-surfaceOverlay m-1 flex-col items-center p-4 rounded-[20px]'
             style={{
-                elevation: 4,
-                shadowColor: '#444',
-                shadowOffset: 2,
-                shadowOpacity: 0.1,
-                shadowRadius: 6,
+                // elevation: 4,
+                // shadowColor: '#444',
+                // shadowOffset: 2,
+                // shadowOpacity: 0.1,
+                // shadowRadius: 6,
             }}
 
         >
@@ -37,7 +37,7 @@ export default function CategoryItem2({ item }: { item: { imageUrl: any, name: s
                 height={gpsh(90)}
                 contentFit="fill"
             />
-            <Text numberOfLines={2} style={{ color: colors?.text1, maxWidth: gpsw(100), textAlign: 'center' }} className='text-[16px] font-[500] text-text1 mt-2'>{item.name}</Text>
+            <Text numberOfLines={2} style={{ color: colors?.textPrimary, maxWidth: gpsw(100), textAlign: 'center' }} className='text-[16px] font-[500] text-text1 mt-2'>{item.name}</Text>
         </TouchableOpacity>
     )
 }

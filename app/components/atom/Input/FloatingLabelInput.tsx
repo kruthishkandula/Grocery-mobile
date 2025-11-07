@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Animated, Text, TextInput, TextInputProps, TouchableOpacity, View } from 'react-native';
 import IconSymbol from '../IconSymbol';
+import useTheme from '@/hooks/useTheme';
 
 export interface FloatingLabelInputProps extends Omit<TextInputProps, 'autoCapitalize' | 'returnKeyType'> {
     value?: string;
@@ -60,12 +61,17 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
     rightIconPress,
     ...rest
 }) => {
+    const { colors } = useTheme()
     let input_height = rest?.inputStyling?.input_height || 70;
-    let input_placeholder_color = rest?.inputStyling?.input_placeholder_color || '#212121';
-    let input_focused_color = rest?.inputStyling?.input_focused_color || inputFocusedColor || '#FF9800';
-    let input_bg_color = rest?.inputStyling?.input_bg_color || '#FFFFFF';
-    let input_border_color = rest?.inputStyling?.input_border_color || '#212121';
-    let input_error_border_color = rest?.inputStyling?.input_error_border_color || '#EF4444';
+    let input_placeholder_color = colors.textPrimary;
+    let input_focused_color = colors.textPrimary;
+    let input_border_color = colors.accent;
+    let input_focused_border_color = colors.primaryHover;
+    let input_error_border_color = colors.error;
+    let input_bg_color = rest?.inputStyling?.input_bg_color || colors.surfaceOverlay
+
+
+    console.log('rest?.inputStyling?.input_bg_color ', rest?.inputStyling?.input_bg_color )
 
     const [isFocused, setIsFocused] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -117,11 +123,14 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
             inputRange: [0, 1],
             outputRange: [16, 12],
         }),
-        fontWeight: isFocused ? 'bold' : '200',
-        color: isFocused ? input_focused_color : input_placeholder_color,
-        paddingHorizontal: 4,
+        fontWeight: isFocused ? 'bold' : '500',
+        color: isFocused ? colors.textInverse : colors.textPrimary,
+        paddingHorizontal: 8,
+        paddingVertical: isFocused ? 2 : 0,
         zIndex: isLabelFloated ? 4 : 2,
-        backgroundColor: input_bg_color,
+        backgroundColor: isFocused ? error ? input_error_border_color : input_focused_border_color : input_bg_color,
+        borderTopRightRadius: isLabelFloated ? 2 : 0,
+        borderTopLeftRadius: isLabelFloated ? 2 : 0,
     };
 
 
@@ -142,14 +151,13 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
                     autoCapitalize={autoCapitalize || inputProps.autoCapitalize}
                     onFocus={e => { setIsFocused(true); onFocus && onFocus(e); }}
                     onBlur={e => { setIsFocused(false); onBlur && onBlur(e); }}
-
                     onSubmitEditing={onSubmitEditing}
                     returnKeyType={returnKeyType}
                     maxLength={inputProps.maxLength}
                     {...rest}
                     style={[{
-                        borderWidth: isFocused ? 2 : 0.2,
-                        borderColor: error ? input_error_border_color : isFocused ? input_focused_color : input_border_color,
+                        borderWidth: isFocused ? 1.5 : 0.3,
+                        borderColor: error ? input_error_border_color : isFocused ? input_focused_border_color : input_border_color,
                         borderRadius: 8,
                         paddingVertical: input_height / 4,
                         paddingHorizontal: (RightIcon || LeftIcon) ? 40 : 12,
@@ -162,6 +170,7 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
                         shadowOffset: { width: 0, height: 2 },
                         shadowOpacity: 0.2,
                         shadowRadius: 1.41,
+                        color: colors.textPrimary
 
                     }, rest.style]}
                 />
@@ -180,7 +189,7 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
                     </View>
                 )}
             </View>
-            {error && <Text style={{ color: '#ef4444', fontSize: 12, marginTop: 4 }}>{error}</Text>}
+            {error && <Text style={{ color: colors.error, fontSize: 12, marginTop: 4 }}>{error}</Text>}
         </View>
     );
 };

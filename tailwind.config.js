@@ -3,7 +3,6 @@ const { hairlineWidth } = require("nativewind/theme");
 /** @type {import('tailwindcss').Config} */
 const { fontFamily } = require("tailwindcss/defaultTheme");
 
-
 module.exports = {
   darkMode: "selector", // or 'media' for system preference
   content: [
@@ -16,18 +15,24 @@ module.exports = {
     extend: {
       colors: {
         primary: "var(--color-primary)",
+        primaryHover: "var(--color-primary-hover)",
         secondary: "var(--color-secondary)",
-        tertiary: "var(--color-tertiary)",
-        fourth: "var(--color-fourth)",
-        fifth: "var(--color-fifth)",
-        bg: "var(--color-bg)",
-        outstand: "var(--color-outstand)",
-        shadingLight: "var(--color-shading-light)",
-        shading: "var(--color-shading)",
-        shadingDark: "var(--color-shading-dark)",
-        text1: "var(--color-text1)",
-        text2: "var(--color-text2)",
-
+        accent: "var(--color-accent)",
+        success: "var(--color-success)",
+        warning: "var(--color-warning)",
+        error: "var(--color-error)",
+        info: "var(--color-info)",
+        surfaceBase: "var(--color-surface-base)",
+        surfaceElevated: "var(--color-surface-elevated)",
+        surfaceOverlay: "var(--color-surface-overlay)",
+        borderDefault: "var(--color-border-default)",
+        borderSubtle: "var(--color-border-subtle)",
+        textPrimary: "var(--color-text-primary)",
+        textSecondary: "var(--color-text-secondary)",
+        textTertiary: "var(--color-text-tertiary)",
+        textInverse: "var(--color-text-inverse)",
+        focusRing: "var(--color-focus-ring)",
+        linkDefault: "var(--color-link-default)",
       },
       fontFamily: {
         poppins: ["Poppins", ...fontFamily.sans],

@@ -1,9 +1,9 @@
+import useTheme from '@/hooks/useTheme';
+import { goBack } from '@/navigation/RootNavRef';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { Children } from 'react';
+import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 import IconSymbol from '../IconSymbol';
-import { goBack } from '@/navigation/RootNavRef';
-import { ScrollView } from 'react-native-gesture-handler';
 
 type LinearHeaderProps = {
     title: string;
@@ -13,16 +13,18 @@ type LinearHeaderProps = {
 }
 
 export default function LinearHeader({ title, colors, style, children }: LinearHeaderProps) {
+    const { colors: themColors } = useTheme()
+
     return (
-        <View style={[styles.container, styles.content]}>
+        <View className='text-surfaceBase' style={[styles.container, styles.content,]}>
             <LinearGradient
-                colors={colors ? colors : ['#667eea', '#764ba2']}
+                colors={colors ? colors : [themColors.primary, themColors.secondary]}
                 style={[styles.headerGradient, style]}
             >
                 <TouchableOpacity onPress={() => {
                     goBack()
                 }} >
-                    <IconSymbol name='left' color='#ffffff' />
+                    <IconSymbol name='left' color={themColors.textPrimary} />
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>{title}</Text>
                 <TouchableOpacity></TouchableOpacity>
@@ -35,7 +37,6 @@ export default function LinearHeader({ title, colors, style, children }: LinearH
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f8f9fa',
     },
     headerGradient: {
         flexDirection: 'row',

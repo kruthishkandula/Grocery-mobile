@@ -6,7 +6,8 @@ const useTheme = () => {
     const colors = getThemeColors(theme);
 
     return {
-        colors
+        colors,
+        theme
     }
 }
 

@@ -8,12 +8,12 @@ export default function DashboardSectionHeader({ section }: { section: { title: 
 
     return (
         <View className='flex-row justify-between items-center py-4'>
-            <Text variant='bold20' className='text-[20px] text-text1'>{section.title}</Text>
+            <Text variant='bold20' className='text-[20px] text-textPrimary'>{section.title}</Text>
             {section.showSeeAll && (
                 <TouchableOpacity onPress={() => {
                     section.seeAllRoute && navigate(section.seeAllRoute);
                 }} >
-                    <Text variant='light12' className='text-[16px] text-text1'>See All</Text>
+                    <Text variant='light12' className='text-[16px] text-textPrimary'>See All</Text>
                 </TouchableOpacity>
             )}
         </View>

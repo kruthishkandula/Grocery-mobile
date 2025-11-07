@@ -1,21 +1,23 @@
+import Animation from '@/components/molecule/Animation';
+import useTheme from '@/hooks/useTheme';
+import { Order, useOrderStore } from '@/store/order/orderStore';
+import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  RefreshControl,
   Animated,
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { useOrderStore, Order } from '@/store/order/orderStore';
-import Animation from '@/components/molecule/Animation';
-import { router } from 'expo-router';
 
 const OrdersScreen = () => {
   const { orders, loading, getOrders } = useOrderStore();
   const [refreshing, setRefreshing] = useState(false);
   const fadeAnim = new Animated.Value(0);
+  const { colors } = useTheme()
 
   useEffect(() => {
     getOrders();
@@ -70,15 +72,15 @@ const OrdersScreen = () => {
               <Text style={styles.statusText}>{item.status.replace('_', ' ').toUpperCase()}</Text>
             </View>
           </View>
-          
+
           <Text style={styles.orderDate}>
             {new Date(item.created_at).toLocaleDateString()}
           </Text>
-          
+
           <Text style={styles.orderAmount}>
             Total: ${item.total_amount.toFixed(2)}
           </Text>
-          
+
           <Text style={styles.itemCount}>
             {item.items.length} item{item.items.length !== 1 ? 's' : ''}
           </Text>
@@ -89,7 +91,7 @@ const OrdersScreen = () => {
 
   if (loading && orders.length === 0) {
     return (
-      <View style={styles.loadingContainer}>
+      <View style={[styles.loadingContainer, { backgroundColor: colors.surfaceBase }]}>
         <Animation name="Splash" style={styles.loadingAnimation} />
         <Text style={styles.loadingText}>Loading your orders...</Text>
       </View>
@@ -98,7 +100,7 @@ const OrdersScreen = () => {
 
   if (orders.length === 0) {
     return (
-      <View style={styles.emptyContainer}>
+      <View style={[styles.emptyContainer, { backgroundColor: colors.surfaceBase }]}>
         <Animation name="EmptyCart" style={styles.emptyAnimation} />
         <Text style={styles.emptyTitle}>No Orders Yet</Text>
         <Text style={styles.emptySubtitle}>
@@ -115,7 +117,7 @@ const OrdersScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.surfaceBase }]}>
       <FlatList
         data={orders}
         renderItem={renderOrderItem}
@@ -137,7 +139,6 @@ const OrdersScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
   },
   listContainer: {
     padding: 16,

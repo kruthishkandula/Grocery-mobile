@@ -63,7 +63,7 @@ export default function ProductDetails() {
         top: 0,
         zIndex: 10,
       }} />
-      < ScrollView className="flex-1 bg-shadingLight" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
+      < ScrollView className="flex-1 bg-surfaceBase" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
         <FeaturedCarousel images={carouselImages} imageHeight={250} borderRadius={12} />
 
         {/* Product Details */}
@@ -94,29 +94,29 @@ export default function ProductDetails() {
             {cartItem ? (
               <>
                 <TouchableOpacity
-                  className="bg-primary px-2 py-1"
+                  className="bg-primary rounded-md px-3 py-2"
                   onPress={handleDecrement}
                 >
-                  <Text className="text-lg text-text2 font-bold">-</Text>
+                  <Text className="text-lg text-textPrimary font-bold">-</Text>
                 </TouchableOpacity>
                 <Text className="text-[24px] mx-2">{cartItem.quantity}</Text>
                 <TouchableOpacity
-                  className="bg-primary px-2 py-1"
+                  className="bg-primary rounded-md px-3 py-2"
                   onPress={handleAddToCart}
                 >
-                  <Text className="text-lg text-text2 font-bold">+</Text>
+                  <Text className="text-lg text-textPrimary font-bold">+</Text>
                 </TouchableOpacity>
               </>
             ) : (
               <TouchableOpacity className="flex flex-row bg-primary px-6 py-3 rounded-lg items-center justify-center flex-1" onPress={handleAddToCart}>
                 <IconSymbol name="cart" size={20} color="#fff" />
-                <Text className="text-white ml-2">Add to Cart</Text>
+                <Text className="text-textInverse ml-2">Add to Cart</Text>
               </TouchableOpacity>
             )}
           </View>
 
           {/* Description */}
-          <Text className="text-[16px] font-light text-left text-[#3E3E3E] mb-4">{product?.description}</Text>
+          <Text className="text-[16px] font-light text-left text-textSecondary mb-4">{product?.description}</Text>
 
         </View>
       </ScrollView>

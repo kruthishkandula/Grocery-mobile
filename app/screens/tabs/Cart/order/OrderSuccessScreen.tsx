@@ -1,37 +1,39 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { router } from 'expo-router';
 import Animation from '@/components/molecule/Animation';
+import useTheme from '@/hooks/useTheme';
 import { useOrderStore } from '@/store/order/orderStore';
-import { replace } from '@/navigation/RootNavRef';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const OrderSuccessScreen = () => {
+  const { colors } = useTheme()
+  const { navigate, replace } = useNavigation<any>()
   const { currentOrder } = useOrderStore();
 
-  useEffect(() => {
-    // Auto navigate to home after 5 seconds
-    const timer = setTimeout(() => {
-      replace('/');
-    }, 5000);
+  // useEffect(() => {
+  //   // Auto navigate to home after 5 seconds
+  //   const timer = setTimeout(() => {
+  //     replace('homescreen');
+  //   }, 5000);
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   return (
-    <View style={styles.container}>
-      <Animation 
-              name="OrderSuccess"
-              style={styles.animation}
-              loop={true} source={''}      />
-      
+    <View style={[styles.container, { backgroundColor: colors.surfaceBase }]}>
+      <Animation
+        name="OrderSuccess"
+        style={styles.animation}
+        loop={true} source={''} />
+
       <Text style={styles.title}>Order Placed Successfully!</Text>
       <Text style={styles.subtitle}>Thank you for your order</Text>
-      
+
       {currentOrder && (
         <View style={styles.orderDetails}>
           <Text style={styles.orderNumber}>Order #{currentOrder.id}</Text>
           <Text style={styles.orderAmount}>
-            Total: ${currentOrder.total_amount.toFixed(2)}
+            Total: {currentOrder.currencySymbol}{currentOrder.total_amount.toFixed(2)}
           </Text>
         </View>
       )}
@@ -42,15 +44,15 @@ const OrderSuccessScreen = () => {
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={styles.trackButton}
-          onPress={() => router.push('/orders')}
+          style={[styles.trackButton, { backgroundColor: colors.accent}]}
+          onPress={() => navigate('orders')}
         >
           <Text style={styles.trackButtonText}>Track Order</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.homeButton}
-          onPress={() => router.replace('/')}
+          style={[styles.homeButton, { backgroundColor: colors.textInverse}]}
+          onPress={() => navigate('homescreen')}
         >
           <Text style={styles.homeButtonText}>Continue Shopping</Text>
         </TouchableOpacity>
@@ -68,8 +70,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   animation: {
-    width: 200,
-    height: 200,
+    width: 350,
+    height: 350,
     marginBottom: 20,
   },
   title: {
@@ -111,6 +113,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
+    marginBottom: 20
   },
   trackButton: {
     backgroundColor: '#007AFF',

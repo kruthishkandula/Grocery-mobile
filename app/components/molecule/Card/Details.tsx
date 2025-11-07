@@ -25,7 +25,7 @@ export default function Details({
 }: DetailsProps) {
 
     return (
-        <View className='bg-[#f2f2f2] flex rounded-[14px] p-[10px]' >
+        <View className='bg-surfaceBase flex rounded-[14px] p-[10px]' >
             {topUi && topUi}
             <View className='flex-col justify-between items-center px-4 py-2' style={topStyles}>
                 {Object.entries(top || {}).map(([key, value]) => {
@@ -37,8 +37,8 @@ export default function Details({
 
                     return (
                         <View key={key} className='flex-row justify-between items-center w-full mb-2'>
-                            <Text variant='medium14' className='text-text1'>{KeyName}</Text>
-                            <Text variant='regular16' className='text-text1 font-semibold text-base'>
+                            <Text variant='medium14' className='text-textPrimary'>{KeyName}</Text>
+                            <Text variant='regular16' className='text-textPrimary font-semibold text-base'>
                                 {value}
                             </Text>
                         </View>
@@ -53,7 +53,7 @@ export default function Details({
 
                         return (
                             <View key={key} className='flex-row justify-between items-center w-full mb-2'>
-                                <Text variant='medium14' className='text-text1'
+                                <Text variant='medium14' className='text-textPrimary'
                                     style={[{
                                         ...(boldKeys.includes(key) && {
                                             fontWeight: 'bold',
@@ -62,7 +62,7 @@ export default function Details({
                                     }]}>
                                     {KeyName}
                                 </Text>
-                                <Text variant='regular16' className='text-text1 font-semibold text-base'
+                                <Text variant='regular16' className='text-textPrimary font-semibold text-base'
                                     style={{
                                         ...(boldKeys.includes(key) && {
                                             fontWeight: 'bold',

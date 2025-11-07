@@ -32,7 +32,7 @@ export default function Categories() {
                     renderItem={({ item }) => <CategoryItem2 item={item} />}
                     numColumns={2}
                     contentContainerClassName='p-5 gap-4'
-                    className='bg-shadingLight'
+                    className='bg-surfaceBase'
                     columnWrapperStyle={{ justifyContent: 'space-between' }}
                     showsVerticalScrollIndicator={false}
                     refreshing={isLoading}

@@ -82,7 +82,7 @@ export default function ProductItem1({ item, style, imageStyle }: ProductItem1Pr
             <TouchableOpacity
                 activeOpacity={0.85}
                 onPress={() => navigate('ProductDetails', item)}
-                className="flex-1 flex-col bg-bg rounded-xl shadow-sm mx-[10px] p-2 justify-between"
+                className="flex-1 flex-col bg-surfaceElevated rounded-xl shadow-sm mx-[10px] p-2 justify-between"
                 style={[{ maxWidth: 170 }, style]}
             >
                 <CachedImage
@@ -96,13 +96,13 @@ export default function ProductItem1({ item, style, imageStyle }: ProductItem1Pr
                     <Text numberOfLines={1} style={{
                         maxWidth: '100%',
                         fontSize: gpsw(12)
-                    }} variant='medium14' className="text-text1">{item.name}</Text>
+                    }} variant='medium14' className="text-textPrimary">{item.name}</Text>
 
                     <View className="flex-col items-start ">
                         <Text numberOfLines={1} style={{
                             maxWidth: '100%',
                             fontSize: gpsw(14)
-                        }} variant='bold18' className="text-tertiary">
+                        }} variant='bold18' className="text-accent">
                             {item.currencySymbol}
                             {item.discountPrice ?? item.basePrice}/{item.weightUnit}
                         </Text>
@@ -110,7 +110,7 @@ export default function ProductItem1({ item, style, imageStyle }: ProductItem1Pr
                             <Text numberOfLines={1} style={{
                                 maxWidth: '100%',
                                 fontSize: gpsw(10),
-                            }} variant='regular14' className="text-text1 ml-2 line-through">
+                            }} variant='regular14' className="text-textPrimary ml-2 line-through">
                                 {item.currencySymbol}
                                 {item.basePrice}
                                 /{item.weightUnit}
@@ -125,26 +125,26 @@ export default function ProductItem1({ item, style, imageStyle }: ProductItem1Pr
                         <>
                             <TouchableOpacity
                                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                                className="bg-primary px-2 py-1"
+                                className="bg-primary rounded-md px-3 py-2"
                                 onPress={(e) => {
                                     Haptics.selectionAsync()
                                     e.stopPropagation(); handleDecrement(item)
                                 }}
                             >
-                                <Text className="text-lg text-text2 font-bold">-</Text>
+                                <Text className="text-lg text-textPrimary font-bold">-</Text>
                             </TouchableOpacity>
                             <Text variant='bold18' style={{
                                 fontSize: gpsw(16),
-                            }} className="m-2">{cartItem.quantity}</Text>
+                            }} className="m-2 text-textPrimary">{cartItem.quantity}</Text>
                             <TouchableOpacity
                                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                                className="bg-primary px-2 py-1"
+                                className="bg-primary rounded-md px-3 py-2"
                                 onPress={(e) => {
                                     Haptics.selectionAsync()
                                     e.stopPropagation(); handleAddToCart(item)
                                 }}
                             >
-                                <Text className="text-xl text-text2 font-bold">+</Text>
+                                <Text className="text-xl text-textPrimary font-bold">+</Text>
                             </TouchableOpacity>
                         </>
                     ) : hasVariants ? (
@@ -175,7 +175,7 @@ export default function ProductItem1({ item, style, imageStyle }: ProductItem1Pr
 
                 {/* Wishlist Controls */}
                 <TouchableOpacity
-                    className="flex bg-[rgba(255,255,255,0.2)] absolute top-3 right-2 flex-row px-[8px] py-[8px] rounded-[7px] items-center justify-center flex-1"
+                    className="flex bg-[rgba(255,255,255,0.7)] absolute top-3 right-2 flex-row px-[8px] py-[8px] rounded-[7px] items-center justify-center flex-1"
                     onPress={(e) => {
                         isWishlistItem ? removeWishlistItem(item.id) : addWishlistItem({
                             id: item.id,
@@ -183,7 +183,7 @@ export default function ProductItem1({ item, style, imageStyle }: ProductItem1Pr
                         })
                     }}
                 >
-                    <IconSymbol name={isWishlistItem ? "heart-fill" : "heart"} iconSet={'Octicons'} size={24} color={isWishlistItem ? "red" : "red"} />
+                    <IconSymbol name={isWishlistItem ? "heart-fill" : "heart"} iconSet={'Octicons'} size={24} color={colors.primary} />
                 </TouchableOpacity>
             </TouchableOpacity>
 

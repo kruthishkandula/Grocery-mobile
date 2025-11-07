@@ -75,7 +75,7 @@ const settingsCms = {
       icon: 'settings',
       iconSet: 'Feather',
       size: 24,
-      is_active: false
+      is_active: true
     },
     {
       id: 4,
@@ -140,7 +140,7 @@ export default function Settings() {
 
   return (
     <ThemedSafeArea>
-      <View className='flex-1 flex-grow bg-[rgba(0,0,0,0.14)]' >
+      <View className='flex-1 flex-grow' >
         
         {/* Profile Section */}
         <LinearGradient start={{ x: 0, y: 0 }}
@@ -152,7 +152,7 @@ export default function Settings() {
 
           }}
 
-          colors={[colors?.primary, colors?.bg]}
+          colors={[colors?.primary, colors?.surfaceBase]}
         >
           <CachedImage
             name={userProfile.photo}
@@ -171,7 +171,7 @@ export default function Settings() {
           </View>
         </LinearGradient>
 
-        <View className='flex-1 bg-bg w-full' style={{
+        <View className='flex-1 bg-surfaceBase w-full' style={{
           borderTopRightRadius: gpsh(20),
           borderTopLeftRadius: gpsh(20),
         }} >
@@ -184,10 +184,10 @@ export default function Settings() {
                   className='w-[100px] h-[100px] flex-col p-2  justify-center items-center gap-2'
                   onPress={() => navigate(item.route)}
                 >
-                  <View className='rounded-[100px] bg-shadingLight p-4'>
-                    <IconSymbol name={item.icon} iconSet={item.iconSet} size={item.size} color='text-text2' />
+                  <View className='rounded-[100px] bg-surfaceElevated p-4'>
+                    <IconSymbol name={item.icon} iconSet={item.iconSet} size={item.size} color={colors.primary} />
                   </View>
-                  <Text className='font-medium text-text1'>{item.title?.replace('(Balance)', `${userDetails?.currencySymbol} ${0.00}`)}</Text>
+                  <Text className='font-medium text-textPrimary'>{item.title?.replace('(Balance)', `${userDetails?.currencySymbol} ${0.00}`)}</Text>
                 </TouchableOpacity>
               ))
             }
@@ -212,10 +212,10 @@ export default function Settings() {
                   <View className='w-full items-center justify-end flex-1 px-4 py-2' >
                     <TouchableOpacity
                       key={`setting-${index}`}
-                      className={`flex-row items-center gap-2 py-4 px-5  border-gray-100 ${item.isLogout ? 'mt-4' : ''}`}
+                      className={`flex-row items-center gap-2 py-4 px-5  border-borderDefault ${item.isLogout ? 'mt-4' : ''}`}
                       onPress={() => handleOptionPress(item)}
                     >
-                      <IconSymbol name={item.icon} iconSet={item.iconSet} size={item.size} color={item.isLogout ? '#EF4444' : '#222'} />
+                      <IconSymbol name={item.icon} iconSet={item.iconSet} size={item.size} color={item.isLogout ? '#EF4444' : colors.textPrimary} />
                       <Text className={`text-base ${item.isLogout ? 'text-red-500 font-semibold' : ''}`}>{item.title}</Text>
                     </TouchableOpacity>
                   </View>
@@ -228,9 +228,9 @@ export default function Settings() {
                   className={`flex-row items-center gap-2 py-4 px-5  border-gray-100`}
                   onPress={() => handleOptionPress(item)}
                 >
-                  <IconSymbol name={item.icon} iconSet={item.iconSet} size={item.size} color={colors.text1} />
-                  <Text className={`text-base text-text1`}>{title}</Text>
-                  <IconSymbol name='chevron-right' size={item?.size} color={colors.text1} style={{ marginLeft: 'auto' }} />
+                  <IconSymbol name={item.icon} iconSet={item.iconSet} size={item.size} color={colors.textPrimary} />
+                  <Text className={`text-base text-textPrimary`}>{title}</Text>
+                  <IconSymbol name='chevron-right' size={item?.size} color={colors.textPrimary} style={{ marginLeft: 'auto' }} />
                 </TouchableOpacity>
               )
             }
@@ -239,7 +239,7 @@ export default function Settings() {
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={() => (
               <View className='flex-1 items-center justify-center'>
-                <Text className='text-gray-500'>No settings available</Text>
+                <Text className='text-textPrimary'>No settings available</Text>
               </View>
             )}
           />

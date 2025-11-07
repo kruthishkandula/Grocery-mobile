@@ -82,10 +82,10 @@ export default function CartScreen({ navigation }: any) {
       <View className="flex-1">
         <DynamicHeader title='Your Cart' rightComponent={<TouchableOpacity onPress={() => clearCart()}>
           <View className="flex items-center flex-row">
-            <IconSymbol name="delete" size={24} color="#000" />
+            <IconSymbol name="delete" size={20} color={colors.textPrimary} />
           </View>
         </TouchableOpacity>} />
-        <ScrollView className="flex-1 bg-white p-4">
+        <ScrollView contentContainerStyle={{ paddingBottom: 20 }} className="flex-1 bg-surfaceBase p-4 ">
           <>
             {isCartLoading ? (
               <View className='flex-1 justify-center items-center'>
@@ -105,7 +105,7 @@ export default function CartScreen({ navigation }: any) {
 
             {
               cartItems.length > 0 && (
-                <View className="bg-gray-50 rounded-lg p-4 shadow">
+                <View className="bg-surfaceElevated rounded-lg p-4 shadow">
                   <Details
                     top={{
                       'subtotal': subtotal.toFixed(2),

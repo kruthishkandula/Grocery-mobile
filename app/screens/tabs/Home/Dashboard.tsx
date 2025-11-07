@@ -8,7 +8,8 @@ import { useAuth } from '@/context/AuthContext';
 import { useAddressStore } from '@/store/address/addressStore';
 import { gpsw } from '@/style/theme';
 import { useThemeContextActions } from '@/Themes';
-import { getThemeColors } from '@/Themes/theme-config';
+import { getThemeColors, Themes } from '@/Themes/theme-config';
+import { generateTailwindColorsConfig } from '@/Themes/theme-helper';
 import { IconSymbol, Text } from '@atom';
 import SearchBar from '@molecule/SearchBar';
 import { useNavigation } from '@react-navigation/native';
@@ -32,6 +33,8 @@ type DashboardSection = {
     showSeeAll: boolean;
     data_source: any;
 }
+
+generateTailwindColorsConfig();
 
 // Separate component for Banner to isolate useEffect
 const BannerCarousel = ({ section, colors, navigate }: { section: DashboardSection, colors: any, navigate: any }) => {
@@ -83,7 +86,7 @@ const BannerCarousel = ({ section, colors, navigate }: { section: DashboardSecti
     }, [banners.length, startAutoScroll, stopAutoScroll]);
 
     return (
-        <View key={section.key} className='bg-bg'>
+        <View key={section.key} className='bg-surfaceBase'>
             <View className='mx-4' >
                 <DashboardSectionHeader section={section} />
             </View>
@@ -194,7 +197,7 @@ const BannerCarousel = ({ section, colors, navigate }: { section: DashboardSecti
                                 height: 8,
                                 width: currentBannerIndex === i ? 20 : 8,
                                 borderRadius: 4,
-                                backgroundColor: currentBannerIndex === i ? colors?.fourth : colors?.shading,
+                                backgroundColor: currentBannerIndex === i ? colors?.secondary : colors?.textPrimary,
                                 marginHorizontal: 4,
                                 opacity: currentBannerIndex === i ? 1 : 0.3,
                             }}
@@ -254,14 +257,16 @@ export default function Dashboard() {
         switch (section.type) {
             case "category":
                 return (
-                    <View key={section.key} className='bg-bg mx-4'>
+                    <View key={section.key} className='mx-4'>
                         <DashboardSectionHeader section={section} />
                         <FlatList
                             data={getSectionData(section)}
-                            renderItem={({ item }) => <CategoryItem1 item={item} />}
+                            renderItem={({ item }) => <CategoryItem1 item={item} style={{
+                                backgroundColor: colors.surfaceElevated
+                            }} />}
                             horizontal
                             showsHorizontalScrollIndicator={false}
-                            contentContainerStyle={{ maxHeight: 160 }}
+                            contentContainerStyle={{ maxHeight: 160, gap: 10 }}
                         />
                     </View>
                 );
@@ -269,7 +274,7 @@ export default function Dashboard() {
                 return <BannerCarousel section={section} colors={colors} navigate={navigate} />;
             case "product":
                 return (
-                    <View key={section.key} className='bg-bg my-2 mx-4'>
+                    <View key={section.key} className='my-2 mx-4'>
                         <DashboardSectionHeader section={section} />
                         <FlatList
                             data={getSectionData(section)}
@@ -278,7 +283,7 @@ export default function Dashboard() {
                                     item={item}
                                     style={{
                                         width: 140,
-                                        backgroundColor: colors?.shadingLight,
+                                        backgroundColor: colors?.surfaceElevated,
                                     }}
                                     imageStyle={{
                                         maxHeight: '40%',
@@ -297,8 +302,10 @@ export default function Dashboard() {
         }
     };
 
+    console.log('dashboard_cms', JSON.stringify(dashboard_cms))
+
     return (
-        <View className="bg-bg2 pb-5 flex-1 justify-start">
+        <View className="bg-surfaceBase pb-5 flex-1 justify-start">
             {/* Header */}
             <LinearGradient
                 style={{
@@ -308,7 +315,7 @@ export default function Dashboard() {
                     paddingBottom: 0
                 }}
                 start={{ x: 2, y: 2 }}
-                colors={[colors?.primary, colors?.bg, colors?.secondary]}
+                colors={[colors.secondary, colors.secondary,]}
             >
                 <View
                     style={{
@@ -323,10 +330,10 @@ export default function Dashboard() {
                 >
                     {/* header & notifications section */}
                     <View className='flex flex-row justify-between'>
-                        <Text variant='bold18' className='text-[30px] font-[800] text-text1'>
+                        <Text variant='bold18' className='text-[30px] font-[800] text-black'>
                             Grocery Plus
                         </Text>
-                        <IconSymbol name='bell' iconSet='FontAwesome5' size={24} color={colors?.text1} />
+                        <IconSymbol name='bell' iconSet='FontAwesome5' size={24} color={colors?.dark} />
                     </View>
 
                     {/* location section */}
@@ -337,19 +344,19 @@ export default function Dashboard() {
                     >
                         <View className='flex-row items-center gap-3'>
                             <View className='bg-secondary p-2 rounded-full'>
-                                <IconSymbol name='location-outline' size={24} color={colors?.text1} />
+                                <IconSymbol name='location-outline' size={24} color={'black'} />
                             </View>
                             <View className='flex-col'>
                                 <View className='flex-row items-center'>
                                     <Text
-                                        style={{ color: colors?.text1, fontSize: gpsw(12) }}
-                                        className='font-[300] text-text1'
+                                        style={{ fontSize: gpsw(12) }}
+                                        className='font-[300] text-black'
                                     >
                                         Deliver to{' '}
                                         <Text
                                             variant='bold18'
-                                            style={{ color: colors?.text1, fontSize: gpsw(12) }}
-                                            className='font-[600] text-text1'
+                                            style={{ fontSize: gpsw(12) }}
+                                            className='font-[600] text-black'
                                         >
                                             {selected_address?.label}
                                         </Text>
@@ -358,16 +365,16 @@ export default function Dashboard() {
                                 {selected_address ? (
                                     <Text
                                         variant='medium14'
-                                        style={{ color: colors?.shading, fontSize: gpsw(12) }}
-                                        className='text-[12px] font-[600] text-text1'
+                                        style={{ fontSize: gpsw(12) }}
+                                        className='text-[12px] font-[600] text-[#454545]'
                                     >
                                         {selected_address?.addressLine1}, {selected_address?.city}
                                     </Text>
                                 ) : (
                                     <Text
                                         variant='medium14'
-                                        style={{ color: colors?.shading, fontSize: gpsw(12) }}
-                                        className='text-[12px] font-[600] text-text1'
+                                        style={{ fontSize: gpsw(12) }}
+                                        className='text-[12px] font-[600] text-black'
                                     >
                                         Select Delivery Address
                                     </Text>
@@ -375,7 +382,7 @@ export default function Dashboard() {
                             </View>
                         </View>
                         <TouchableOpacity>
-                            <IconSymbol name='chevron-right' iconSet='FontAwesome6' size={24} color={colors?.text1} />
+                            <IconSymbol name='chevron-right' iconSet='FontAwesome6' size={24} color={'black'} />
                         </TouchableOpacity>
                     </TouchableOpacity>
                 </View>
@@ -384,7 +391,7 @@ export default function Dashboard() {
             {/* body */}
             <ScrollView
                 contentContainerStyle={{
-                    paddingBottom: 80,
+                    paddingBottom: 120,
                 }}
                 showsVerticalScrollIndicator={false}
                 refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}

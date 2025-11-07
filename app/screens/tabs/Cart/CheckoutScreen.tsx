@@ -1,16 +1,19 @@
-import { Button, IconSymbol, Text } from '@/components/atom';
+import { Button, IconSymbol, KeyboardScrollView, Text } from '@/components/atom';
 import LinearHeader from '@/components/atom/Header/LinearHeader';
+import FloatingLabelInput from '@/components/atom/Input/FloatingLabelInput';
 import Animation from '@/components/molecule/Animation';
 import useTheme from '@/hooks/useTheme';
 import { navigate } from '@/navigation/RootNavRef';
 import { useAddressStore } from '@/store/address/addressStore';
 import { useCartStore } from '@/store/cart/cartStore';
 import { useOrderStore } from '@/store/order/orderStore';
+import { useRoute } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
   Animated,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -19,13 +22,16 @@ import {
 } from 'react-native';
 
 const CheckoutScreen = () => {
+  const { params: {
+    currencySymbol
+  } } = useRoute<any>()
   const { colors } = useTheme()
   const { items, clearCart } = useCartStore();
   const { placeOrder, placing, error } = useOrderStore();
   const { addresses, selectedAddressId, selectAddress } = useAddressStore();
   let selectedAddress = addresses.find(addr => addr.id === selectedAddressId) || null;
 
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('upi');
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('cod');
   const [showAnimation, setShowAnimation] = useState(false);
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [upiId, setUpiId] = useState('');
@@ -97,6 +103,8 @@ const CheckoutScreen = () => {
         }),
       ]).start();
 
+      let totalAmount = calculateTotal();
+
       const orderData = {
         items: items.map(item => ({
           id: item.id,
@@ -105,10 +113,11 @@ const CheckoutScreen = () => {
           price: item.product?.discountPrice || 0,
           product: item.product,
         })),
-        total_amount: calculateTotal(),
+        total_amount: totalAmount,
         payment_method: selectedPaymentMethod,
         upi_id: selectedPaymentMethod === 'upi' ? upiId : null,
         delivery_address: selectedAddress,
+        currencySymbol: currencySymbol
       };
 
       await placeOrder(orderData);
@@ -116,13 +125,16 @@ const CheckoutScreen = () => {
       // Clear cart after successful order
       clearCart();
 
-      // Show success animation
-      setShowAnimation(true);
+      // // Show success animation
+      // setShowAnimation(true);
 
-      // Navigate to order success screen after animation
-      setTimeout(() => {
-        navigate('order-success');
-      }, 3000);
+      // // Navigate to order success screen after animation
+      // setTimeout(() => {
+      navigate('order-success', {
+        orderId: '#1872937423472',
+        totalAmount: totalAmount,
+      });
+      // }, 3000);
 
     } catch (error) {
       // Reset animations on error
@@ -145,7 +157,7 @@ const CheckoutScreen = () => {
 
   const renderAddressSelection = () => (
     <View style={styles.section}>
-      <Text style={[styles.sectionTitle, { color: colors?.text1 }]}>🏠 Delivery Address</Text>
+      <Text style={[styles.sectionTitle, { color: colors?.textPrimary }]}>🏠 Delivery Address</Text>
 
       <TouchableOpacity
         style={styles.addressDropdown}
@@ -194,7 +206,7 @@ const CheckoutScreen = () => {
 
   const renderPaymentMethods = () => (
     <View style={styles.section}>
-      <Text style={[styles.sectionTitle, { color: colors?.text1 }]}>💳 Payment Method</Text>
+      <Text style={[styles.sectionTitle, { color: colors?.textPrimary }]}>💳 Payment Method</Text>
 
       {/* UPI Payment */}
       <TouchableOpacity
@@ -228,7 +240,7 @@ const CheckoutScreen = () => {
       </TouchableOpacity>
 
       {/* UPI Input Field - Show only when UPI is selected */}
-      {/* {selectedPaymentMethod === 'upi' && (
+      {selectedPaymentMethod === 'upi' && (
         <FloatingLabelInput
           placeholder="Enter UPI ID (e.g., name@paytm)"
           value={upiId}
@@ -236,8 +248,11 @@ const CheckoutScreen = () => {
           keyboardType="email-address"
           autoCapitalize="none"
           inputType="email"
+          inputStyling={{
+            input_bg_color: colors.textInverse
+          }}
         />
-      )} */}
+      )}
 
       {/* Cash on Delivery */}
       <TouchableOpacity
@@ -274,9 +289,9 @@ const CheckoutScreen = () => {
 
   if (showAnimation) {
     return (
-      <SafeAreaView style={styles.animationContainer}>
+      <SafeAreaView style={[styles.animationContainer, { backgroundColor: colors.surfaceBase }]}>
         <LinearGradient
-          colors={['#f8f8f8', '#f8f8f8']}
+          colors={[colors.surfaceBase, colors.surfaceBase]}
           style={styles.successGradient}
         >
           <Animation
@@ -292,7 +307,7 @@ const CheckoutScreen = () => {
   }
 
   return (
-    <View className='flex-1' >
+    <View className='flex-1 bg-surfaceBase' >
       <Animated.View
         style={[
           styles.content,
@@ -310,36 +325,42 @@ const CheckoutScreen = () => {
           {/* Header */}
           <LinearHeader
             title="Checkout"
-            colors={['#667eea', '#764ba2']}
             style={styles.headerGradient}
           >
-            <View className='flex-1' style={{ padding: 16, }} >
-              {/* Order Summary */}
-              <View style={[styles.section,]}>
-                <Text style={styles.sectionTitle}>🛒 Order Summary</Text>
-                <LinearGradient
-                  colors={['#eeee', 'pink']}
-                  style={styles.summaryGradient}
-                >
-                  {items.map((item) => (
-                    <View key={item.id} style={styles.orderItem}>
-                      <Text style={styles.itemName}>{item.product?.name || 'Product'}</Text>
-                      <Text style={styles.itemQuantity}>Qty: {item.quantity}</Text>
-                      <Text style={styles.itemPrice}>
-                        ₹{((item.product?.discountPrice || 0) * item.quantity).toFixed(2)}
-                      </Text>
+            <KeyboardScrollView
+              contentContainerStyle={{
+                flexGrow: 1,
+                justifyContent: 'flex-end',
+              }}
+              extraScrollHeight={Platform.OS === 'android' ? 250 : 30} // Override for this screen
+            >
+              <View className='flex-1' style={{ padding: 16, gap: 30 }} >
+                {/* Order Summary */}
+                <View style={[styles.section,]}>
+                  <Text style={styles.sectionTitle}>🛒 Order Summary</Text>
+                  <LinearGradient
+                    colors={['#eeee', 'pink']}
+                    style={styles.summaryGradient}
+                  >
+                    {items.map((item) => (
+                      <View key={item.id} style={styles.orderItem}>
+                        <Text style={styles.itemName}>{item.product?.name || 'Product'}</Text>
+                        <Text style={styles.itemQuantity}>Qty: {item.quantity}</Text>
+                        <Text style={styles.itemPrice}>
+                          ₹{((item.product?.discountPrice || 0) * item.quantity).toFixed(2)}
+                        </Text>
+                      </View>
+                    ))}
+                    <View style={styles.totalRow}>
+                      <Text style={styles.totalText}>Total: ₹{calculateTotal().toFixed(2)}</Text>
                     </View>
-                  ))}
-                  <View style={styles.totalRow}>
-                    <Text style={styles.totalText}>Total: ₹{calculateTotal().toFixed(2)}</Text>
-                  </View>
-                </LinearGradient>
+                  </LinearGradient>
+                </View>
+
+                {renderAddressSelection()}
+                {renderPaymentMethods()}
               </View>
-
-              {renderAddressSelection()}
-              {renderPaymentMethods()}
-            </View>
-
+            </KeyboardScrollView>
           </LinearHeader>
         </ScrollView>
 
@@ -353,22 +374,23 @@ const CheckoutScreen = () => {
         />
 
 
+        {/* address modal to select/add */}
         {showAddressModal && (
           <View style={styles.addressModal}>
             <TouchableOpacity
-              style={styles.modalBackdrop}
+              style={[styles.modalBackdrop,]}
               activeOpacity={1}
               onPress={() => setShowAddressModal(false)}
             />
-            <View style={styles.modalContainer}>
+            <View style={[styles.modalContainer, { backgroundColor: colors.surfaceBase }]}>
               <View style={styles.modalHeader}>
-                <Text style={styles.modalTitle}>Select Delivery Address</Text>
+                <Text style={[styles.modalTitle, { color: colors.textPrimary }]}>Select Delivery Address</Text>
                 <TouchableOpacity
                   hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
                   onPress={() => setShowAddressModal(false)}
                   style={styles.closeButton}
                 >
-                  <IconSymbol name='x' iconSet='Feather' size={18} color={'#666'} />
+                  <IconSymbol name='x' iconSet='Feather' size={18} color={colors.textSecondary} />
                 </TouchableOpacity>
               </View>
 
@@ -384,7 +406,10 @@ const CheckoutScreen = () => {
                         key={item.id.toString()}
                         style={[
                           styles.addressOption,
-                          selectedAddress?.id === item.id && styles.selectedAddressOption
+                          selectedAddress?.id === item.id && {
+                            borderWidth: 2,
+                            borderColor: colors.accent,
+                          }
                         ]}
                         onPress={() => {
                           selectAddress(item.id);
@@ -400,10 +425,10 @@ const CheckoutScreen = () => {
                               <Text style={styles.addressOptionIconText}>🏠</Text>
                             </View>
                             <View style={styles.addressOptionDetails}>
-                              <Text style={styles.addressOptionText}>
+                              <Text style={[styles.addressOptionText, { color: colors.textPrimary }]}>
                                 {item.addressLine1}
                               </Text>
-                              <Text style={styles.addressOptionSubtext}>
+                              <Text style={[styles.addressOptionSubtext, { color: colors.textSecondary }]}>
                                 {item.city}, {item.state} - {item.postalCode}
                               </Text>
                             </View>
@@ -422,7 +447,7 @@ const CheckoutScreen = () => {
                         setShowAddressModal(false)
                         navigate('Address', { fromCheckout: true })
                       }}
-                      style={styles.addAddressButton}
+                      style={[styles.addAddressButton, { backgroundColor: colors.accent }]}
                     />
                   </ScrollView>
                 ) : (
@@ -456,13 +481,14 @@ const CheckoutScreen = () => {
               colors={['rgba(255,255,255,0.9)', 'rgba(248,249,250,0.9)']}
               style={styles.loadingGradient}
             >
-              <Animation
-                name="Splash"
-                style={styles.loadingAnimation}
-                loop={true}
-              />
-              <Text style={styles.loadingText}>Processing your order... 🚀</Text>
-
+              <View className='flex justify-center items-center' >
+                <Animation
+                  name="Splash"
+                  containerStyle={[styles.loadingAnimation, { flex: 0.5 }]}
+                  loop={true}
+                />
+                <Text style={styles.loadingText}>Processing your order... 🚀</Text>
+              </View>
             </LinearGradient>
           </View>
         )}
@@ -765,6 +791,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
     color: '#333',
+    lineHeight: 24
   },
   summaryGradient: {
     padding: 16,
@@ -775,7 +802,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 12,
-    borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.3)',
   },
   itemName: {
@@ -809,6 +835,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'right',
     color: '#333',
+    lineHeight: 24
   },
   placeOrderButton: {
     margin: 16,
@@ -858,8 +885,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   successAnimation: {
-    width: 200,
-    height: 200,
+    width: 500,
+    height: 500,
   },
   successText: {
     fontSize: 24,

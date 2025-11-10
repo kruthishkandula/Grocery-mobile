@@ -6,8 +6,8 @@ let ip = 'localhost'
 // let ip = '192.168.29.74' 
 
 export const CMS_URL =  Platform.OS === 'ios' ? `http://${ip}:3005` : 'http://10.0.2.2:3005';
-// export const NODE_URL = Platform.OS === 'ios' ? `http://${ip}:3000/` : 'http://10.0.2.2:3000/';
-export const NODE_URL = 'https://grocery-backend-5tu6.onrender.com/';
+export const NODE_URL = Platform.OS === 'ios' ? `http://${ip}:3000/` : 'http://10.0.2.2:3000/';
+// export const NODE_URL = 'https://grocery-backend-5tu6.onrender.com/';
 export const ADMIN_WEB_URL = 'https://grocery-admin-qtxy.onrender.com'
 export const local_node = __DEV__
 export const SPLASH_SCREEN_TIMEOUT = 200;

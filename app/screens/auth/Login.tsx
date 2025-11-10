@@ -66,7 +66,7 @@ export default function Login({ navigation }: any) {
     <ThemedSafeArea>
       <AuthScreenWrapper
         illustrationSource={require('@/assets/images/login.png')}
-        gradientColors={[colors?.bg, colors?.bg]}
+        gradientColors={[colors.surfaceBase, colors.surfaceBase]}
         size={250} // Reduced size for more form space
       >
         <KeyboardScrollView

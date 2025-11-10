@@ -14,7 +14,6 @@ export default function CartNav() {
       <CartStack.Screen name="CartScreen" component={CartScreen} />
       <CartStack.Screen name="Checkout" component={CheckoutScreen} />
       <CartStack.Screen name="Payment" component={Payment} />
-      <CartStack.Screen name="order-success" component={OrderSuccessScreen} />
     </CartStack.Navigator>
   );
 }

@@ -1,8 +1,9 @@
 import { Button, DynamicHeader, IconSymbol, Text, ThemedSafeArea } from '@/components/atom';
 import Animation from '@/components/molecule/Animation';
+import useTheme from '@/hooks/useTheme';
 import { useAddressStore } from '@/store/address/addressStore';
 import { gpsh } from '@/style/theme';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FlatList, Modal, Pressable, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -34,11 +35,23 @@ const AddressModal = ({
   onSave: (address: any) => void;
   initial?: any;
 }) => {
+  const { colors } = useTheme();
   const [form, setForm] = useState(initial || emptyAddress);
 
   React.useEffect(() => {
     setForm(initial || emptyAddress);
   }, [visible, initial]);
+
+  const isUpdateChangedCheck = useCallback(() => {
+    if (!initial) return true;
+
+    return Object.keys(initial).some((key) => {
+      if (form[key] !== initial[key]) {
+        return true;
+      }
+      return false
+    });
+  }, [form, initial]);
 
   const handleChange = (key: string, value: string) => {
     setForm((prev: any) => ({ ...prev, [key]: value }));
@@ -57,19 +70,19 @@ const AddressModal = ({
 
   return (
     <Modal onDismiss={onClose} visible={visible} animationType="slide" transparent onRequestClose={onClose}>
-      <View style={styles.modalOverlay}>
-        <View style={[styles.modalContent, { maxHeight: '60%' }]} >
+      <View style={[styles.modalOverlay]}>
+        <View style={[styles.modalContent, { maxHeight: '60%', backgroundColor: colors.surfaceOverlay }]} >
           <View className='flex-row justify-between ' >
-            <Text style={styles.modalTitle}>{form.id ? 'Edit Address' : 'Add Address'}</Text>
+            <Text className='text-textPrimary' style={styles.modalTitle}>{form.id ? 'Edit Address' : 'Add Address'}</Text>
             <TouchableOpacity onPress={onClose} style={{ marginLeft: 'auto' }}>
-              <IconSymbol name="close" size={24} color="#222" style={{ marginLeft: 'auto' }} />
+              <IconSymbol name="close" size={24} color={colors.textPrimary} style={{ marginLeft: 'auto' }} />
             </TouchableOpacity>
           </View>
 
           <ScrollView showsVerticalScrollIndicator={false} >
             {/* Label Pills */}
-            <Text style={styles.fieldLabel}>Save As <Text style={styles.required}>*</Text></Text>
-            <View style={styles.pillsRow}>
+            <Text className='text-textPrimary' style={styles.fieldLabel}>Save As <Text style={styles.required}>*</Text></Text>
+            <View className='text-textPrimary' style={styles.pillsRow}>
               {LABEL_OPTIONS.map((option) => (
                 <Pressable
                   key={option}
@@ -81,6 +94,7 @@ const AddressModal = ({
                 >
                   <Text style={[
                     styles.pillText,
+                    (form.label === option) ? { color: colors.textPrimary } : { color: colors.accent },
                     (form.label === option) && styles.pillTextSelected,
                   ]}>
                     {option}
@@ -89,16 +103,19 @@ const AddressModal = ({
               ))}
             </View>
             {form.label === 'Other' && (
-              <TextInput
-                style={styles.input}
-                placeholder="Custom label"
-                value={form.customLabel}
-                onChangeText={(v) => handleChange('customLabel', v)}
-                maxLength={10}
-              />
+              <>
+                <Text className='text-textPrimary' style={styles.fieldLabel}>Custom label <Text style={styles.required}>*</Text></Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Custom label"
+                  value={form.customLabel}
+                  onChangeText={(v) => handleChange('customLabel', v)}
+                  maxLength={10}
+                />
+              </>
             )}
             {/* Receiver Details */}
-            <Text style={styles.fieldLabel}>Receiver Name <Text style={styles.required}>*</Text></Text>
+            <Text className='text-textPrimary' style={styles.fieldLabel}>Receiver Name <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               placeholder="Full Name"
@@ -106,7 +123,7 @@ const AddressModal = ({
               onChangeText={(v) => handleChange('receiverName', v)}
               maxLength={20}
             />
-            <Text style={styles.fieldLabel}>Receiver Phone <Text style={styles.required}>*</Text></Text>
+            <Text className='text-textPrimary' style={styles.fieldLabel}>Receiver Phone <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               placeholder="Phone Number"
@@ -120,7 +137,7 @@ const AddressModal = ({
             <View style={{ flex: 1, marginVertical: gpsh(10), width: '100%', height: 1, backgroundColor: '#eee' }} />
 
             {/* Address Fields */}
-            <Text style={styles.fieldLabel}>Address Line 1 <Text style={styles.required}>*</Text></Text>
+            <Text className='text-textPrimary' style={styles.fieldLabel}>Address Line 1 <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               placeholder="H.No/Flat No/Room No, Street Name"
@@ -128,7 +145,7 @@ const AddressModal = ({
               onChangeText={(v) => handleChange('addressLine1', v)}
               maxLength={30}
             />
-            <Text style={styles.fieldLabel}>Address Line 2 <Text style={styles.optional}>(Optional)</Text></Text>
+            <Text className='text-textPrimary' style={styles.fieldLabel}>Address Line 2 <Text className='text-textSecondary' style={styles.optional}>(Optional)</Text></Text>
             <TextInput
               style={styles.input}
               placeholder="Street Name, Area, Landmark"
@@ -136,7 +153,7 @@ const AddressModal = ({
               onChangeText={(v) => handleChange('addressLine2', v)}
               maxLength={30}
             />
-            <Text style={styles.fieldLabel}>City <Text style={styles.required}>*</Text></Text>
+            <Text className='text-textPrimary' style={styles.fieldLabel}>City <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               placeholder="City"
@@ -144,7 +161,7 @@ const AddressModal = ({
               onChangeText={(v) => handleChange('city', v)}
               maxLength={20}
             />
-            <Text style={styles.fieldLabel}>State <Text style={styles.required}>*</Text></Text>
+            <Text className='text-textPrimary' style={styles.fieldLabel}>State <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               placeholder="State"
@@ -152,7 +169,7 @@ const AddressModal = ({
               onChangeText={(v) => handleChange('state', v)}
               maxLength={14}
             />
-            <Text style={styles.fieldLabel}>Postal Code <Text style={styles.required}>*</Text></Text>
+            <Text className='text-textPrimary' style={styles.fieldLabel}>Postal Code <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               placeholder="Postal Code"
@@ -161,7 +178,7 @@ const AddressModal = ({
               keyboardType="numeric"
               maxLength={10}
             />
-            <Text style={styles.fieldLabel}>Country <Text style={styles.required}>*</Text></Text>
+            <Text className='text-textPrimary' style={styles.fieldLabel}>Country <Text style={styles.required}>*</Text></Text>
             <TextInput
               style={styles.input}
               placeholder="Country"
@@ -194,6 +211,7 @@ const AddressModal = ({
                   });
                   onClose();
                 }}
+                disabled={!isUpdateChangedCheck()}
                 style={{ flex: 1, marginLeft: 8 }}
               />
             </View>
@@ -206,6 +224,7 @@ const AddressModal = ({
 };
 
 const AddressScreen = () => {
+  const { colors } = useTheme();
   const { addresses, selectedAddressId, addAddress, removeAddress, selectAddress, updateAddress } = useAddressStore();
   const [modalVisible, setModalVisible] = useState(false);
   const [editAddress, setEditAddress] = useState<any>(null);
@@ -231,7 +250,7 @@ const AddressScreen = () => {
   return (
     <ThemedSafeArea>
       <DynamicHeader title="My Addresses" />
-      <View style={styles.container}>
+      <View className='bg-surfaceBase' style={[styles.container]}>
         <FlatList
           data={addresses}
           keyExtractor={(item) => item.id}
@@ -244,6 +263,7 @@ const AddressScreen = () => {
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   alignItems: 'center',
+                  backgroundColor: colors.textInverse
                 }
               ]}
               onPress={() => selectAddress(item.id)}
@@ -253,23 +273,23 @@ const AddressScreen = () => {
                   position: 'absolute',
                   top: 0,
                   left: 0,
-                  backgroundColor: '#FF894F',
+                  backgroundColor: colors.accent,
                   borderTopLeftRadius: 8,
                   paddingHorizontal: 8,
                   paddingVertical: 2,
                   zIndex: 1,
                 }
               ]} >
-                <Text style={{ color: '#fff' }}>Default</Text>
+                <Text style={{ color: colors.textPrimary }}>Default</Text>
               </View>
               }
               <View className='flex-1 pt-2' >
-                <Text style={styles.label}>{item.label}</Text>
-                <Text>{item.receiverName} ({item.receiverPhone})</Text>
-                <Text>{item.addressLine1},</Text>
-                {item.addressLine2 ? <Text>{item.addressLine2},</Text> : null}
-                <Text>{item.city}, {item.state} - {item.postalCode},</Text>
-                <Text>{item.country}</Text>
+                <Text className='text-textPrimary' style={styles.label}>{item.label}</Text>
+                <Text className='text-textPrimary' >{item.receiverName} ({item.receiverPhone})</Text>
+                <Text className='text-textPrimary'>{item.addressLine1},</Text>
+                {item.addressLine2 ? <Text className='text-textPrimary'>{item.addressLine2},</Text> : null}
+                <Text className='text-textPrimary'>{item.city}, {item.state} - {item.postalCode},</Text>
+                <Text className='text-textPrimary'>{item.country}</Text>
               </View>
               <View style={styles.actions}>
                 <Button
@@ -303,7 +323,7 @@ const AddressScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: '#F9FAFB' },
+  container: { flex: 1, padding: 16, },
   title: { fontSize: 22, fontWeight: 'bold', marginBottom: 16, textAlign: 'center' },
   addressItem: {
     backgroundColor: '#fff',

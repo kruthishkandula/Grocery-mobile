@@ -1,29 +1,14 @@
 import useTheme from '@/hooks/useTheme';
 import { useCartStore } from '@/store/cart/cartStore';
-import { CMS_URL } from '@/utility/config';
-import { convertToFloat } from '@/utility/utility';
-import { Button, CachedImage, DynamicHeader, IconSymbol, Text, ThemedSafeArea } from '@atom';
+import { Button, DynamicHeader, IconSymbol, Text, ThemedSafeArea } from '@atom';
 import Details from '@molecule/Card/Details';
 import DynamicLoader from '@molecule/Loader';
 
+import CartItem1 from '@/components/molecule/Card/Cart/CartItem1';
 import React from 'react';
 import { ActivityIndicator, FlatList, ScrollView, TouchableOpacity, View } from 'react-native';
 import EmptyCart from './EmptyCart';
-import { gpsw } from '@/style/theme';
-import CartItem1 from '@/components/molecule/Card/Cart/CartItem1';
 
-
-const getImageUrl = (image: string) => {
-  if (image) {
-    if (image?.startsWith("/uploads/")) {
-      return `${CMS_URL}${image}`; // Replace with your base URL
-    }
-    if (image.startsWith('http://') || image.startsWith('https://')) {
-      return image;
-    }
-  }
-  return `https://example.com/image`; // Replace with your base URL
-}
 
 export default function CartScreen({ navigation }: any) {
   const { colors } = useTheme();
@@ -71,6 +56,30 @@ export default function CartScreen({ navigation }: any) {
   const couponDiscount = 0;
   const total = subtotal + deliveryFee + surgeFee - couponDiscount;
 
+
+  const DeliverySummary = () => {
+    return (
+      <Details
+        top={{
+          'subtotal': subtotal.toFixed(2),
+          'delivery_fee': deliveryFee == 0 ? 'Free' : deliveryFee.toFixed(2),
+          'surge_fee': surgeFee.toFixed(2),
+        }}
+        bottom={{
+          'coupon_discount': couponDiscount.toFixed(2),
+          'total': total.toFixed(2),
+        }}
+        mapData={{
+          'subtotal': 'Sub total',
+          'delivery_fee': 'Delivery Fee',
+          'surge_fee': 'Surge Fee',
+          'coupon_discount': 'Coupon Discount',
+          'total': 'Total',
+        }}
+      />
+    )
+  }
+
   if (isCartLoading) {
     return (
       <DynamicLoader message='Loading your cart...' />
@@ -80,13 +89,19 @@ export default function CartScreen({ navigation }: any) {
   return (
     <ThemedSafeArea>
       <View className="flex-1">
-        <DynamicHeader title='Your Cart' rightComponent={<TouchableOpacity onPress={() => clearCart()}>
+        <DynamicHeader title='Your Cart' rightComponent={<TouchableOpacity onPress={() => navigation.navigate('FavouriteProducts')}>
           <View className="flex items-center flex-row">
-            <IconSymbol name="delete" size={20} color={colors.textPrimary} />
+            <IconSymbol name="favorite-outline" size={22} color={colors.textPrimary} />
           </View>
         </TouchableOpacity>} />
-        <ScrollView contentContainerStyle={{ paddingBottom: 20 }} className="flex-1 bg-surfaceBase p-4 ">
+        <ScrollView contentContainerStyle={{ paddingBottom: 100 }} className="flex-1 bg-surfaceBase p-4 ">
           <>
+            {cartItems.length > 0 && <TouchableOpacity className='flex self-end mb-2 bg-info p-2 rounded-lg' onPress={() => clearCart()}>
+              <View className="flex items-center flex-row">
+                <IconSymbol name="delete" size={20} color={colors.textPrimary} />
+                <Text className="ml-2 text-textPrimary">Clear Cart</Text>
+              </View>
+            </TouchableOpacity>}
             {isCartLoading ? (
               <View className='flex-1 justify-center items-center'>
                 <ActivityIndicator size="large" color={colors?.primary} />
@@ -105,29 +120,18 @@ export default function CartScreen({ navigation }: any) {
 
             {
               cartItems.length > 0 && (
-                <View className="bg-surfaceElevated rounded-lg p-4 shadow">
-                  <Details
-                    top={{
-                      'subtotal': subtotal.toFixed(2),
-                      'delivery_fee': deliveryFee == 0 ? 'Free' : deliveryFee.toFixed(2),
-                      'surge_fee': surgeFee.toFixed(2),
-                    }}
-                    bottom={{
-                      'coupon_discount': couponDiscount.toFixed(2),
-                      'total': total.toFixed(2),
-                    }}
-                    mapData={{
-                      'subtotal': 'Sub total',
-                      'delivery_fee': 'Delivery Fee',
-                      'surge_fee': 'Surge Fee',
-                      'coupon_discount': 'Coupon Discount',
-                      'total': 'Total',
-                    }}
-                  />
+                <View className="bg-surfaceElevated rounded-lg p-4  mt-10 shadow">
+                  <DeliverySummary />
                   <Button
                     title='Checkout'
                     className='text-pink-900 mt-4'
-                    onPress={() => navigation.navigate('Checkout', { total, currency, currencySymbol })}
+                    onPress={() => navigation.navigate('Checkout', {
+                      total, currency, currencySymbol, top: {
+                        'subtotal': subtotal.toFixed(2),
+                        'delivery_fee': deliveryFee == 0 ? 'Free' : deliveryFee.toFixed(2),
+                        'surge_fee': surgeFee.toFixed(2),
+                      }, DeliverySummary
+                    })}
                   />
                 </View>
               )

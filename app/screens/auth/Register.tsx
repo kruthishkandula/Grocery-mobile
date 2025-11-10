@@ -10,6 +10,7 @@ import React, { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { View, TextInput, Platform, StyleSheet } from 'react-native';
 import { z } from 'zod';
+import useTheme from '@/hooks/useTheme';
 
 const registerSchema = z.object({
   username: z.string().nonempty({
@@ -59,6 +60,7 @@ export default function Register({ navigation }: any) {
   })
 
   const { showToast } = useToast();
+  const { colors } = useTheme();
 
   const onSubmit = async (data: any) => {
     const success = await register({ ...data, role: 'user' });
@@ -79,7 +81,7 @@ export default function Register({ navigation }: any) {
     <ThemedSafeArea>
       <AuthScreenWrapper
         illustrationSource={require('@/assets/images/register.png')}
-        gradientColors={["#fff", "#fff", "#fff"]}
+        gradientColors={[colors.surfaceBase, colors.surfaceBase]}
         size={180} // Reduced size to give more space for form
       >
         <KeyboardScrollView

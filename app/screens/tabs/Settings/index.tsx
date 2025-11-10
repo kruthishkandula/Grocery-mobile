@@ -20,7 +20,6 @@ export default function SettingsNav() {
             <SettingsStack.Screen name="ChangeTheme" component={ChangeTheme} />
             <SettingsStack.Screen name="About" component={About} />
             <SettingsStack.Screen name="Help" component={Help} />
-            <SettingsStack.Screen name="FavouriteProducts" component={FavouriteProducts} />
             <SettingsStack.Screen name="ProfileSettings" component={ProfileSettings} />
         </SettingsStack.Navigator>
     )

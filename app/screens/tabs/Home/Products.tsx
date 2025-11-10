@@ -90,7 +90,7 @@ export default function Products() {
             </TouchableOpacity>
           }
         />
-        <View className="flex-1 px-4 pt-4">
+        <View className="flex-1 px-4 pt-4 pb-4">
           {/* Category Tabs */}
           <View className="mb-4">
             <FlatList

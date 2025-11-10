@@ -1,51 +1,50 @@
-import IconSymbol from '@atom/IconSymbol';
+import { DynamicHeader, ThemedSafeArea } from '@/components/atom';
+import useTheme from '@/hooks/useTheme';
+import { useThemeStore } from '@/store/theme/themeStore';
 import { useThemeContextActions } from '@/Themes';
 import { Themes } from '@/Themes/theme-config';
+import IconSymbol from '@atom/IconSymbol';
+import { upperFirst } from 'lodash';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import { DynamicHeader, ThemedSafeArea } from '@/components/atom';
 
 const ChangeTheme = () => {
+  const { isDefaultTheme } = useThemeStore();
   const { handleThemeSwitch, theme } = useThemeContextActions();
-
+  const { colors } = useTheme();
 
   return (
     <ThemedSafeArea>
       <DynamicHeader title='Themes' />
-      <View className={`flex-1  px-4 mt-4 bg-tertiary`} >
+      <View className={`flex-1 px-4 mt-4 bg-surfaceBase`}>
         {/* list of themes */}
-        <View className='flex flex-col gap-2 py-4' >
-          {Object.entries(Themes)?.map(([t, v]: any) => {
-            console.log('t', t, theme, t == theme)
+        <View className='flex flex-col gap-2 py-4'>
+          {Object.entries({ 'System Default': 'System Default', ...Themes }).map(([t, v]: any) => {
+            // System Default is selected if isDefaultTheme is true
+            let isSelected = (t === 'System Default' && isDefaultTheme) || (t === theme && !isDefaultTheme);
+
             return (
               <TouchableOpacity
+                activeOpacity={1}
                 key={t}
                 onPress={() => {
-                  handleThemeSwitch(t)
+                  if (t === 'System Default') {
+                    handleThemeSwitch('light', true); // true triggers system default
+                  } else {
+                    handleThemeSwitch(t, false); // false disables system default
+                  }
                 }}
-                className={`bg-pink-100 flex-row gap-2 py-6 p-4 rounded-xl mt-2 elevation-md ${t == theme ? 'border-primary border-2' : 'border-black'}`}
+                className={`bg-surfaceElevated flex-row gap-2 py-6 p-4 rounded-xl mt-2 elevation-md ${isSelected ? 'border-primary border-2 bg-surfaceOverlay' : 'border-black'}`}
               >
-                <IconSymbol name='feather' iconSet='Entypo' size={24} color={'black'} />
-                <Text className=' text-black' >{t}</Text>
+                <IconSymbol name={isSelected ? 'radio-button-checked' : 'radio-button-off'} size={24} color={colors.textPrimary} />
+                <Text className='text-textPrimary'>{upperFirst(t)}</Text>
               </TouchableOpacity>
-            )
+            );
           })}
         </View>
-
-        {/* random theme btn */}
-        {/* <TouchableOpacity
-        onPress={() => {
-          // let index = Math.floor(Math.random() * Object.keys(Themes).length);
-          // console.log('index', index, getRandomObj(Themes));
-          // handleThemeSwitch(Themes)[index])
-        }}
-        className='bg-[#C1D8C3] p-4 rounded-md mt-2'
-      >
-        <Text className=' text-[#A31D1D]' >Set Random</Text>
-      </TouchableOpacity> */}
       </View>
     </ThemedSafeArea>
-  )
-}
+  );
+};
 
-export default ChangeTheme
+export default ChangeTheme;

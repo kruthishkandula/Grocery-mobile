@@ -159,14 +159,14 @@ export default function Settings() {
             style={{ width: 80, height: 80, borderRadius: 40, marginBottom: 12 }}
           />
           <View  >
-            <Text className='text-[32px] font-bold text-text1'>{upperFirst(userProfile.name)}</Text>
+            <Text className='text-[32px] font-bold text-textPrimary'>{upperFirst(userProfile.name)}</Text>
             <View className='flex-row items-center gap-2' >
-              <IconSymbol name='phone' size={16} />
-              <Text className='text-shading text-[16px]'>{userProfile.phonenumber}</Text>
+              <IconSymbol name='phone' color={colors.dark} size={16} />
+              <Text className='text-dark text-[16px]'>{userProfile.phonenumber}</Text>
             </View>
             <View className='flex-row items-center gap-2'>
-              <IconSymbol name='email' size={16} />
-              <Text className='text-shading text-[16px]'>{userProfile.email}</Text>
+              <IconSymbol name='email' color={colors.dark} size={16} />
+              <Text className='text-dark text-[16px]'>{userProfile.email}</Text>
             </View>
           </View>
         </LinearGradient>

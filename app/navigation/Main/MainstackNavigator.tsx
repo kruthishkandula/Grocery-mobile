@@ -9,6 +9,9 @@ import Products from '../../screens/tabs/Home/Products';
 import TabsLayout from './TabsLayout';
 import SearchResultsScreen from '@/screens/SearchResultsScreen';
 import OrderSuccessScreen from '@/screens/tabs/Cart/order/OrderSuccessScreen';
+import FavouriteProducts from '@/screens/tabs/Settings/FavouriteProducts';
+import Orders from '@/screens/tabs/Orders';
+import OrderDetails from '@/screens/tabs/Orders/OrderDetails';
 
 const Stack = createStackNavigator<any>();
 
@@ -78,6 +81,29 @@ export default function RootLayout() {
       <Stack.Screen
         name="Address"
         component={AddressScreen}
+        options={{
+          animation: Platform.OS === 'web' ? 'none' : 'default'
+        }}
+      />
+      <Stack.Screen
+        name="FavouriteProducts"
+        component={FavouriteProducts}
+        options={{
+          animation: Platform.OS === 'web' ? 'none' : 'default'
+        }}
+      />
+      
+      {/* orders */}
+      <Stack.Screen
+        name="Orders"
+        component={Orders}
+        options={{
+          animation: Platform.OS === 'web' ? 'none' : 'default'
+        }}
+      />
+      <Stack.Screen
+        name="OrderDetails"
+        component={OrderDetails}
         options={{
           animation: Platform.OS === 'web' ? 'none' : 'default'
         }}

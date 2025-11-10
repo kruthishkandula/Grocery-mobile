@@ -6,7 +6,7 @@ import Home from "@/screens/tabs/Home"
 export const tab_options = [
     {
         id: '1',
-        name: 'name',
+        name: 'Home',
         icon: 'home',
         iconSet: '',
         size: 24,

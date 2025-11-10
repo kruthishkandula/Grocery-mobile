@@ -51,7 +51,7 @@ export const useOrderStore = create<OrderStore>()(
         set({ placing: true, error: null });
         try {
           // Simulate API call
-          await new Promise(resolve => setTimeout(resolve, 2000));
+          // await new Promise(resolve => setTimeout(resolve, 2000));
           
           const newOrder: Order = {
             id: Date.now().toString(),

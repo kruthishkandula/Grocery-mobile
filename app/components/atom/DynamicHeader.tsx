@@ -4,6 +4,7 @@ import IconSymbol from './IconSymbol';
 import { useNavigation } from '@react-navigation/native';
 import Text from './Text';
 import useTheme from '@/hooks/useTheme';
+import { gpsh } from '@/style/theme';
 
 type Variant = 'default' | 'back' | 'search' | 'custom';
 
@@ -53,7 +54,7 @@ export default function DynamicHeader({
         {leftComponent}
       </View>
       {/* Title */}
-      <Text className="text-lg font-bold flex-1 text-start text-textPrimary" numberOfLines={2} ellipsizeMode="tail" style={{ maxWidth: '100%', textAlign: 'center', fontWeight: '600' }}>
+      <Text className="text-lg font-bold flex-1 text-start text-textPrimary" numberOfLines={2} ellipsizeMode="tail" style={{ maxWidth: '100%', textAlign: 'center', fontWeight: '700', fontSize: gpsh(12) }}>
         {title}
       </Text>
       {/* Right */}

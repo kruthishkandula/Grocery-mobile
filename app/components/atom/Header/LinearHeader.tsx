@@ -18,13 +18,14 @@ export default function LinearHeader({ title, colors, style, children }: LinearH
     return (
         <View className='text-surfaceBase' style={[styles.container, styles.content,]}>
             <LinearGradient
-                colors={colors ? colors : [themColors.primary, themColors.secondary]}
+                // colors={colors ? colors : [themColors.primary, themColors.secondary]}
+                colors={[themColors.primary, themColors.primary]}
                 style={[styles.headerGradient, style]}
             >
                 <TouchableOpacity onPress={() => {
                     goBack()
                 }} >
-                    <IconSymbol name='left' color={themColors.textPrimary} />
+                    <IconSymbol size={24} name='left' color={themColors.textPrimary} />
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>{title}</Text>
                 <TouchableOpacity></TouchableOpacity>
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 100,
     },
     headerTitle: {
-        fontSize: 28,
+        fontSize: 18,
         fontWeight: 'bold',
         color: '#ffffff',
         textAlign: 'center',

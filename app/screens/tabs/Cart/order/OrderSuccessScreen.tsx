@@ -45,7 +45,7 @@ const OrderSuccessScreen = () => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={[styles.trackButton, { backgroundColor: colors.accent}]}
-          onPress={() => navigate('orders')}
+          onPress={() => navigate('Orders')}
         >
           <Text style={styles.trackButtonText}>Track Order</Text>
         </TouchableOpacity>

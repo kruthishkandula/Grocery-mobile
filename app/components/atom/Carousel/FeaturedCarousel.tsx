@@ -83,7 +83,7 @@ const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({
                 {images.map((_, idx) => (
                     <View
                         key={idx}
-                        style={[styles.dot, activeIndex === idx && styles.activeDot, { backgroundColor: activeIndex === idx ? "#000" : '#cfcfcf' }]}
+                        style={[styles.dot, activeIndex === idx && styles.activeDot, { backgroundColor: activeIndex === idx ? colors.accent : colors.textPrimary }]}
                     />
                 ))}
             </View>}
@@ -107,9 +107,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 4,
     },
     activeDot: {
-        backgroundColor: '#333',
-        width: 12,
-        height: 12,
+        width: 20,
+        height: 8,
         borderRadius: 6,
     },
 });

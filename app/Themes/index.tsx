@@ -1,5 +1,6 @@
+import { useThemeStore } from '@/store/theme/themeStore';
 import { StatusBar } from 'expo-status-bar';
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect } from 'react';
 import { useColorScheme, View, ViewProps } from 'react-native';
 import { StatusBarTheme, Themes, ThemesVariant } from './theme-config';
 
@@ -18,7 +19,7 @@ export function useThemeContextValues() {
 
 type ThemeContextActions = {
   theme: ThemesVariant;
-  handleThemeSwitch: (newTheme: ThemesVariant) => void;
+  handleThemeSwitch: (newTheme: ThemesVariant, isDefault?: boolean) => void;
 };
 
 const ThemeProviderActions = createContext<ThemeContextActions>(
@@ -32,18 +33,23 @@ export function useThemeContextActions() {
 type ThemeProps = ViewProps;
 
 export function Theme(props: ThemeProps) {
-  const [theme, setTheme] = useState<ThemesVariant>('light');
+  const { theme, setTheme, isDefaultTheme, setIsDefaultTheme } = useThemeStore();
   const colorScheme = useColorScheme();
 
-  const handleThemeSwitch = useCallback((newTheme: ThemesVariant) => {
+  const handleThemeSwitch = useCallback((newTheme: ThemesVariant, isDefault?: boolean) => {
     setTheme(newTheme);
+    if (isDefault) {
+      setIsDefaultTheme(true);
+    } else {
+      setIsDefaultTheme(false);
+    }
   }, []);
 
   useEffect(() => {
-    if (colorScheme) {
+    if (colorScheme && isDefaultTheme) {
       setTheme(colorScheme === 'dark' ? 'dark' : 'light');
     }
-  }, [colorScheme]);
+  }, [colorScheme, isDefaultTheme]);
 
   return (
     <View style={Themes[theme]} className={'flex-1' + ' ' + props.className}>

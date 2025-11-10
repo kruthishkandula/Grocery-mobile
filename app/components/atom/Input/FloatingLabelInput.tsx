@@ -174,15 +174,27 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
 
                     }, rest.style]}
                 />
-                <TouchableOpacity
-                    activeOpacity={0.7}
-                    onPress={() => {
-                        inputRef.current?.focus()
+                <View
+                    style={{
+                        position: 'absolute',
+                        left: hasLeftIcon ? 44 : 12,
+                        top: 0,
+                        height: '100%',
+                        zIndex: 11,
+                        justifyContent: 'center',
                     }}
-                    style={{ position: 'absolute', left: hasLeftIcon ? 44 : 12, top: 0, height: '100%', zIndex: 11 }}
+                    pointerEvents="box-only"
                 >
-                    <Animated.Text style={[labelStyle]}>{placeholder}</Animated.Text>
-                </TouchableOpacity>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => {
+                            inputRef.current?.focus()
+                        }}
+                        style={{ flex: 1, justifyContent: 'center' }}
+                    >
+                        <Animated.Text style={[labelStyle]}>{placeholder}</Animated.Text>
+                    </TouchableOpacity>
+                </View>
                 {RightIcon && (
                     <View style={{ position: 'absolute', right: 0, height: '100%', justifyContent: 'center', zIndex: 10 }}>
                         {RightIcon}

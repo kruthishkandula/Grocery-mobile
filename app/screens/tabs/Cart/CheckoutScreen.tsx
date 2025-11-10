@@ -3,7 +3,7 @@ import LinearHeader from '@/components/atom/Header/LinearHeader';
 import FloatingLabelInput from '@/components/atom/Input/FloatingLabelInput';
 import Animation from '@/components/molecule/Animation';
 import useTheme from '@/hooks/useTheme';
-import { navigate } from '@/navigation/RootNavRef';
+import { navigate, replace } from '@/navigation/RootNavRef';
 import { useAddressStore } from '@/store/address/addressStore';
 import { useCartStore } from '@/store/cart/cartStore';
 import { useOrderStore } from '@/store/order/orderStore';
@@ -23,11 +23,14 @@ import {
 
 const CheckoutScreen = () => {
   const { params: {
-    currencySymbol
+    currencySymbol,
+    total,
+    top,
+    ...rest
   } } = useRoute<any>()
   const { colors } = useTheme()
   const { items, clearCart } = useCartStore();
-  const { placeOrder, placing, error } = useOrderStore();
+  const { placeOrder, placing, error, orders } = useOrderStore();
   const { addresses, selectedAddressId, selectAddress } = useAddressStore();
   let selectedAddress = addresses.find(addr => addr.id === selectedAddressId) || null;
 
@@ -60,10 +63,11 @@ const CheckoutScreen = () => {
   }, []);
 
   const calculateTotal = () => {
-    return items.reduce((total, item) => {
-      const price = item?.product?.discountPrice || 0;
-      return total + (price * item.quantity);
-    }, 0);
+    // return items.reduce((total, item) => {
+    //   const price = item?.product?.discountPrice || 0;
+    //   return total + (price * item.quantity);
+    // }, 0);
+    return total;
   };
 
   const validateOrder = () => {
@@ -130,7 +134,7 @@ const CheckoutScreen = () => {
 
       // // Navigate to order success screen after animation
       // setTimeout(() => {
-      navigate('order-success', {
+      replace('order-success', {
         orderId: '#1872937423472',
         totalAmount: totalAmount,
       });
@@ -337,9 +341,9 @@ const CheckoutScreen = () => {
               <View className='flex-1' style={{ padding: 16, gap: 30 }} >
                 {/* Order Summary */}
                 <View style={[styles.section,]}>
-                  <Text style={styles.sectionTitle}>🛒 Order Summary</Text>
+                  <Text style={[styles.sectionTitle, { color: colors?.textPrimary }]}>🛒 Order Summary</Text>
                   <LinearGradient
-                    colors={['#eeee', 'pink']}
+                    colors={[colors.borderDefault, colors.surfaceElevated, colors.surfaceElevated]}
                     style={styles.summaryGradient}
                   >
                     {items.map((item) => (
@@ -351,9 +355,7 @@ const CheckoutScreen = () => {
                         </Text>
                       </View>
                     ))}
-                    <View style={styles.totalRow}>
-                      <Text style={styles.totalText}>Total: ₹{calculateTotal().toFixed(2)}</Text>
-                    </View>
+                    {rest?.DeliverySummary && rest?.DeliverySummary()}
                   </LinearGradient>
                 </View>
 

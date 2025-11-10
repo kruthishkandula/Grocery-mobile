@@ -1,15 +1,27 @@
-import { gpsh, gpsw } from '@/style/theme';
+import { gpsh } from '@/style/theme';
 import { useThemeContextActions } from '@/Themes';
 import { getThemeColors } from '@/Themes/theme-config';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, Dimensions } from 'react-native';
 import { CachedImage } from '../../atom';
 
-export default function CategoryItem2({ item }: { item: { imageUrl: any, name: string } }) {
+const screenWidth = Dimensions.get('window').width;
+
+export default function CategoryItem2({
+    item,
+    numColumns = 3,
+}: {
+    item: { imageUrl: any, name: string },
+    numColumns?: number
+}) {
     const { theme } = useThemeContextActions();
     const colors = getThemeColors(theme);
-    const { navigate } = useNavigation<any>()
+    const { navigate } = useNavigation<any>();
+
+    // 10% of the row is for spacing
+    const totalSpacingPercent = 10;
+    const itemWidth = screenWidth * ((100 - totalSpacingPercent) / 100) / numColumns;
 
     return (
         <TouchableOpacity
@@ -21,23 +33,35 @@ export default function CategoryItem2({ item }: { item: { imageUrl: any, name: s
                     title: item.name
                 });
             }}
-            className='flex bg-surfaceOverlay m-1 flex-col items-center p-4 rounded-[20px]'
+            className='flex bg-surfaceOverlay flex-col items-center rounded-[20px]'
             style={{
-                // elevation: 4,
-                // shadowColor: '#444',
-                // shadowOffset: 2,
-                // shadowOpacity: 0.1,
-                // shadowRadius: 6,
+                width: itemWidth,
+                minHeight: gpsh(120),
+                marginBottom: 16,
             }}
-
         >
             <CachedImage
                 name={`${item.imageUrl}`}
-                width={gpsw(110)}
-                height={gpsh(90)}
+                style={{
+                    maxHeight: gpsh(90),
+                    maxWidth: itemWidth * 0.9,
+                }}
                 contentFit="fill"
             />
-            <Text numberOfLines={2} style={{ color: colors?.textPrimary, maxWidth: gpsw(100), textAlign: 'center' }} className='text-[16px] font-[500] text-text1 mt-2'>{item.name}</Text>
+            <Text
+                numberOfLines={2}
+                adjustsFontSizeToFit
+                style={{
+                    color: colors?.textPrimary,
+                    maxWidth: itemWidth * 0.9,
+                    textAlign: 'center',
+                    fontSize: Math.max(14, Math.min(18, itemWidth * 0.09)),
+                    marginTop: 8,
+                }}
+                className='font-[500] text-text1'
+            >
+                {item.name}
+            </Text>
         </TouchableOpacity>
-    )
+    );
 }

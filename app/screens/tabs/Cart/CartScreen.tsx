@@ -120,7 +120,7 @@ export default function CartScreen({ navigation }: any) {
 
             {
               cartItems.length > 0 && (
-                <View className="bg-surfaceElevated rounded-lg p-4  mt-10 shadow">
+                <View className="bg-surfaceElevated rounded-lg p-4  mt-4 shadow">
                   <DeliverySummary />
                   <Button
                     title='Checkout'

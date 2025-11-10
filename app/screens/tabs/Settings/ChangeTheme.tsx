@@ -7,6 +7,7 @@ import IconSymbol from '@atom/IconSymbol';
 import { upperFirst } from 'lodash';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const ChangeTheme = () => {
   const { isDefaultTheme } = useThemeStore();
@@ -15,10 +16,10 @@ const ChangeTheme = () => {
 
   return (
     <ThemedSafeArea>
-      <DynamicHeader title='Themes' />
-      <View className={`flex-1 px-4 mt-4 bg-surfaceBase`}>
+      <View className={`flex-1 bg-surfaceBase`}>
+        <DynamicHeader title='Themes' />
         {/* list of themes */}
-        <View className='flex flex-col gap-2 py-4'>
+        <ScrollView contentContainerClassName='pb-32' className='flex px-4 flex-col gap-2 py-4'>
           {Object.entries({ 'System Default': 'System Default', ...Themes }).map(([t, v]: any) => {
             // System Default is selected if isDefaultTheme is true
             let isSelected = (t === 'System Default' && isDefaultTheme) || (t === theme && !isDefaultTheme);
@@ -41,7 +42,7 @@ const ChangeTheme = () => {
               </TouchableOpacity>
             );
           })}
-        </View>
+        </ScrollView>
       </View>
     </ThemedSafeArea>
   );

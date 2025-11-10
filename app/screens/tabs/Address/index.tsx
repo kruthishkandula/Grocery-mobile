@@ -359,6 +359,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
+    lineHeight: 20,
   },
   fieldLabel: {
     fontWeight: '600',

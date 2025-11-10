@@ -315,7 +315,7 @@ export default function Dashboard() {
                     paddingBottom: 0
                 }}
                 start={{ x: 2, y: 2 }}
-                colors={[colors.secondary, colors.secondary,]}
+                colors={[colors.surfaceOverlay, colors.surfaceOverlay, colors.surfaceOverlay]} 
             >
                 <View
                     style={{
@@ -330,10 +330,10 @@ export default function Dashboard() {
                 >
                     {/* header & notifications section */}
                     <View className='flex flex-row justify-between'>
-                        <Text variant='bold18' className='text-[30px] font-[800] text-black'>
+                        <Text variant='bold18' className='text-[30px] font-[800] text-textPrimary'>
                             Grocery Plus
                         </Text>
-                        <IconSymbol name='bell' iconSet='FontAwesome5' size={24} color={colors?.dark} />
+                        <IconSymbol name='bell' iconSet='FontAwesome5' size={24} color={colors?.textPrimary} />
                     </View>
 
                     {/* location section */}
@@ -344,19 +344,19 @@ export default function Dashboard() {
                     >
                         <View className='flex-row items-center gap-3'>
                             <View className='bg-secondary p-2 rounded-full'>
-                                <IconSymbol name='location-outline' size={24} color={'black'} />
+                                <IconSymbol name='location-outline' size={24} color={colors.textInverse} />
                             </View>
                             <View className='flex-col'>
                                 <View className='flex-row items-center'>
                                     <Text
                                         style={{ fontSize: gpsw(12) }}
-                                        className='font-[300] text-black'
+                                        className='font-[300] text-textPrimary'
                                     >
                                         Deliver to{' '}
                                         <Text
                                             variant='bold18'
                                             style={{ fontSize: gpsw(12) }}
-                                            className='font-[600] text-black'
+                                            className='font-[600] text-textPrimary'
                                         >
                                             {selected_address?.label}
                                         </Text>
@@ -366,7 +366,7 @@ export default function Dashboard() {
                                     <Text
                                         variant='medium14'
                                         style={{ fontSize: gpsw(12) }}
-                                        className='text-[12px] font-[600] text-[#454545]'
+                                        className='text-[12px] font-[600] text-textSecondary'
                                     >
                                         {selected_address?.addressLine1}, {selected_address?.city}
                                     </Text>
@@ -374,7 +374,7 @@ export default function Dashboard() {
                                     <Text
                                         variant='medium14'
                                         style={{ fontSize: gpsw(12) }}
-                                        className='text-[12px] font-[600] text-black'
+                                        className='text-[12px] font-[600] text-textPrimary'
                                     >
                                         Select Delivery Address
                                     </Text>
@@ -382,7 +382,7 @@ export default function Dashboard() {
                             </View>
                         </View>
                         <TouchableOpacity>
-                            <IconSymbol name='chevron-right' iconSet='FontAwesome6' size={24} color={'black'} />
+                            <IconSymbol name='chevron-right' iconSet='FontAwesome6' size={24} color={colors.textPrimary} />
                         </TouchableOpacity>
                     </TouchableOpacity>
                 </View>

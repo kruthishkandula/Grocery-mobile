@@ -66,7 +66,7 @@ const settingsCms = {
       icon: 'star',
       iconSet: 'Feather',
       size: 24,
-      is_active: true,
+      is_active: false,
     },
     {
       id: 3,

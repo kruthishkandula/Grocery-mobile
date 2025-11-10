@@ -13,11 +13,7 @@ import { ThemedSafeArea } from '@/components/atom'
 
 export default function Categories() {
     const { theme } = useThemeContextActions();
-    const colors = getThemeColors(theme);
-
     const { data, isLoading, error, refetch: refetchCategories, } = useFetchAllCategories()
-
-
 
     if (isLoading) return <DynamicLoader />;
     if (error) return <DynamicError error={error} onRetry={refetchCategories} />;
@@ -27,11 +23,10 @@ export default function Categories() {
             <View className='flex-1' >
                 <DynamicHeader variant='back' title='Categories' />
                 <FlatList
-                    //   ListHeaderComponent={SearchBar}
                     data={data?.data || []}
-                    renderItem={({ item }) => <CategoryItem2 item={item} />}
+                    renderItem={({ item }) => <CategoryItem2 item={item} numColumns={2} />}
                     numColumns={2}
-                    contentContainerClassName='p-5 gap-4'
+                    contentContainerClassName='p-5'
                     className='bg-surfaceBase'
                     columnWrapperStyle={{ justifyContent: 'space-between' }}
                     showsVerticalScrollIndicator={false}

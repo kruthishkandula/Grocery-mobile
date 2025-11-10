@@ -13,7 +13,7 @@ export const commonColors = {
   errorDark: '#EF5350',
   info: '#2196F3',
   infoDark: '#42A5F5',
-  
+
   // Neutral colors
   white: '#FFFFFF',
   black: '#000000',
@@ -27,7 +27,7 @@ export const commonColors = {
   gray700: '#424242',
   gray800: '#212121',
   gray900: '#121212',
-  
+
   // Additional utility colors (add any new common colors here)
   transparent: 'transparent',
   overlay: 'rgba(0, 0, 0, 0.5)',
@@ -267,6 +267,29 @@ const themeSpecificDefinitions: Record<string, ThemeSpecificColors> = {
     textInverse: '#FAF5FF',
     focusRing: '#9333EA',
     linkDefault: '#7E22CE',
+    dark: commonColors.black,
+    light: commonColors.white
+  },
+  xmas: {
+    primary: '#BB2528',
+    primaryHover: '#991F22',
+    secondary: '#146B3A',
+    accent: '#D4AF37',
+    success: '#0F7833',
+    warning: '#F8B229',
+    error: '#C41E3A',
+    info: '#5BA8D9',
+    surfaceBase: '#FFF8E7',
+    surfaceElevated: '#FFFCF0',
+    surfaceOverlay: '#FFF3D6',
+    borderDefault: '#E8D4A0',
+    borderSubtle: '#F5E8C8',
+    textPrimary: '#1A3A1F',
+    textSecondary: '#8B6914',
+    textTertiary: '#A88932',
+    textInverse: '#FFFFFF',
+    focusRing: '#BB2528',
+    linkDefault: '#146B3A',
     dark: commonColors.black,
     light: commonColors.white
   },

@@ -90,10 +90,10 @@ export default function Register({ navigation }: any) {
         >
           <View style={styles.container}>
             <View style={styles.header}>
-              <Text variant='bold20' style={styles.title}>
+              <Text className='text-textPrimary' variant='bold20' style={styles.title}>
                 Welcome Onboarding
               </Text>
-              <Text variant='light12' style={styles.subtitle}>
+              <Text className='text-textSecondary' variant='light12' style={styles.subtitle}>
                 Create your account to get started
               </Text>
             </View>
@@ -165,9 +165,9 @@ export default function Register({ navigation }: any) {
                 loading={isSubmitting}
                 className="rounded-[4px]"
               />
-              <Text style={styles.loginText}>
+              <Text className='text-textPrimary' style={styles.loginText}>
                 Already have an account?{' '}
-                <Text style={styles.loginLink} onPress={() => goBack()}>
+                <Text className='text-primary' style={styles.loginLink} onPress={() => goBack()}>
                   Login
                 </Text>
               </Text>
@@ -213,9 +213,7 @@ const styles = StyleSheet.create({
   loginText: {
     marginTop: 16,
     textAlign: 'center',
-    color: '#666',
   },
   loginLink: {
-    color: '#ef4444',
   }
 });

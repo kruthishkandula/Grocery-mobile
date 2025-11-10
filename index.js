@@ -1,4 +1,3 @@
-import "./flipper.config";
 import "./global.css";
 
 import Base from "@/Base/index";

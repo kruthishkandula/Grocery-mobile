@@ -75,10 +75,10 @@ export default function Login({ navigation }: any) {
         >
           <View style={styles.container}>
             <View style={styles.header}>
-              <Text variant='bold20' style={styles.title}>
+              <Text className='text-textPrimary' variant='bold20' style={styles.title}>
                 Login
               </Text>
-              <Text variant='light12' style={styles.subtitle}>
+              <Text className='text-textSecondary' variant='light12' style={styles.subtitle}>
                 Welcome back! Please enter your credentials to continue.
               </Text>
             </View>
@@ -117,9 +117,9 @@ export default function Login({ navigation }: any) {
                 loading={loading}
                 className="rounded-[4px]"
               />
-              <Text style={styles.registerText}>
+              <Text className='text-textPrimary' style={styles.registerText}>
                 Don't have an account?{' '}
-                <Text style={styles.registerLink} onPress={() => {
+                <Text className='text-primary' style={styles.registerLink} onPress={() => {
                   navigation?.navigate('register')
                 }}>
                   Register
@@ -127,9 +127,9 @@ export default function Login({ navigation }: any) {
               </Text>
 
 
-              <Text style={styles.registerText}>
+              <Text className='text-textPrimary' style={styles.registerText}>
                 Login as Admin?{' '}
-                <Text style={styles.registerLink} onPress={() => {
+                <Text className='text-primary' style={styles.registerLink} onPress={() => {
                   navigation?.navigate('adminportal')
                 }}>
                   Admin Login
@@ -178,9 +178,7 @@ const styles = StyleSheet.create({
   registerText: {
     marginTop: 16,
     textAlign: 'center',
-    color: '#666',
   },
   registerLink: {
-    color: '#ef4444',
   }
 });

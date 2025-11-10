@@ -1,3 +1,3 @@
-if (__DEV__) {
-  require('react-native-flipper');
-}
+// if (__DEV__) {
+//   require('react-native-flipper');
+// }

@@ -1,5 +1,6 @@
 import { CachedImage } from '@/components/atom';
 import useTheme from '@/hooks/useTheme';
+import { navigate } from '@/navigation/RootNavRef';
 import { useCartStore } from '@/store/cart/cartStore';
 import { gpsw } from '@/style/theme';
 import { convertToFloat } from '@/utility/utility';
@@ -25,19 +26,19 @@ const CartItem1 = ({ item }: CartItem1Props) => {
         ...(item?.product && { ...item?.product } || {}),
     }
 
-    console.log('product_details', product_details)
-
     return (
-        <View style={{
-            shadowColor: colors.textPrimary,
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.2,
-            shadowRadius: 1.41,
-            elevation: 2,
-            backgroundColor: colors.surfaceElevated,
-            borderRadius: 8,
-            marginBottom: 8,
-        }} className="flex-row justify-between items-center p-4 border-b border-borderSubtle">
+        <TouchableOpacity
+            onPress={() => navigate('ProductDetails', product_details)}
+            style={{
+                shadowColor: colors.textPrimary,
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.2,
+                shadowRadius: 1.41,
+                elevation: 2,
+                backgroundColor: colors.surfaceElevated,
+                borderRadius: 8,
+                marginBottom: 8,
+            }} className="flex-row justify-between items-center p-4 border-b border-borderSubtle">
             <View className="flex-row items-center">
                 {product_details?.images && (
                     <CachedImage
@@ -96,7 +97,7 @@ const CartItem1 = ({ item }: CartItem1Props) => {
                     {currencySymbol} {convertToFloat((product_details?.discountPrice || 0) * item.quantity)}
                 </Text>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 

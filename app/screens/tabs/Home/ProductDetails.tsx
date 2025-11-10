@@ -1,6 +1,7 @@
 import FeaturedCarousel from '@/components/atom/Carousel/FeaturedCarousel';
 import OverlayLoader from '@/components/molecule/Loader/OverLayLoader';
 import useTheme from '@/hooks/useTheme';
+import { navigate } from '@/navigation/RootNavRef';
 import { useCartStore } from '@/store/cart/cartStore';
 import { CMS_URL } from '@/utility/config';
 import { DynamicHeader, IconSymbol, Text, ThemedSafeArea } from '@atom';
@@ -14,6 +15,7 @@ export default function ProductDetails() {
   const { colors } = useTheme();
   const { items: cartItems, setQuantity, removeItem, loading: cartLoading, products: productCache } = useCartStore();
   const [product, setProduct] = useState<any>(null);
+
 
   useEffect(() => {
     setProduct(params);
@@ -62,7 +64,21 @@ export default function ProductDetails() {
         position: 'sticky',
         top: 0,
         zIndex: 10,
-      }} />
+      }}
+        rightComponent={
+          <TouchableOpacity onPress={() => navigate('Cart')}>
+            <View className="relative">
+              <IconSymbol name="cart" size={28} color={colors.textPrimary} />
+              {cartItems.length > 0 && (
+                <View className="absolute -top-2 -right-2 bg-accent rounded-full w-5 h-5 items-center justify-center">
+                  <Text className="text-xs text-textInverse">{cartItems.length}</Text>
+                </View>
+              )}
+            </View>
+          </TouchableOpacity>
+        }
+
+      />
       < ScrollView className="flex-1 bg-surfaceBase" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
         <FeaturedCarousel images={carouselImages} imageHeight={250} borderRadius={12} />
 

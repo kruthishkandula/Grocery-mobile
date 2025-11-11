@@ -25,7 +25,7 @@ export default function LinearHeader({ title, colors, style, children }: LinearH
                 <TouchableOpacity onPress={() => {
                     goBack()
                 }} >
-                    <IconSymbol size={24} name='left' color={themColors.textPrimary} />
+                    <IconSymbol size={24} name='left' color={themColors.light} />
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>{title}</Text>
                 <TouchableOpacity></TouchableOpacity>

@@ -348,9 +348,9 @@ const CheckoutScreen = () => {
                   >
                     {items.map((item) => (
                       <View key={item.id} style={styles.orderItem}>
-                        <Text style={styles.itemName}>{item.product?.name || 'Product'}</Text>
-                        <Text style={styles.itemQuantity}>Qty: {item.quantity}</Text>
-                        <Text style={styles.itemPrice}>
+                        <Text className='text-textPrimary' style={styles.itemName}>{item.product?.name || 'Product'}</Text>
+                        <Text className='text-textPrimary bg-textInverse' style={styles.itemQuantity}>Qty: {item.quantity}</Text>
+                        <Text className='text-textPrimary' style={styles.itemPrice}>
                           ₹{((item.product?.discountPrice || 0) * item.quantity).toFixed(2)}
                         </Text>
                       </View>
@@ -419,7 +419,7 @@ const CheckoutScreen = () => {
                         }}
                       >
                         <LinearGradient
-                          colors={selectedAddress?.id === item.id ? ['#e8f5e8', '#f0f8ff'] : ['#ffffff', '#f9f9f9']}
+                          colors={selectedAddress?.id === item.id ? [colors.borderDefault, colors.borderDefault] : [colors.borderDefault, colors.borderDefault]}
                           style={styles.addressOptionGradient}
                         >
                           <View style={styles.addressOptionContent}>
@@ -809,14 +809,11 @@ const styles = StyleSheet.create({
   itemName: {
     flex: 1,
     fontSize: 16,
-    color: '#333',
     fontWeight: '500',
   },
   itemQuantity: {
     fontSize: 14,
-    color: '#666',
     marginHorizontal: 12,
-    backgroundColor: 'rgba(255,255,255,0.7)',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 10,
@@ -824,7 +821,6 @@ const styles = StyleSheet.create({
   itemPrice: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
   },
   totalRow: {
     paddingTop: 16,

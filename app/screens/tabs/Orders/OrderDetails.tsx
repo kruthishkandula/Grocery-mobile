@@ -14,7 +14,7 @@ export default function OrderDetails() {
                 <DynamicHeader title='Order Details' />
                 <ScrollView style={styles.container} contentContainerClassName='pb-4' showsVerticalScrollIndicator={false}>
                     {/* Order Info Card */}
-                    <View style={styles.card}>
+                    <View className='border border-textPrimary' style={[styles.card]}>
                         <Text className='text-textPrimary' style={styles.orderId}>Order #{order.id}</Text>
                         <Text className='text-textPrimary' style={[styles.status, order.status === 'pending' ? styles.statusPending : styles.statusOther]}>
                             {order.status?.toUpperCase() || order.c?.toUpperCase()}
@@ -77,14 +77,15 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     card: {
-        borderRadius: 16,
+        borderRadius: 24,
         padding: 16,
         marginBottom: 16,
-        shadowColor: '#000',
-        shadowOpacity: 0.06,
-        shadowRadius: 8,
-        shadowOffset: { width: 0, height: 2 },
-        elevation: 2,
+        borderWidth: 1,
+        // shadowColor: '#000',
+        // shadowOpacity: 0.06,
+        // shadowRadius: 8,
+        // shadowOffset: { width: 0, height: 2 },
+        // elevation: 2,
     },
     orderId: {
         fontSize: 18,

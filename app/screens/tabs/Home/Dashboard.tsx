@@ -346,7 +346,7 @@ export default function Dashboard() {
                             <View className='bg-secondary p-2 rounded-full'>
                                 <IconSymbol name='location-outline' size={24} color={colors.textInverse} />
                             </View>
-                            <View className='flex-col'>
+                            <View className='flex-col max-w-[80%]'>
                                 <View className='flex-row items-center'>
                                     <Text
                                         style={{ fontSize: gpsw(12) }}

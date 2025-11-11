@@ -110,7 +110,7 @@ const AddressModal = ({
                   placeholder="Custom label"
                   value={form.customLabel}
                   onChangeText={(v) => handleChange('customLabel', v)}
-                  maxLength={10}
+                  maxLength={20}
                 />
               </>
             )}
@@ -121,7 +121,7 @@ const AddressModal = ({
               placeholder="Full Name"
               value={form.receiverName}
               onChangeText={(v) => handleChange('receiverName', v)}
-              maxLength={20}
+              maxLength={40}
             />
             <Text className='text-textPrimary' style={styles.fieldLabel}>Receiver Phone <Text style={styles.required}>*</Text></Text>
             <TextInput
@@ -143,7 +143,7 @@ const AddressModal = ({
               placeholder="H.No/Flat No/Room No, Street Name"
               value={form.addressLine1}
               onChangeText={(v) => handleChange('addressLine1', v)}
-              maxLength={30}
+              maxLength={50}
             />
             <Text className='text-textPrimary' style={styles.fieldLabel}>Address Line 2 <Text className='text-textSecondary' style={styles.optional}>(Optional)</Text></Text>
             <TextInput
@@ -151,7 +151,7 @@ const AddressModal = ({
               placeholder="Street Name, Area, Landmark"
               value={form.addressLine2}
               onChangeText={(v) => handleChange('addressLine2', v)}
-              maxLength={30}
+              maxLength={50}
             />
             <Text className='text-textPrimary' style={styles.fieldLabel}>City <Text style={styles.required}>*</Text></Text>
             <TextInput
@@ -159,7 +159,7 @@ const AddressModal = ({
               placeholder="City"
               value={form.city}
               onChangeText={(v) => handleChange('city', v)}
-              maxLength={20}
+              maxLength={30}
             />
             <Text className='text-textPrimary' style={styles.fieldLabel}>State <Text style={styles.required}>*</Text></Text>
             <TextInput
@@ -167,7 +167,7 @@ const AddressModal = ({
               placeholder="State"
               value={form.state}
               onChangeText={(v) => handleChange('state', v)}
-              maxLength={14}
+              maxLength={20}
             />
             <Text className='text-textPrimary' style={styles.fieldLabel}>Postal Code <Text style={styles.required}>*</Text></Text>
             <TextInput
@@ -184,7 +184,7 @@ const AddressModal = ({
               placeholder="Country"
               value={form.country}
               onChangeText={(v) => handleChange('country', v)}
-              maxLength={10}
+              maxLength={20}
             />
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 16 }}>
@@ -307,7 +307,7 @@ const AddressScreen = () => {
           )}
           ListEmptyComponent={<View>
             <Animation name="Address" />
-            <Text variant='medium16' style={{ textAlign: 'center', marginTop: 32 }}>No addresses yet.</Text>
+            <Text className='text-textPrimary' variant='medium16' style={{ textAlign: 'center', marginTop: 32 }}>No addresses yet.</Text>
           </View>}
         />
         <Button title="Add Address" onPress={handleAdd} style={styles.addBtn} />

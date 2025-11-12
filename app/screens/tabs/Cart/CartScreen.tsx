@@ -96,7 +96,7 @@ export default function CartScreen({ navigation }: any) {
         </TouchableOpacity>} />
         <ScrollView contentContainerStyle={{ paddingBottom: 100 }} className="flex-1 bg-surfaceBase p-4 ">
           <>
-            {cartItems.length > 0 && <TouchableOpacity className='flex self-end mb-2 bg-info p-2 rounded-lg' onPress={() => clearCart()}>
+            {cartItems.length > 0 && <TouchableOpacity className='flex self-end mb-2 bg-surfaceOverlay p-2 rounded-lg' onPress={() => clearCart()}>
               <View className="flex items-center flex-row">
                 <IconSymbol name="delete" size={20} color={colors.textPrimary} />
                 <Text className="ml-2 text-textPrimary">Clear Cart</Text>

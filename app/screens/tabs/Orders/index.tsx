@@ -1,9 +1,10 @@
-import React from 'react';
-import { View, Text, FlatList } from 'react-native';
-import { useWishlistStore } from '@/store/whishlist/wishlistStore';
+import { Button, DynamicHeader, ThemedSafeArea } from '@/components/atom';
 import OrderCard from '@/components/molecule/Card/Order/OrderCard';
-import { DynamicHeader, ThemedSafeArea } from '@/components/atom';
+import { navigate } from '@/navigation/RootNavRef';
 import { useOrderStore } from '@/store/order/orderStore';
+import { useWishlistStore } from '@/store/whishlist/wishlistStore';
+import React from 'react';
+import { FlatList, Text, View } from 'react-native';
 
 const Orders = () => {
     const { items, loading } = useWishlistStore();
@@ -27,15 +28,20 @@ const Orders = () => {
                     <FlatList
                         data={orders}
                         keyExtractor={item => item.id}
-                        renderItem={({item}) => <OrderCard order={item} />}
+                        renderItem={({ item }) => <OrderCard order={item} />}
                         style={{ flexGrow: 1 }}
                         contentContainerStyle={{ paddingBottom: 20, gap: 10 }}
                         showsVerticalScrollIndicator={false}
                         horizontal={false}
                         ListEmptyComponent={
-                            <Text className="text-center text-textSecondary mt-8">
-                                No favourite products found.
-                            </Text>
+                            <View className='w-100 h-full justify-center items-center gap-2 pt-40'>
+                                <Text className="text-center text-2xl font-bold text-textSecondary mt-8">
+                                    No Orders found.
+                                </Text>
+                                <Button title='Order Now' onPress={() => {
+                                    navigate('Products')
+                                }} />
+                            </View>
                         }
                     />
                 </View>

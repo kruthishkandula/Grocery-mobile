@@ -1126,6 +1126,7 @@ const styles = StyleSheet.create({
   noAddressIcon: {
     fontSize: 48,
     marginBottom: 16,
+    lineHeight: 52
   },
   noAddressTitle: {
     fontSize: 18,

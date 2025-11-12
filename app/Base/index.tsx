@@ -70,6 +70,10 @@ export default function Base() {
         prepare();
     }, []);
 
+      useEffect(() => {
+    console.log('[APP] Root layout mounted - startup complete');
+  }, []);
+
     if (!isSplashFinished || !isAppReady) {
         return Platform.OS === 'web' ? null : <AnimatedSplash />;
     }

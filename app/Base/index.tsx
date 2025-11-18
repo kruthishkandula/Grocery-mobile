@@ -15,10 +15,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import RootNavigator from '../navigation/RootNavigator';
 
-// Only prevent auto hide on native platforms
-if (Platform.OS !== 'web') {
-    SplashScreen.preventAutoHideAsync();
-}
+// moved prevent/hide logic into component lifecycle to avoid leaving the native splash visible in release
 
 export default function Base() {
     const [isSplashFinished, setIsSplashFinished] = useState(Platform.OS === 'web');
@@ -104,22 +101,34 @@ export default function Base() {
     };
 
     useEffect(() => {
-        if (Platform.OS === 'web') {
-            return;
-        }
+        if (Platform.OS === 'web') return;
 
+        let mounted = true;
         async function prepare() {
             try {
+                // ensure splash doesn't auto-hide before we are ready
+                await SplashScreen.preventAutoHideAsync();
                 await new Promise(resolve => setTimeout(resolve, SPLASH_SCREEN_TIMEOUT));
-                setIsSplashFinished(true);
+                if (mounted) setIsSplashFinished(true);
             } catch (e) {
-                console.warn(e);
+                console.warn('[Splash] prepare failed', e);
             } finally {
-                setIsAppReady(true);
+                if (mounted) {
+                    setIsAppReady(true);
+                    try {
+                        // explicitly hide native splash when app is ready
+                        await SplashScreen.hideAsync();
+                    } catch (hideErr) {
+                        console.warn('[Splash] hideAsync failed', hideErr);
+                    }
+                }
             }
         }
 
         prepare();
+        return () => {
+            mounted = false;
+        };
     }, []);
 
     useEffect(() => {

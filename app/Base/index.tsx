@@ -51,6 +51,58 @@ export default function Base() {
         key: 'GROCERYPLUS_QUERY_CACHE',
     });
 
+    // Improved safe wrapper: validate raw storage value, parse safely, and remove corrupted data
+    const safeAsyncStoragePersister = {
+        ...asyncStoragePersister,
+        restoreClient: async () => {
+            const key = 'GROCERYPLUS_QUERY_CACHE';
+            try {
+                // Read raw value directly from storage to inspect it
+                const raw = await local_storage.getItem?.(key);
+
+                if (raw == null) {
+                    return undefined;
+                }
+
+                // If storage returned a non-string (some wrappers accidentally return objects),
+                // treat it as corrupted and remove it.
+                if (typeof raw !== 'string') {
+                    console.warn('[Persist] persisted value is not a string — removing', raw);
+                    await local_storage.removeItem?.(key);
+                    return undefined;
+                }
+
+                // Quick sanity check: JSON should start with '{' or '[' or '"'
+                const first = raw.trim()[0];
+                if (!['{', '[', '"'].includes(first)) {
+                    console.warn('[Persist] persisted value does not look like JSON — removing, first char:', first);
+                    await local_storage.removeItem?.(key);
+                    return undefined;
+                }
+
+                // Parse safely; if this throws, handle below and remove the corrupted key
+                const parsed = JSON.parse(raw);
+                return parsed;
+            } catch (err) {
+                console.warn('[Persist] restore failed — clearing persisted cache', err);
+                try {
+                    await local_storage.removeItem?.('GROCERYPLUS_QUERY_CACHE');
+                } catch (removeErr) {
+                    console.warn('[Persist] remove failed', removeErr);
+                }
+                return undefined;
+            }
+        },
+        // Ensure removeClient exists and delegates to your storage API
+        removeClient: async () => {
+            try {
+                await local_storage.removeItem?.('GROCERYPLUS_QUERY_CACHE');
+            } catch (err) {
+                console.warn('[Persist] removeClient failed', err);
+            }
+        },
+    };
+
     useEffect(() => {
         if (Platform.OS === 'web') {
             return;
@@ -70,9 +122,9 @@ export default function Base() {
         prepare();
     }, []);
 
-      useEffect(() => {
-    console.log('[APP] Root layout mounted - startup complete');
-  }, []);
+    useEffect(() => {
+        console.log('[APP] Root layout mounted - startup complete');
+    }, []);
 
     if (!isSplashFinished || !isAppReady) {
         return Platform.OS === 'web' ? null : <AnimatedSplash />;
@@ -87,7 +139,7 @@ export default function Base() {
                 <PersistQueryClientProvider
                     client={queryClient}
                     persistOptions={{
-                        persister: asyncStoragePersister,
+                        persister: safeAsyncStoragePersister,
                         dehydrateOptions: {
                             shouldDehydrateQuery: query =>
                                 persistor_list.includes(query.queryKey[0] as string),

@@ -131,7 +131,7 @@ export default function SearchBar({
       activeOpacity={0.7}
     >
       <View style={styles.suggestionContent}>
-        <IconSymbol name='search' size={16} color={colors?.text2} />
+        <IconSymbol iconSet='Feather' name='search' size={16} color={colors?.text2} />
         <View style={styles.suggestionTextContainer}>
           <Text style={[styles.suggestionTitle, { color: colors?.text1 }]} numberOfLines={1}>
             {item.name}

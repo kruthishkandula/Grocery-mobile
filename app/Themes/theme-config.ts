@@ -57,6 +57,7 @@ type ThemeSpecificColors = {
   linkDefault: string;
   dark: string;
   light: string;
+  isDark: boolean;
 };
 
 type ThemeColors = ThemeSpecificColors & typeof commonColors;
@@ -84,7 +85,8 @@ const themeSpecificDefinitions: Record<string, ThemeSpecificColors> = {
     focusRing: commonColors.info,
     linkDefault: '#1976D2',
     dark: commonColors.black,
-    light: commonColors.white
+    light: commonColors.white,
+    isDark: false,
   },
   dark: {
     primary: '#7DD321',
@@ -107,7 +109,8 @@ const themeSpecificDefinitions: Record<string, ThemeSpecificColors> = {
     focusRing: commonColors.infoDark,
     linkDefault: '#64B5F6',
     dark: commonColors.black,
-    light: commonColors.white
+    light: commonColors.white,
+    isDark: true,
   },
   ocean: {
     primary: '#0077BE',
@@ -130,7 +133,8 @@ const themeSpecificDefinitions: Record<string, ThemeSpecificColors> = {
     focusRing: '#00BCD4',
     linkDefault: '#0097A7',
     dark: commonColors.black,
-    light: commonColors.white
+    light: commonColors.white,
+    isDark: false,
   },
   sunset: {
     primary: '#FF6B6B',
@@ -153,7 +157,8 @@ const themeSpecificDefinitions: Record<string, ThemeSpecificColors> = {
     focusRing: '#FF6B6B',
     linkDefault: '#E63946',
     dark: commonColors.black,
-    light: commonColors.white
+    light: commonColors.white,
+    isDark: false,
   },
   forest: {
     primary: '#2D5016',
@@ -176,7 +181,8 @@ const themeSpecificDefinitions: Record<string, ThemeSpecificColors> = {
     focusRing: '#6B8E23',
     linkDefault: '#2D5016',
     dark: commonColors.black,
-    light: commonColors.white
+    light: commonColors.white,
+    isDark: false,
   },
   midnight: {
     primary: '#6C63FF',
@@ -199,7 +205,8 @@ const themeSpecificDefinitions: Record<string, ThemeSpecificColors> = {
     focusRing: '#6C63FF',
     linkDefault: '#A29BFE',
     dark: commonColors.black,
-    light: commonColors.white
+    light: commonColors.white,
+    isDark: true,
   },
   candy: {
     primary: '#FF1493',
@@ -222,7 +229,8 @@ const themeSpecificDefinitions: Record<string, ThemeSpecificColors> = {
     focusRing: '#FF1493',
     linkDefault: '#C71585',
     dark: commonColors.black,
-    light: commonColors.white
+    light: commonColors.white,
+    isDark: false,
   },
   desert: {
     primary: '#D97706',
@@ -245,7 +253,8 @@ const themeSpecificDefinitions: Record<string, ThemeSpecificColors> = {
     focusRing: '#D97706',
     linkDefault: '#B45309',
     dark: commonColors.black,
-    light: commonColors.white
+    light: commonColors.white,
+    isDark: false,
   },
   lavender: {
     primary: '#9333EA',
@@ -268,7 +277,8 @@ const themeSpecificDefinitions: Record<string, ThemeSpecificColors> = {
     focusRing: '#9333EA',
     linkDefault: '#7E22CE',
     dark: commonColors.black,
-    light: commonColors.white
+    light: commonColors.white,
+    isDark: false,
   },
   xmas: {
     primary: '#BB2528',
@@ -291,7 +301,8 @@ const themeSpecificDefinitions: Record<string, ThemeSpecificColors> = {
     focusRing: '#BB2528',
     linkDefault: '#146B3A',
     dark: commonColors.black,
-    light: commonColors.white
+    light: commonColors.white,
+    isDark: false,
   },
 };
 

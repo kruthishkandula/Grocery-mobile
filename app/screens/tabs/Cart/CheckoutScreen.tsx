@@ -14,12 +14,12 @@ import {
   Alert,
   Animated,
   Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
   View
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const CheckoutScreen = () => {
   const { params: {

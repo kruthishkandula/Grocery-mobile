@@ -17,7 +17,7 @@ import { FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 export default function Products() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>("All");
   const { params } = useRoute<any>();
-  const { goBack, navigate } = useNavigation<any>();
+  const { goBack, navigate, canGoBack } = useNavigation<any>();
   const [categories, setCategories] = useState<any[]>([]);
   const { colors } = useTheme();
   const {
@@ -76,7 +76,6 @@ export default function Products() {
         <DynamicHeader
           variant="back"
           title="Products"
-          onBack={() => goBack()}
           rightComponent={
             <TouchableOpacity onPress={() => navigate('Cart')}>
               <View className="relative">

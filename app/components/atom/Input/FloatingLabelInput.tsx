@@ -70,9 +70,6 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
     let input_error_border_color = colors.error;
     let input_bg_color = rest?.inputStyling?.input_bg_color || colors.surfaceOverlay
 
-
-    console.log('rest?.inputStyling?.input_bg_color ', rest?.inputStyling?.input_bg_color )
-
     const [isFocused, setIsFocused] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const animatedIsFocused = useRef(new Animated.Value(value ? 1 : 0)).current;

@@ -23,7 +23,7 @@ const MAPPING: Record<string, IconMappingEntry> = {
   'heart.fill': { iconSet: 'AntDesign', iconName: 'heart' },
   'star.fill': { iconSet: 'FontAwesome', iconName: 'star' },
   'person.crop.circle': { iconSet: 'Ionicons', iconName: 'person-circle-outline' },
-  'search': { iconSet: 'AntDesign', iconName: 'search1' },
+  'search': { iconSet: 'Feather', iconName: 'search' },
   // Add more mappings as needed
 };
 

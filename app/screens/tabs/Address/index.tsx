@@ -6,6 +6,8 @@ import { gpsh } from '@/style/theme';
 import React, { useCallback, useState } from 'react';
 import { FlatList, Modal, Pressable, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Alert } from 'react-native';
+import * as Location from 'expo-location';
 
 const LABEL_OPTIONS = ['Home', 'Office', 'Other'];
 
@@ -37,6 +39,7 @@ const AddressModal = ({
 }) => {
   const { colors } = useTheme();
   const [form, setForm] = useState(initial || emptyAddress);
+  const [loadingLocation, setLoadingLocation] = useState(false);
 
   React.useEffect(() => {
     setForm(initial || emptyAddress);
@@ -68,6 +71,69 @@ const AddressModal = ({
 
   const getFinalLabel = () => (form.label === 'Other' ? form.customLabel : form.label);
 
+  const requestLocationPermission = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      return status === 'granted';
+    } catch (err) {
+      return false;
+    }
+  };
+
+  const reverseGeocode = async (lat: number, lon: number) => {
+    try {
+      const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
+      const res = await fetch(url, {
+        headers: { 'User-Agent': 'GroceryMobile/1.0 (you@example.com)' },
+      });
+      if (!res.ok) throw new Error('Reverse geocode failed');
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const fetchLocationAndFill = async () => {
+    const ok = await requestLocationPermission();
+    if (!ok) {
+      Alert.alert('Permission required', 'Location permission is required to use this feature.');
+      return;
+    }
+    setLoadingLocation(true);
+    try {
+      const pos = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Highest,
+        maximumAge: 10000,
+        timeout: 15000,
+      });
+      const { latitude, longitude } = pos.coords;
+      try {
+        const geo = await reverseGeocode(latitude, longitude);
+        const addr = (geo && geo.address) || {};
+        const line1 =
+          [addr.house_number, addr.road].filter(Boolean).join(' ') ||
+          (geo.display_name ? geo.display_name.split(',')[0] : '');
+        setForm((prev: any) => ({
+          ...prev,
+          addressLine1: line1,
+          addressLine2: geo.display_name || prev.addressLine2,
+          city: addr.city || addr.town || addr.village || addr.county || prev.city,
+          state: addr.state || prev.state,
+          postalCode: addr.postcode || prev.postalCode,
+          country: addr.country || prev.country,
+        }));
+      } catch (err) {
+        Alert.alert('Location error', err.message || 'Unable to get address from coordinates.');
+      } finally {
+        setLoadingLocation(false);
+      }
+    } catch (err) {
+      setLoadingLocation(false);
+      Alert.alert('Error', 'Failed to fetch location.');
+    }
+  };
+
   return (
     <Modal onDismiss={onClose} visible={visible} animationType="slide" transparent onRequestClose={onClose}>
       <View style={[styles.modalOverlay]}>
@@ -80,6 +146,23 @@ const AddressModal = ({
           </View>
 
           <ScrollView showsVerticalScrollIndicator={false} >
+            {/* Use My Location */}
+            <View style={{ marginBottom: 8, flexDirection: 'row', justifyContent: 'flex-end' }}>
+              <TouchableOpacity
+                onPress={fetchLocationAndFill}
+                disabled={loadingLocation}
+                style={{
+                  paddingHorizontal: 12,
+                  paddingVertical: 8,
+                  borderRadius: 8,
+                  backgroundColor: loadingLocation ? '#ddd' : colors.accent,
+                }}
+              >
+                <Text style={{ color: colors.textPrimary, fontWeight: '600' }}>
+                  {loadingLocation ? 'Fetching...' : 'Use My Location'}
+                </Text>
+              </TouchableOpacity>
+            </View>
             {/* Label Pills */}
             <Text className='text-textPrimary' style={styles.fieldLabel}>Save As <Text style={styles.required}>*</Text></Text>
             <View className='text-textPrimary' style={styles.pillsRow}>

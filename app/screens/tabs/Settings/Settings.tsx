@@ -99,8 +99,8 @@ const settingsCms = {
       id: 6,
       title: 'Support',
       route: 'Help',
-      icon: 'customerservice',
-      iconSet: 'AntDesign',
+      icon: 'phone',
+      iconSet: 'FontAwesome',
       size: 24,
       is_active: true,
     },
@@ -161,12 +161,12 @@ export default function Settings() {
           <View  >
             <Text className='text-[32px] font-bold text-textPrimary'>{upperFirst(userProfile.name)}</Text>
             <View className='flex-row items-center gap-2' >
-              <IconSymbol name='phone' color={colors.dark} size={16} />
-              <Text className='text-dark text-[16px]'>{userProfile.phonenumber}</Text>
+              <IconSymbol name='phone' color={colors.textPrimary} size={16} />
+              <Text className='text-textPrimary text-[16px]'>{userProfile.phonenumber}</Text>
             </View>
             <View className='flex-row items-center gap-2'>
-              <IconSymbol name='email' color={colors.dark} size={16} />
-              <Text className='text-dark text-[16px]'>{userProfile.email}</Text>
+              <IconSymbol name='email' color={colors.textPrimary} size={16} />
+              <Text className='text-textPrimary text-[16px]'>{userProfile.email}</Text>
             </View>
           </View>
         </LinearGradient>

@@ -19,7 +19,7 @@ export const ThemedSafeArea = ({ children }: { children: React.ReactNode }) => {
             }}
         >
             <StatusBar
-                style={isDark ? "light" : "dark"}
+                style={colors.isDark ? "light" : "dark"}
                 backgroundColor={colors?.surfaceOverlay}
             />
             {children}

@@ -36,7 +36,7 @@ export const useAddressStore = create<AddressStore>()(
             addAddress: (address) =>
                 set((state) => ({
                     addresses: [...state.addresses, address],
-                    selectedAddressId: address.isDefault ? address.id : state.selectedAddressId,
+                    selectedAddressId: (address.isDefault || !state.selectedAddressId) ? address.id : state.selectedAddressId,
                 })),
             removeAddress: (id) =>
                 set((state) => ({

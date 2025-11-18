@@ -23,7 +23,7 @@ export default function Categories() {
             <View className='flex-1' >
                 <DynamicHeader variant='back' title='Categories' />
                 <FlatList
-                    data={data?.data || []}
+                    data={data?.data?.filter((i: any) => i.isActive) || []}
                     renderItem={({ item }) => <CategoryItem2 item={item} numColumns={2} />}
                     numColumns={2}
                     contentContainerClassName='p-5'

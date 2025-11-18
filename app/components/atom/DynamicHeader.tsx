@@ -26,7 +26,7 @@ export default function DynamicHeader({
   style,
 }: DynamicHeaderProps) {
   const { colors } = useTheme()
-  const { goBack } = useNavigation<any>();
+  const { goBack, canGoBack, navigate } = useNavigation<any>();
 
   return (
     <View className="flex-row items-center justify-between px-4 py-3 bg-surfaceOverlay" style={[{
@@ -46,7 +46,7 @@ export default function DynamicHeader({
               onBack();
               return;
             }
-            goBack()
+            canGoBack() ? goBack() : navigate('homescreen')
           }} className="mr-2" hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
             <IconSymbol name="arrow-back" size={24} color={colors?.textPrimary} />
           </TouchableOpacity>

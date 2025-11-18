@@ -12,7 +12,7 @@ const EmptyCart = () => {
   return (
     <View style={styles.container}>
       <Animation name="EmptyCart" />
-      <Text variant="medium14" style={{ fontSize: 18, color: '#333' }}>
+      <Text className='text-textPrimary' variant="medium14" style={{ fontSize: 18 }}>
         Your cart is empty
       </Text>
       <Button
